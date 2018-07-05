@@ -3,7 +3,7 @@ var path = require('path');
 
 module.exports = {
 	entry: [
-		path.join(__dirname, './src/main/resources/main.js')
+		path.join(__dirname, './src/main/resources/app/index.js')
 	],
 	module: {
 		loaders: [{
@@ -17,8 +17,8 @@ module.exports = {
 		]
 	},
 	output: {
-		path: __dirname + './',
-		filename: 'bundle.js'
+		path: path.join(__dirname, 'build/resources/main'),
+		filename : "bundle.js"
 	},
 	devServer: {
 		contentBase: __dirname + '/dist',

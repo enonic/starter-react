@@ -1,5 +1,6 @@
 plugins {
     id 'com.enonic.xp.app' version '1.0.17'
+    id "com.moowork.node" version "1.1.1"
 }
 
 app {
@@ -10,7 +11,16 @@ app {
     systemVersion = "${xpVersion}"
 }
 
+node {
+    download = true
+    version = '6.9.2'
+}
+
+
 dependencies {
+
+    include "com.enonic.xp:lib-repo:${xpVersion}"
+    include "com.enonic.xp:lib-node:${xpVersion}"
     compile "com.enonic.xp:core-api:${xpVersion}"
     compile "com.enonic.xp:portal-api:${xpVersion}"
     include "com.enonic.xp:lib-content:${xpVersion}"
@@ -22,3 +32,15 @@ repositories {
     jcenter()
     xp.enonicRepo()
 }
+
+
+
+task webpack(type: NodeTask) {
+    script = file('node_modules/webpack/bin/webpack.js')
+}
+
+// processes your package.json before running webpack
+webpack.dependsOn 'npmInstall'
+webpack.dependsOn 'processResources'
+
+jar.dependsOn webpack

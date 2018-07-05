@@ -1,0 +1,24 @@
+plugins {
+    id 'com.enonic.xp.app' version '1.0.17'
+}
+
+app {
+    name = project.appName
+    displayName = 'React Starter Kit'
+    vendorName = 'Enonic AS'
+    vendorUrl = 'http://enonic.com'
+    systemVersion = "${xpVersion}"
+}
+
+dependencies {
+    compile "com.enonic.xp:core-api:${xpVersion}"
+    compile "com.enonic.xp:portal-api:${xpVersion}"
+    include "com.enonic.xp:lib-content:${xpVersion}"
+    include "com.enonic.xp:lib-portal:${xpVersion}"
+}
+
+repositories {
+    mavenLocal()
+    jcenter()
+    xp.enonicRepo()
+}

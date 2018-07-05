@@ -3,7 +3,7 @@ var path = require('path');
 
 module.exports = {
 	entry: [
-		path.join(__dirname, './src/main/resources/main.js')
+		path.join(__dirname, './src/main/resources/index.js')
 	],
 	module: {
 		loaders: [{

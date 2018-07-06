@@ -1,23 +1,29 @@
+var libIo = require('/lib/xp/io');
+var portal = require("/lib/xp/portal");
 
-var io = require('/lib/xp/io'); 
 
-var res1 = io.getResource("./index.html");
-var size = res1.getSize();
-var stream = res1.getStream(); 
-
-var text = io.readText(stream); 
+var html = getFileContents('./index.html') + "<script> " + getFileContents("./bundle.js") + "</script>"; 
 
 exports.get = function(){
     return {
-        body : text
+        headers : {
+            "Content-Type" : "text/html"
+        }, 
+        body: html
     }
 }
 
 
 /**
- * Notes: 
- * 
- * - get IO to work 
- * Then, return the text from a HTML-file. 
- * The HTML-file contains a reference to webpack bundle 
+ * NOTES: 
+ * - importing the HTML file works
+ * - Problem
+    * - The imported script (supposed to be a js-bundle) contains a copy of the HTML.. 
+    * - The bundle looks okay locally 
  */
+
+function getFileContents(path) {
+    var result = libIo.getResource(resolve(path))
+    var stream = result.getStream()
+    return libIo.readText(stream);
+}

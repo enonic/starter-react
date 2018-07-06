@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import  homePageActions from '../actions/homePageActions' 
+import * as homePageActions from '../actions/homePageActions' 
 
 class HomePage extends React.PureComponent { 
   
@@ -15,9 +15,17 @@ class HomePage extends React.PureComponent {
   componentDidMount(){
   }
 
+  buttonClick(arg){
+    this.props.doSomething("changed! wow cool!"); 
+  }
+
   render() {
     return (
-      <div>HomePage - data: {this.props.data}</div>
+      <div>
+          HomePage - data: {this.props.data}
+          <button onClick={this.buttonClick.bind(this)}></button>
+      </div>
+      
     );
   }
 }
@@ -32,13 +40,13 @@ HomePage.defaultProps = {
 
 function mapStateToProps(state){
 	return {
-	    data: state.get('example').get('data')
+      data: state.get('example').get('data')
 	};
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    doSomething: () => {homePageActions.doSomething(dispatch)},
+    doSomething: (arg) => {homePageActions.doSomething(dispatch,arg)},
   };
 }
 

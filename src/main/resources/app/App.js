@@ -1,9 +1,24 @@
 import React, {Component} from 'react';
+import { Route, Switch } from 'react-router'
+
+import HomePage from './containers/homePage';
+import NotFound from './containers/notFoundPage';
 
 export default class App extends Component {
     
     render () {
-        console.log("hello!")
-        return <p>This is my new react app</p>
+        return (
+            <div>
+                <Switch>
+                    <Route path="/" component={HomePage} />
+                    <Route component={NotFound} />
+                </Switch>
+                
+            </div>
+        )
     }
 }
+
+/**
+ * 
+ */

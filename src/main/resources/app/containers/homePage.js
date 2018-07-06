@@ -15,15 +15,10 @@ class HomePage extends React.PureComponent {
   componentDidMount(){
   }
 
-  buttonClick(arg){
-    this.props.doSomething("changed! wow cool!"); 
-  }
-
   render() {
     return (
       <div>
           HomePage - data: {this.props.data}
-          <button onClick={this.buttonClick.bind(this)}></button>
       </div>
       
     );

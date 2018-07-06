@@ -2,12 +2,11 @@ import { fromJS } from 'immutable';
 import  * as somethingActions from '../actions/homePageActions'
 
 const initialState = fromJS({
-  data: "something"
+  data: "data"
 });
 
 function doSomethingToState(oldState, action){
   let state = oldState
-  state = state.set('data', action.data)
   return state
 }
 

@@ -1,5 +1,4 @@
 var portal = require('/lib/xp/portal');
-var router = require('/lib/router')();
 var mustache = require('/lib/xp/mustache');
 
 
@@ -9,7 +8,7 @@ function handleGet(req) {
 
     var params = {
         appVersion: app.version,
-        assetUrl: portal.assetUrl('bundle.js')
+        assetUrl: portal.assetUrl('')
     };
     
     var body = mustache.render(view, params);

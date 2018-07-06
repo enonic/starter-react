@@ -17,11 +17,7 @@ module.exports = {
 		]
 	},
 	output: {
-		path: path.join(__dirname, 'build/resources/main'),
+		path: path.join(__dirname, 'build/resources/main/assets/'),
 		filename : "bundle.js"
-	},
-	devServer: {
-		contentBase: __dirname + '/dist',
-		historyApiFallback: true
 	}
 }

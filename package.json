@@ -5,9 +5,7 @@
   "scripts": {
     "build": "gradle build",
     "deploy": "gradle deploy",
-    "watch": "gradle deploy -t",
-    "dev": "./node_modules/.bin/webpack-dev-server --config ./webpack/webpack.dev.config.js"
-  
+    "watch": "gradle deploy -t"
   },
   "repository": {
     "type": "git",
@@ -23,7 +21,6 @@
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "webpack": "^3.12.0",
-    "webpack-dev-server": "^3.1.4",
     "workbox-webpack-plugin": "^2.1.0"
   },
   "devDependencies": {
@@ -48,5 +45,5 @@
     "plugins": [
       "transform-object-rest-spread"
     ]
-  }
+  } 
 }

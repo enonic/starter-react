@@ -1,37 +1,26 @@
-var libIo = require('/lib/xp/io');
-var portalLib = require('/lib/xp/portal');
-var router = require('/lib/router')();
+var portal = require('/lib/xp/portal');
 var mustache = require('/lib/xp/mustache');
 
-function getAppUrl() {
-    return portalLib.url({path:'/app/' + app.name}) + '/';
-}
 
-function getPage() {
-    var test = libIo.getResource(resolve('./index.html'))
-    var stream = test.getStream()
-    var page = libIo.readText(stream);
-    return page
-}
+var view = resolve('./index.html');
 
-function getBundle(){
-    var appUrl = getAppUrl();
-    return {
-        contentType: 'application/javascript',
-        body: mustache.render(resolve('/assets/bundle.js'), {
-            appUrl: appUrl,
-        })
+function handleGet(req) {
+
+    var params = {
+        appVersion: app.version,
+        assetUrl: portal.assetUrl('')
     };
-
-}
-
-router.get('/', getPage);
-router.get('/bundle.js', getBundle);
-
-exports.get = function (req) {
+    
+    var body = mustache.render(view, params);
 
     return {
-        body: router.dispatch(req)
-    }
+        contentType: 'text/html',
+        headers: {
+            'Service-Worker-Allowed': '/'
+        },
+        body: body
+    };
 }
+
+exports.get = handleGet;
 

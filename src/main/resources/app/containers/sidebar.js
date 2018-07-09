@@ -14,7 +14,7 @@ import Item from '../interfaces/item';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import * as item from '../actions/itemActions'
+import * as mainActions from '../actions/mainActions'
 
 class SideBar extends React.PureComponent {
 

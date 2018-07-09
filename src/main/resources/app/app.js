@@ -22,10 +22,7 @@ export default class App extends Component {
                     <Route path="/user" component={UserPage} />
                     <Route component={NotFound} />
                 </Switch>
-                <TopBar/>
-                        {/*'true' to open */}
-                <SideBar open={true}/>
-                <UserViewComponent/>
+                
             </div>
         )
     }

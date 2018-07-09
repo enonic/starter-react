@@ -6,9 +6,8 @@ import AdminItemComp from '../components/adminItemComponent';
 import CreateItem from '../components/createItemComponent';
 
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 
-import * as item from '../actions/itemActions' 
+import * as mainActions from '../actions/mainActions' 
 
 class AdminPage extends React.PureComponent { 
   
@@ -64,9 +63,9 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
   return {
-    createItem : (arg) => {item.createItem(dispatch,arg)},
-    deleteItem : (arg) => {item.deleteItem(dispatch,arg)},
-    changeItem : (arg) => {item.changeItem(dispatch,arg)}
+    createItem : (arg) => {mainActions.createItem(dispatch,arg)},
+    deleteItem : (arg) => {mainActions.deleteItem(dispatch,arg)},
+    changeItem : (arg) => {mainActions.changeItem(dispatch,arg)}
   };
 }
 

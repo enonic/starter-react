@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import * as Item from '../actions/itemActions'
+import * as mainActions from '../actions/mainActions'
 
 const initialState = fromJS({
   allItems: [],
@@ -41,17 +41,17 @@ function removeItemFromCart(oldState, action){
 
 
 
-export function itemReducer(state = initialState, action) {
+export function mainReducer(state = initialState, action) {
   switch (action.type) {
-    case Item.actions.removeItemFromCart:
+    case mainActions.actions.removeItemFromCart:
       return removeItemFromCart(state, action)
-    case Item.actions.addItemToCart:
+    case mainActions.actions.addItemToCart:
       return addItemToCart(state, action)
-    case Item.actions.changeItem:
+    case mainActions.actions.changeItem:
       return changeItem(state, action)
-    case Item.actions.deleteItem:
+    case mainActions.actions.deleteItem:
       return deleteItem(state, action)
-    case Item.actions.createItem:
+    case mainActions.actions.createItem:
       return createItem(state, action)
     default:
       return state;

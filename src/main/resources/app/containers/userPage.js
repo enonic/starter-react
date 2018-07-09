@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import * as item from '../actions/itemActions' 
+import * as mainActions from '../actions/mainActions' 
 
 class UserPage extends React.PureComponent { 
   

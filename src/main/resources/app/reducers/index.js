@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux-immutable';
-import { itemReducer } from './itemReducer';
+import { mainReducer } from './mainReducer';
 
 export default function createRootReducer() {
   return combineReducers({
-    app: itemReducer
+    app: mainReducer
   });
 }

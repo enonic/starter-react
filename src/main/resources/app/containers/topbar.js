@@ -40,8 +40,8 @@ class TopBar extends React.PureComponent {
                         <Typography variant="title" color="inherit" >
                             HEIHEI
                         </Typography>
-                        <Button color="inherit">User</Button>
-                        <Button color="inherit">Admin</Button>
+                        <Button color="inherit" href="/react-starter-user">User</Button>
+                        <Button color="inherit" href="/react-starter-admin">Admin</Button>
                         <Button color="inherit">Store Demo</Button>
                     </Toolbar>
                 </AppBar>

@@ -34,7 +34,7 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return (
-      <div>
+      <div style={styles}>
           <button onClick={this.addClick.bind(this)}>add</button>
           
           {this.state.showForm ? <CreateItem submit={this.submitClick.bind(this)} /> : null}
@@ -45,6 +45,11 @@ class AdminPage extends React.PureComponent {
       
     );
   }
+}
+
+const styles = {
+  position: "absolute",
+  margin: "20%"
 }
 
 AdminPage.propTypes = {

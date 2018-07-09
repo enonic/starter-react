@@ -30,9 +30,9 @@ export default class App extends Component {
     render () {
         return (
             <div>
-                <Switch>
-                    <Route path="/" component={AdminPage} />
-                    <Route path="/user" component={UserPage} />
+                <Switch>    {/* '/admin' fører til enonic login */}
+                    <Route path="/app/com.enonic.starter.react/admin" component={AdminPage} />
+                    <Route path="/app/com.enonic.starter.react/admin" component={UserPage} />
                     <Route component={NotFound} />
                 </Switch>
                 <TopBar onToggleMenu={this.toggleMenu.bind(this)}/>

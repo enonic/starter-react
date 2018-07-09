@@ -35,7 +35,7 @@ UserPage.defaultProps = {
 
 function mapStateToProps(state){
 	return {
-      data: state.get('example').get('data')
+      // data: state.get('example').get('data')
 	};
 }
 

@@ -16,7 +16,7 @@ class CartPage extends React.PureComponent {
 
   render() {
     return (
-      <div>
+      <div style={styles}>
           Items in cart: 
           {this.props.items.map(item => 
             <CartItemComp 
@@ -31,12 +31,16 @@ class CartPage extends React.PureComponent {
   }
 }
 
+const styles = {
+  margin: "20%"
+}
 
-AdminPage.propTypes = {
+
+CartPage.propTypes = {
   items: PropTypes.object
 };
 
-AdminPage.defaultProps = {
+CartPage.defaultProps = {
 }
 
 

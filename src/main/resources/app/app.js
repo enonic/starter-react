@@ -7,6 +7,7 @@ import AdminPage from './containers/adminPage';
 import NotFound from './containers/notFoundPage';
 import TopBar from './containers/TopBar'; 
 import SideBar from './containers/SideBar'; 
+import CartPage from './containers/cartPage'; 
 
 
 export default class App extends Component {
@@ -34,6 +35,8 @@ export default class App extends Component {
                     */}
                     <Route path="/app/com.enonic.starter.react/admin" component={AdminPage} />
                     <Route path="/app/com.enonic.starter.react/user" component={UserPage} />
+                    <Route path="/app/com.enonic.starter.react/cart" component={CartPage} />
+
                     <Route component={NotFound} />
                 </Switch>
                 <TopBar onToggleMenu={this.toggleMenu.bind(this)}/>

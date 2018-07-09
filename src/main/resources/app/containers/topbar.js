@@ -44,7 +44,9 @@ class TopBar extends React.PureComponent {
                         <Link to="admin">
                             <Button color="inherit">Admin</Button>                        
                         </Link>
-                        CART
+                        <Link to="cart">
+                            <Button color="inherit">Cart</Button>
+                        </Link>
                     </Toolbar>
                 </AppBar>
             </div>

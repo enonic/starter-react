@@ -9,13 +9,6 @@ export const actions = {
   addCategory: 'ADD_CATEGORY'
 }
 
-function getCategoriesAction(arg) {
-  return {
-    type: actions.getCategories,
-    item: arg
-  };
-}
-
 function addCategoryAction(arg) {
   return {
     type: actions.addCategory,

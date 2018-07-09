@@ -1,5 +1,5 @@
 import { fromJS } from 'immutable';
-import * as Item from '../actions/itemActions'
+import * as mainActions from '../actions/mainActions'
 
 const initialState = fromJS({
   allItems: [],
@@ -67,18 +67,16 @@ function addCategory(oldState, action){
 
 export function mainReducer(state = initialState, action) {
   switch (action.type) {
-    case Item.actions.addCategory:
-      return addCategory(state, action);
-    case Item.actions.removeItemFromCart:
-      return removeItemFromCart(state, action);
-    case Item.actions.addItemToCart:
-      return addItemToCart(state, action);
-    case Item.actions.changeItem:
-      return changeItem(state, action);
-    case Item.actions.deleteItem:
-      return deleteItem(state, action);
-    case Item.actions.createItem:
-      return createItem(state, action);
+    case mainActions.actions.removeItemFromCart:
+      return removeItemFromCart(state, action)
+    case mainActions.actions.addItemToCart:
+      return addItemToCart(state, action)
+    case mainActions.actions.changeItem:
+      return changeItem(state, action)
+    case mainActions.actions.deleteItem:
+      return deleteItem(state, action)
+    case mainActions.actions.createItem:
+      return createItem(state, action)
     default:
       return state;
   }

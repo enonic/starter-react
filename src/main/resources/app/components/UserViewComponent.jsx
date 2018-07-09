@@ -15,9 +15,9 @@ import UserItemComponent from "./UserItemComponent"
 import UserSearchComponent from "./UserSearchComponent"; 
 
 
-// import * as itemViewActions from "../actions/itemViewActions";
+// import * as userViewComponentActions from "../actions/userViewComponentActions";
 
-class ItemView extends React.PureComponent {
+class UserViewComponent extends React.PureComponent {
 
     constructor() {
         super();
@@ -67,7 +67,7 @@ class ItemView extends React.PureComponent {
     }
 }
 
-ItemView.propTypes = {
+UserViewComponent.propTypes = {
     items : PropTypes.shape({
         name : PropTypes.string.isRequired, 
         info : PropTypes.string, 
@@ -75,21 +75,21 @@ ItemView.propTypes = {
     })
 };
 
-ItemView.defaultProps = {
+UserViewComponent.defaultProps = {
 }
 
 
 function mapStateToProps(state) {
     return {
-        data: state.get('example').get('data')
+        //data: state.get('example').get('data')
     };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        doSomething: (arg) => { itemViewActions.doSomething(dispatch, arg) },
+        doSomething: (arg) => { userViewComponentActions.doSomething(dispatch, arg); },
     };
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ItemView)
+export default connect(mapStateToProps, mapDispatchToProps)(UserViewComponent)

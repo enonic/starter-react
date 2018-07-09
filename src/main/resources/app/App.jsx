@@ -6,7 +6,7 @@ import AdminPage from './containers/adminPage';
 import NotFound from './containers/notFoundPage';
 
 // Testing 
-import ItemView from './components/UserViewComponent';
+import UserViewComponent from './components/UserViewComponent';
 
 export default class App extends Component {
     
@@ -18,7 +18,7 @@ export default class App extends Component {
                     <Route path="/user" component={UserPage} />
                     <Route component={NotFound} />
                 </Switch>
-                <ItemView/>
+                <UserViewComponent/>
             </div>
         )
     }

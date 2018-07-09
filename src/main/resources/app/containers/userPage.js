@@ -7,24 +7,40 @@ import { NavLink } from 'react-router-dom';
 import * as mainActions from '../actions/mainActions' 
 
 // Components 
-import UserViewComponent from '../components/userViewComponent'; 
+import UserItemComponent from "../components/userItemComponent"
+import UserSearchComponent from "../components/UserSearchComponent"; 
 
 class UserPage extends React.PureComponent { 
   
-  constructor(props){
-    super(props)
-  }
-
-  componentDidMount(){
+  renderItems() {
+    return this.props.items.map((item, index) => {
+      console.log(item);
+      return <UserItemComponent
+        name={item.name}
+        info={item.info}
+        image={item.image}
+        key={index}
+      >
+      </UserItemComponent>
+    })
   }
 
   render() {
-    return <UserViewComponent />
+    return (
+      <div style={styles}>
+        <UserSearchComponent />
+        {this.renderItems()}
+      </div>
+    );
   }
 }
 
+const styles = {
+  margin: "20%"
+}
+
 UserPage.propTypes = {
-    data: PropTypes.string
+  items: PropTypes.object
 };
 
 UserPage.defaultProps = {
@@ -33,7 +49,7 @@ UserPage.defaultProps = {
 
 function mapStateToProps(state){
 	return {
-      // data: state.get('example').get('data')
+    items: state.get('app').get('allItems')
 	};
 }
 

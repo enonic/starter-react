@@ -22,10 +22,21 @@ export default class UserSearchComponent extends Component {
             value : "" 
         })
     }
+
     inputChange(event) {
         this.setState({
             value : event.target.value
         })
+    }
+
+    handleKeyDown(event) {
+                        //  ENTER 
+        if(event.keyCode === 13) {
+            if(this.props.onEnter) {
+                // Put the value in the redux store from parent component 
+                this.props.onEnter(this.state.value); 
+            }
+        }
     }
 
     render() {
@@ -34,7 +45,6 @@ export default class UserSearchComponent extends Component {
                 <TextField
                     label="Search"
                     value={this.state.value}
-                    onChange={this.inputChange.bind(this)}
                     margin="normal"
                     InputProps={{
                         startAdornment: (
@@ -43,6 +53,9 @@ export default class UserSearchComponent extends Component {
                             </InputAdornment>
                         ),
                     }}
+                    helperText="Search in store"
+                    onChange={this.inputChange.bind(this)}
+                    onKeyDown={this.handleKeyDown.bind(this)}
                 />
             </div>
         )
@@ -51,7 +64,8 @@ export default class UserSearchComponent extends Component {
 
 UserSearchComponent.propTypes = {
     autofocus : PropTypes.bool, 
-    error : PropTypes.bool
+    error : PropTypes.bool,
+    onEnter : PropTypes.func
 };
 
 UserSearchComponent.defaultProps = {

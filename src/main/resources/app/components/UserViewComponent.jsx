@@ -9,10 +9,12 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-
 // Components 
 import UserItemComponent from "./UserItemComponent"
 import UserSearchComponent from "./UserSearchComponent"; 
+
+// Interfaces 
+import Item from '../interfaces/item'; 
 
 
 // import * as userViewComponentActions from "../actions/userViewComponentActions";
@@ -25,30 +27,31 @@ class UserViewComponent extends React.PureComponent {
     }
 
     componentDidMount() {
+        // this.setState(this.props.items)
         this.setState({
             items: [
-                {
+                new Item({
                     name: "Støvler",
                     info: "Fine støvler for turer i all slags vær! (sol?)",
-                    image: './../../assets/images/image.jpg'
-                },
-                {
+                    image: '/resources/main/app/images/image.jpg'
+                }), 
+                new Item({
                     name: "T-skjorte",
-                    info: "Fantastisk skjorte for alle!)",
-                    image: "images/tskjorte.png"
-                },
-                {
+                    info: "Fantastisk skjorte for alle!",
+                    image: '/resources/main/app/images/image.jpg'
+                }), 
+                new Item({
                     name: "Jeans var. 1",
                     info: "Fantastisk jeans for de som liker å være først ute!",
-                    image: "images/jeans1.png"
-                },
-                {
+                    image: '/resources/main/app/images/image.jpg'
+                }), 
+                new Item({
                     name: "Jeans var. 2",
                     info: "Fantastisk jeans for de som liker å være nummer to!",
-                    image: "images/jeans2.png"
-                }
+                    image: '/resources/main/app/images/image.jpg'
+                }), 
             ]
-        })
+        }); 
     }
 
     renderItems() {
@@ -68,11 +71,7 @@ class UserViewComponent extends React.PureComponent {
 }
 
 UserViewComponent.propTypes = {
-    items : PropTypes.shape({
-        name : PropTypes.string.isRequired, 
-        info : PropTypes.string, 
-        image : PropTypes.string
-    })
+    items: PropTypes.instanceOf(Item),
 };
 
 UserViewComponent.defaultProps = {
@@ -81,6 +80,7 @@ UserViewComponent.defaultProps = {
 
 function mapStateToProps(state) {
     return {
+        items: state.get('app').get('items')
         //data: state.get('example').get('data')
     };
 }

@@ -2,7 +2,7 @@ import { fromJS } from 'immutable';
 import  * as Item from '../actions/itemActions'
 
 const initialState = fromJS({
-  allItems: ["item1", "item2"],
+  allItems: [], //[new Item({name : "testName", info : "testInfo", image : null})],
   cartItems: []
 });
 

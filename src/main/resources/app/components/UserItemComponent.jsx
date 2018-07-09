@@ -13,12 +13,14 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 export default class UserItemComponent extends Component {
+
     render() {
         console.log(this.props.image); 
         return (
             <Card className="Card">
                 <CardMedia
-                    image="./../../assets/images/image.jpg"
+                    style={styles}
+                    image={this.props.image}
                     title="Contemplative Reptile"
                 />
                 <CardContent>
@@ -39,8 +41,20 @@ export default class UserItemComponent extends Component {
     }
 }
 
+const styles = {
+    card: {
+        maxWidth: 345,
+    },
+    media: {
+        height: "200px",
+        paddingTop: '56.25%', // 16:9
+    },
+};
+
 UserItemComponent.propTypes = {
-    
+    name : PropTypes.string, 
+    info : PropTypes.string, 
+    image : PropTypes.string
 };
 
 UserItemComponent.defaultProps = {

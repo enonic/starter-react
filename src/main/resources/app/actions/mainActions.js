@@ -63,7 +63,7 @@ export function addCategory(dispatch, arg){
   dispatch(addCategoryAction(arg))
 }
 
-export function toggleVisible(dispacth, arg){
+export function toggleVisible(dispatch, arg){
   dispatch(toggleVisibleAction(arg))
 }
 

@@ -37,9 +37,15 @@ class AdminPage extends React.PureComponent {
           <button onClick={this.addClick.bind(this)}>add</button>
           
           {this.state.showForm ? <CreateItem submit={this.submitClick.bind(this)} /> : null}
-          {this.props.items.map(item => {
-            return <AdminItemComp item={item} key={Math.random()} remove={this.props.deleteItem}/>
-          })}
+          {this.props.items.map(item => 
+            <AdminItemComp 
+              item = {item} 
+              key = {item.id} 
+              remove = {this.props.deleteItem}
+              visible = {item.visible}
+              toggleVisible = {this.props.toggleVisible}
+            />
+          )}
       </div>
       
     );
@@ -56,6 +62,7 @@ AdminPage.defaultProps = {
 
 function mapStateToProps(state){
   console.log(state)
+  
 	return {
     items: state.get('app').get('allItems')
 	};
@@ -63,6 +70,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
   return {
+    toggleVisible: (arg) => {mainActions.toggleVisible(dispatch,arg)},  
     createItem : (arg) => {mainActions.createItem(dispatch,arg)},
     deleteItem : (arg) => {mainActions.deleteItem(dispatch,arg)},
     changeItem : (arg) => {mainActions.changeItem(dispatch,arg)}

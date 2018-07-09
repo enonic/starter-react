@@ -35,10 +35,10 @@ export default class App extends Component {
                     <Route path="/user" component={UserPage} />
                     <Route component={NotFound} />
                 </Switch>
-                <TopBar onToggleMenu={this.toggleMenu.bind(this)}/>
-                        {/*'true' to open */}
+                {/*<TopBar onToggleMenu={this.toggleMenu.bind(this)}/>
+                        'true' to open 
                 <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)}/>
-                <UserViewComponent/>
+                <UserViewComponent/>*/}
             </div>
         )
     }

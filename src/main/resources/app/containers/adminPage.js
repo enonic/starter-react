@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Item from '../interfaces/item';
+import AdminItemComp from '../components/adminItemComp';
 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
@@ -26,6 +27,9 @@ class AdminPage extends React.PureComponent {
     return (
       <div>
           <button onClick={this.addClick.bind(this)}>add</button>
+          {this.props.items.map(item => {
+            return <AdminItemComp item={item} key={Math.random()} remove={this.props.deleteItem}/>
+          })}
       </div>
       
     );

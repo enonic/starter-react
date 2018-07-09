@@ -17,6 +17,10 @@ function createItem(oldState, action){
 
 function deleteItem(oldState, action){
   let state = oldState
+  state = state.updateIn(['allItems'], function (items) {
+    items = items.splice(items.indexOf(action.item), 1)
+    return items
+  });
   return state
 }
 

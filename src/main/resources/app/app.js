@@ -6,11 +6,8 @@ import UserPage from './containers/userPage';
 import AdminPage from './containers/adminPage';
 import NotFound from './containers/notFoundPage';
 import TopBar from './containers/TopBar'; 
-import SideBar from "./containers/SideBar"; 
+import SideBar from './containers/SideBar'; 
 
-
-// Testing 
-import UserViewComponent from './components/UserViewComponent';
 
 export default class App extends Component {
 
@@ -30,15 +27,13 @@ export default class App extends Component {
     render () {
         return (
             <div>
-                <Switch>    {/* '/admin' fører til enonic login */}
-                    <Route path="/app/com.enonic.starter.react/admin" component={AdminPage} />
-                    <Route path="/app/com.enonic.starter.react/admin" component={UserPage} />
+                <Switch>    
+                    <Route path={/.+admin/} component={AdminPage} />
+                    <Route path={/.+user/} component={UserPage} />
                     <Route component={NotFound} />
                 </Switch>
                 <TopBar onToggleMenu={this.toggleMenu.bind(this)}/>
-                        {/*'true' to open */}
                 <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)}/>
-                <UserViewComponent/>
             </div>
         )
     }

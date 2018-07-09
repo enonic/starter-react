@@ -21,6 +21,9 @@ class TopBar extends React.PureComponent {
 
     constructor(props) {
         super(props)
+        this.state = {
+            clicked : null
+        }
     }
 
     componentDidMount() {
@@ -31,7 +34,7 @@ class TopBar extends React.PureComponent {
             <div>
                 <AppBar>
                     <Toolbar>
-                        <IconButton color="inherit" aria-label="Menu">
+                        <IconButton color="inherit" aria-label="Menu" onClick={this.props.onToggleMenu}>
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="title" color="inherit" >
@@ -40,7 +43,6 @@ class TopBar extends React.PureComponent {
                         <Button color="inherit">User</Button>
                         <Button color="inherit">Admin</Button>
                         <Button color="inherit">Store Demo</Button>
-
                     </Toolbar>
                 </AppBar>
             </div>
@@ -48,11 +50,14 @@ class TopBar extends React.PureComponent {
     }
 }
 
+
+
 TopBar.propTypes = {
     
 };
 
 TopBar.defaultProps = {
+    onToggleMenu : PropTypes.func,
     buttons : PropTypes.object // {name : string, action: REDUX-action}
 }
 

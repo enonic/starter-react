@@ -13,6 +13,19 @@ import SideBar from "./containers/SideBar";
 import UserViewComponent from './components/UserViewComponent';
 
 export default class App extends Component {
+
+    constructor(props) {
+        super(props); 
+        this.state = {
+            menuVisible : false
+        }
+    }
+
+    toggleMenu() {
+        this.setState({
+            menuVisible : !this.state.menuVisible
+        }); 
+    }
     
     render () {
         return (
@@ -22,7 +35,10 @@ export default class App extends Component {
                     <Route path="/user" component={UserPage} />
                     <Route component={NotFound} />
                 </Switch>
-                
+                <TopBar onToggleMenu={this.toggleMenu.bind(this)}/>
+                        {/*'true' to open */}
+                <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)}/>
+                <UserViewComponent/>
             </div>
         )
     }

@@ -3,7 +3,18 @@ import * as mainActions from '../actions/mainActions'
 
 const initialState = fromJS({
   allItems: [],
-  cartItems: []
+  cartItems: [],
+  visibleItem: [],
+  categories: [
+    {
+      title: "Category 1",
+      action: "FILTER CATEGORY 1"
+    },
+    {
+      title: "Category 2",
+      action: "FILTER CATEGORY 2"
+    }
+  ]
 });
 
 function createItem(oldState, action){
@@ -35,6 +46,19 @@ function addItemToCart(oldState, action){
 }
 
 function removeItemFromCart(oldState, action){
+  let state = oldState
+  return state
+}
+
+function toggleVisible(oldState, action){
+  let state = oldState
+  state = state.updateIn(["allItems"], function(items) {
+    console.log(items.indexOf(action.item))
+    return items;
+  });
+}
+
+function addCategory(oldState, action){
   let state = oldState
   return state
 }

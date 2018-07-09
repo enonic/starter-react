@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import { Route, Switch } from 'react-router-dom'
 
+// Containers
 import HomePage from './containers/homePage';
 import NotFound from './containers/notFoundPage';
 
-// Testing Material UI 
-import ItemView from './components/ItemView';
+// Testing 
+import ItemView from './components/UserViewComponent';
 
 export default class App extends Component {
     

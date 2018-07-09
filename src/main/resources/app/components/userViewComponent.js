@@ -20,7 +20,7 @@ import Item from '../interfaces/item';
 // import * as userViewComponentActions from "../actions/userViewComponentActions";
 
 class UserViewComponent extends React.PureComponent {
-
+  /*
     constructor() {
         super();
         this.state = { items: [] }
@@ -28,6 +28,7 @@ class UserViewComponent extends React.PureComponent {
 
     componentDidMount() {
         // this.setState(this.props.items)
+        
         this.setState({
             items: [
                 new Item({
@@ -53,14 +54,22 @@ class UserViewComponent extends React.PureComponent {
             ]
         }); 
     }
+    */
 
     renderItems() {
-        return this.state.items.map((item, index) => {
-            return <UserItemComponent name={item.name} info={item.info} image={item.image} key={index}></UserItemComponent>
+        return this.props.items.map((item, index) => {
+            console.log(item); 
+            /*return <UserItemComponent 
+                    name={item.get('name')} 
+                    info={item.get('info')} 
+                    image={item.get('image')} 
+                    key={index}></UserItemComponent> */ 
+            <div>Item</div>
         })
     }
 
     render() {
+        console.log(this.props.items); 
         return (
             <div>
                 <UserSearchComponent />
@@ -71,7 +80,7 @@ class UserViewComponent extends React.PureComponent {
 }
 
 UserViewComponent.propTypes = {
-    items: PropTypes.instanceOf(Item),
+    items: PropTypes.object
 };
 
 UserViewComponent.defaultProps = {
@@ -80,8 +89,7 @@ UserViewComponent.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        items: state.get('app').get('items')
-        //data: state.get('example').get('data')
+        items: state.get('app').get('allItems')
     };
 }
 

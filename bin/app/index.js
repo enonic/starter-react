@@ -8,7 +8,7 @@ import configureStore from './configureStore';
 
 
 // main app
-import App from './App';
+import App from './app';
 
 const initialState = {};
 const store = configureStore(initialState);

@@ -13,7 +13,7 @@ export default class AdminItemComp extends React.PureComponent {
     render(){
         return (
         <div>
-            Hello from component {this.props.item.name} 
+            Item name: {this.props.item.name} 
             <button onClick={this.remove.bind(this)}>X</button>
         </div>)
     }

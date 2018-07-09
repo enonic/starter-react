@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 
 // Material UI 
 import AppBar from '@material-ui/core/AppBar'; 
@@ -37,6 +38,8 @@ class TopBar extends React.PureComponent {
                         <Typography variant="title" color="inherit" >
                             HEIHEI
                         </Typography>
+                        <Link to="user">LINK TO USER</Link>
+                        <Link to="admin">LINK TO ADMIN</Link>
                         <Button color="inherit" href="user">User</Button>
                         <Button color="inherit" href="admin">Admin</Button>
                         <Button color="inherit">Store Demo</Button>

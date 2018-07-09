@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AdminViewComp from '../components/adminViewComp';
+import Item from '../interfaces/item';
 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
@@ -17,15 +17,15 @@ class AdminPage extends React.PureComponent {
   componentDidMount(){
   }
 
+
+  addClick(event){
+    this.props.createItem(new Item({name: "test"}))
+  }
+
   render() {
-    const {
-      createItem,
-      deleteItem,
-      changeItem
-    } = this.props
     return (
       <div>
-          AdminPage - <AdminViewComp createItem={createItem} deleteItem={deleteItem} changeItem={changeItem}/>
+          <button onClick={this.addClick.bind(this)}>add</button>
       </div>
       
     );

@@ -1,13 +1,17 @@
 import { fromJS } from 'immutable';
-import  * as Item from '../actions/itemActions'
+import * as Item from '../actions/itemActions'
 
 const initialState = fromJS({
-  allItems: ["item1", "item2"],
+  allItems: [],
   cartItems: []
 });
 
 function createItem(oldState, action){
   let state = oldState
+  state = state.updateIn(['allItems'], function (items) {
+    items = items.push(action.item)
+    return items
+  });
   return state
 }
 

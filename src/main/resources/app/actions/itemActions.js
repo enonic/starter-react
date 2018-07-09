@@ -10,35 +10,35 @@ export const actions = {
 function createAction(arg){
   return {
     type: actions.createItem,	
-    data: arg
+    item: arg
   }
 }
 
 function deleteAction(arg){
   return {
     type: actions.deleteItem,	
-    data: arg
+    item: arg
   }
 }
 
 function changeAction(arg){
   return {
     type: actions.changeItem,	
-    data: arg
+    item: arg
   }
 }
 
 function addItemToCartAction(arg){
   return {
     type: actions.addItemToCart,	
-    data: arg
+    item: arg
   }
 }
 
 function removeItemFromCartAction(arg){
   return {
     type: actions.removeItemFromCart,	
-    data: arg
+    item: arg
   }
 }
 
@@ -49,7 +49,6 @@ export function createItem(dispatch, arg){
     //promise 
     dispatch(createAction(arg))
 }
-   
 
 export function deleteItem(dispatch, arg){ 
     //promise 

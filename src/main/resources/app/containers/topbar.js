@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom'
 
 // Material UI 
 import AppBar from '@material-ui/core/AppBar'; 
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from "@material-ui/core/Button";
+import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton'; 
 import Typography from '@material-ui/core/Typography'; 
 import MenuIcon from '@material-ui/icons/Menu'; 
@@ -26,9 +27,6 @@ class TopBar extends React.PureComponent {
         }
     }
 
-    componentDidMount() {
-    }
-
     render() {
         return (
             <div>
@@ -40,9 +38,13 @@ class TopBar extends React.PureComponent {
                         <Typography variant="title" color="inherit" >
                             HEIHEI
                         </Typography>
-                        <Button color="inherit">User</Button>
-                        <Button color="inherit">Admin</Button>
-                        <Button color="inherit">Store Demo</Button>
+                        <Link to="user">
+                            <Button color="inherit">User</Button>                        
+                        </Link>
+                        <Link to="admin">
+                            <Button color="inherit">Admin</Button>                        
+                        </Link>
+                        CART
                     </Toolbar>
                 </AppBar>
             </div>
@@ -51,9 +53,8 @@ class TopBar extends React.PureComponent {
 }
 
 
-
 TopBar.propTypes = {
-    
+
 };
 
 TopBar.defaultProps = {

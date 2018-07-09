@@ -6,6 +6,9 @@ import { NavLink } from 'react-router-dom';
 
 import * as mainActions from '../actions/mainActions' 
 
+// Components 
+import UserViewComponent from '../components/userViewComponent'; 
+
 class UserPage extends React.PureComponent { 
   
   constructor(props){
@@ -16,12 +19,7 @@ class UserPage extends React.PureComponent {
   }
 
   render() {
-    return (
-      <div>
-          UserPage
-      </div>
-      
-    );
+    return <UserViewComponent />
   }
 }
 
@@ -35,7 +33,7 @@ UserPage.defaultProps = {
 
 function mapStateToProps(state){
 	return {
-      data: state.get('example').get('data')
+      // data: state.get('example').get('data')
 	};
 }
 

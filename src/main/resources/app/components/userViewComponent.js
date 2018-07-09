@@ -21,42 +21,15 @@ import Item from '../interfaces/item';
 
 class UserViewComponent extends React.PureComponent {
 
-    constructor() {
-        super();
-        this.state = { items: [] }
-    }
-
-    componentDidMount() {
-        // this.setState(this.props.items)
-        this.setState({
-            items: [
-                new Item({
-                    name: "Støvler",
-                    info: "Fine støvler for turer i all slags vær! (sol?)",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-                new Item({
-                    name: "T-skjorte",
-                    info: "Fantastisk skjorte for alle!",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-                new Item({
-                    name: "Jeans var. 1",
-                    info: "Fantastisk jeans for de som liker å være først ute!",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-                new Item({
-                    name: "Jeans var. 2",
-                    info: "Fantastisk jeans for de som liker å være nummer to!",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-            ]
-        }); 
-    }
-
     renderItems() {
-        return this.state.items.map((item, index) => {
-            return <UserItemComponent name={item.name} info={item.info} image={item.image} key={index}></UserItemComponent>
+        return this.props.items.map((item, index) => {
+            return <UserItemComponent 
+                    name={item.name} 
+                    info={item.info} 
+                    image={item.image} 
+                    key={index}
+                    >
+            </UserItemComponent> 
         })
     }
 
@@ -71,7 +44,7 @@ class UserViewComponent extends React.PureComponent {
 }
 
 UserViewComponent.propTypes = {
-    items: PropTypes.instanceOf(Item),
+    items: PropTypes.object
 };
 
 UserViewComponent.defaultProps = {
@@ -80,8 +53,7 @@ UserViewComponent.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        items: state.get('app').get('items')
-        //data: state.get('example').get('data')
+        items: state.get('app').get('allItems')
     };
 }
 

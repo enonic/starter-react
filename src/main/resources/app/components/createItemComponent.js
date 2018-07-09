@@ -23,8 +23,12 @@ export default class CreateItem extends React.PureComponent {
         return (<Form onSubmit={data => this.props.submit(data)}>
             {formApi => (
                 <form onSubmit={formApi.submitForm} id="form1">
-                <label htmlFor="hello">Create Item</label>
+                <label htmlFor="hello">Name</label>
                 <Text field="name" id="name" validate={this.validate.bind(this)} />
+                <label htmlFor="hello">Info</label>
+                <Text field="info" id="info" validate={this.validate.bind(this)} />
+                <label htmlFor="hello">Image</label>
+                <Text field="image" id="image" validate={this.validate.bind(this)} />
                 <button type="submit">
                     Submit
                 </button>

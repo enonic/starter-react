@@ -53,9 +53,11 @@ function removeItemFromCart(oldState, action){
 function toggleVisible(oldState, action){
   let state = oldState
   state = state.updateIn(["allItems"], function(items) {
-    console.log(items.indexOf(action.item))
+    action.item.visible = action.item.visible ? false : true;
+    items = items.splice(items.indexOf(action.item), 1, action.item)
     return items;
   });
+  return state
 }
 
 function addCategory(oldState, action){
@@ -67,6 +69,8 @@ function addCategory(oldState, action){
 
 export function mainReducer(state = initialState, action) {
   switch (action.type) {
+    case mainActions.actions.toggleVisible:
+      return toggleVisible(state, action)
     case mainActions.actions.removeItemFromCart:
       return removeItemFromCart(state, action)
     case mainActions.actions.addItemToCart:

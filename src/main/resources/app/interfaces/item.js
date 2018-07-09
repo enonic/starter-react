@@ -4,5 +4,6 @@ export default class Item {
                 this.info = data.info, 
                 this.image = data.image,
                 this.id = Math.random()
+                this.visible = false
         }
 }

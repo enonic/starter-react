@@ -20,56 +20,20 @@ import Item from '../interfaces/item';
 // import * as userViewComponentActions from "../actions/userViewComponentActions";
 
 class UserViewComponent extends React.PureComponent {
-  /*
-    constructor() {
-        super();
-        this.state = { items: [] }
-    }
-
-    componentDidMount() {
-        // this.setState(this.props.items)
-        
-        this.setState({
-            items: [
-                new Item({
-                    name: "Støvler",
-                    info: "Fine støvler for turer i all slags vær! (sol?)",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-                new Item({
-                    name: "T-skjorte",
-                    info: "Fantastisk skjorte for alle!",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-                new Item({
-                    name: "Jeans var. 1",
-                    info: "Fantastisk jeans for de som liker å være først ute!",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-                new Item({
-                    name: "Jeans var. 2",
-                    info: "Fantastisk jeans for de som liker å være nummer to!",
-                    image: '/resources/main/app/images/image.jpg'
-                }), 
-            ]
-        }); 
-    }
-    */
 
     renderItems() {
         return this.props.items.map((item, index) => {
-            console.log(item); 
-            /*return <UserItemComponent 
-                    name={item.get('name')} 
-                    info={item.get('info')} 
-                    image={item.get('image')} 
-                    key={index}></UserItemComponent> */ 
-            <div>Item</div>
+            return <UserItemComponent 
+                    name={item.name} 
+                    info={item.info} 
+                    image={item.image} 
+                    key={index}
+                    >
+            </UserItemComponent> 
         })
     }
 
     render() {
-        console.log(this.props.items); 
         return (
             <div>
                 <UserSearchComponent />

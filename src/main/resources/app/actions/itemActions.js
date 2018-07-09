@@ -4,7 +4,23 @@ export const actions = {
   deleteItem: 'DELETE_ITEM',
   changeItem: 'CHANGE_ITEM',
   addItemToCart: 'ADD_ITEM_TO_CART',
-  removeItemFromCart: 'REMOVE_ITEM_FROM_CART'
+  removeItemFromCart: 'REMOVE_ITEM_FROM_CART',
+  toggleVisible: 'TOGGLE_VISIBLE',
+  addCategory: 'ADD_CATEGORY'
+}
+
+function getCategoriesAction(arg) {
+  return {
+    type: actions.getCategories,
+    item: arg
+  };
+}
+
+function addCategoryAction(arg) {
+  return {
+    type: actions.addCategory,
+    item: arg
+  }
 }
 
 function createAction(arg){
@@ -42,8 +58,21 @@ function removeItemFromCartAction(arg){
   }
 }
 
+function toggleVisibleAction(arg){
+  return {
+    type: actions.toggleVisible,
+    item: arg
+  }
+}
 
 
+export function addCategory(dispatch, arg){
+  dispatch(addCategoryAction(arg))
+}
+
+export function toggleVisible(dispacth, arg){
+  dispatch(toggleVisibleAction(arg))
+}
 
 export function createItem(dispatch, arg){ 
     //promise 

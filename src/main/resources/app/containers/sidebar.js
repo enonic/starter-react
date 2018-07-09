@@ -13,11 +13,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import CategoryIcon from "@material-ui/icons/Store"; 
 
 
-
-
-// Interfaces 
-import Item from '../interfaces/item';
-
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
@@ -25,36 +20,13 @@ import * as item from '../actions/itemActions'
 
 class SideBar extends React.PureComponent {
 
-    constructor(props) {
-        super(props)
-        this.state = {
-            listItems : []
-        }
-    }
-
-    componentDidMount() {
-        // fetch list from redux-store? 
-        this.setState({
-            listItems : [
-                {
-                    title : "Category 1", 
-                    action : "FILTER CATEGORY 1"
-                }, 
-                {
-                    title: "Category 2",
-                    action: "FILTER CATEGORY 2"
-                }
-            ]
-        })
-    }
-
     renderList() {
-        return this.state.listItems.map((item, index) => {
-            return <ListItem onClick={() => { alert("action dispatch: ", item.action) }}>
+        return this.props.categories.map((category, index) => {
+            return <ListItem onClick={() => { alert("action dispatch: ", category.get('action')) }} key={index}>
                 <ListItemIcon>
                     <CategoryIcon />
                 </ListItemIcon>
-                <ListItemText>{item.title}</ListItemText>
+                <ListItemText>{category.get('title')}</ListItemText>
             </ListItem>
         })
     }
@@ -76,6 +48,7 @@ class SideBar extends React.PureComponent {
 
 SideBar.propTypes = {
     onToggleMenu: PropTypes.func,
+    categories: PropTypes.object
 };
 
 SideBar.defaultProps = {
@@ -85,13 +58,12 @@ SideBar.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-
+        categories: state.get('app').get('categories')
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-
     }
 }
 

@@ -42,11 +42,19 @@ function changeItem(oldState, action){
 
 function addItemToCart(oldState, action){
   let state = oldState
+  state = state.updateIn(['cartItems'], function (items) {
+    items = items.push(action.item)
+    return items
+  });
   return state
 }
 
 function removeItemFromCart(oldState, action){
   let state = oldState
+  state = state.updateIn(['cartItems'], function (items) {
+    items = items.splice(items.indexOf(action.item), 1)
+    return items
+  });
   return state
 }
 

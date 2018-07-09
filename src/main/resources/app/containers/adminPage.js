@@ -61,7 +61,6 @@ AdminPage.defaultProps = {
 
 
 function mapStateToProps(state){
-  console.log(state)
   
 	return {
     items: state.get('app').get('allItems')

@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import * as homePageActions from '../actions/homePageActions' 
+import * as item from '../actions/itemActions' 
 
-class HomePage extends React.PureComponent { 
+class CartBox extends React.PureComponent { 
   
   constructor(props){
     super(props)
@@ -18,18 +18,18 @@ class HomePage extends React.PureComponent {
   render() {
     return (
       <div>
-          HomePage - data: {this.props.data}
+          CartBox
       </div>
       
     );
   }
 }
 
-HomePage.propTypes = {
+CartBox.propTypes = {
     data: PropTypes.string
 };
 
-HomePage.defaultProps = {
+CartBox.defaultProps = {
 }
 
 
@@ -41,9 +41,9 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
   return {
-    doSomething: (arg) => {homePageActions.doSomething(dispatch,arg)},
+    doSomething: (arg) => {item.doSomething(dispatch,arg)},
   };
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(HomePage)
+export default connect(mapStateToProps, mapDispatchToProps)(CartBox)

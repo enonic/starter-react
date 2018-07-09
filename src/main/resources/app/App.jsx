@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { Route, Switch } from 'react-router-dom'
 
-// Containers
-import HomePage from './containers/homePage';
+import UserPage from './containers/userPage';
+import AdminPage from './containers/adminPage';
 import NotFound from './containers/notFoundPage';
 
 // Testing 
@@ -14,7 +14,8 @@ export default class App extends Component {
         return (
             <div>
                 <Switch>
-                    <Route path="/" component={HomePage} />
+                    <Route path="/" component={AdminPage} />
+                    <Route path="/user" component={UserPage} />
                     <Route component={NotFound} />
                 </Switch>
                 <ItemView/>

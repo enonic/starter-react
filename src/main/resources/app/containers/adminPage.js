@@ -16,6 +16,8 @@ import '../styles/adminPage.less'
 import { connect } from 'react-redux';
 
 import * as mainActions from '../actions/mainActions' 
+import * as categoryActions from '../actions/categoryActions'
+
 
 class AdminPage extends React.PureComponent { 
   
@@ -51,7 +53,6 @@ class AdminPage extends React.PureComponent {
   render() {
     return (
       <div className="AdminPage">
-          <button onClick={this.addClick.bind(this)}>add</button>
           
           <button onClick={this.addItemClick.bind(this)}>add Item</button>
           
@@ -68,17 +69,14 @@ class AdminPage extends React.PureComponent {
           <button onClick={this.addCategoryClick.bind(this)}>add Category</button>
           
           {this.state.showCategoryForm ? <CreateComponent submit={this.categorySubmitClick.bind(this)} /> : null}
-          {this.props.categories.map(category => {
-            return <CategoryComponent 
+          {this.props.categories.map(category => 
+            <CategoryComponent 
               category = {category} 
               remove = {this.props.deleteCategory}
               visible = {category.visible}
               toggleVisible = {this.props.toggleCategoryVisible}
             />
-          })}
-
-
-
+          )}
       </div>
       
     );
@@ -95,10 +93,9 @@ AdminPage.defaultProps = {
 
 
 function mapStateToProps(state){
-  
 	return {
     items: state.get('app').get('allItems'),
-    categories: state.get('app').get('categories')
+    categories: state.get('categories')
 	};
 }
 
@@ -109,10 +106,10 @@ function mapDispatchToProps(dispatch) {
     changeItem : (item, arg) => {mainActions.changeItem(dispatch,item, arg)},
     toggleItemVisible: (arg) => {mainActions.toggleItemVisible(dispatch,arg)},  
 
-    createCategory : (arg) => {mainActions.createCategory(dispatch,arg)},
-    deleteCategory : (arg) => {mainActions.deleteCategory(dispatch,arg)},
-    changeCategory : (item, arg) => {mainActions.changeCategory(dispatch,item,arg)},
-    toggleCategoryVisible : () => {mainActions.toggleCategoryVisible(dispatch)},
+    createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},
+    deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
+    changeCategory : (item, arg) => {categoryActions.changeCategory(dispatch,item,arg)},
+    toggleCategoryVisible : () => {categoryActions.toggleCategoryVisible(dispatch)},
     
   };
 }

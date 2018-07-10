@@ -21,11 +21,11 @@ class SideBar extends React.PureComponent {
 
     renderList() {
         return this.props.categories.map((category, index) => {
-            return <ListItem onClick={() => { alert("action dispatch: ", category.get('filter')) }} key={index}>
+            return <ListItem onClick={() => { alert("action dispatch: ", category.filter )}} key={index}>
                 <ListItemIcon>
                     <CategoryIcon />
                 </ListItemIcon>
-                <ListItemText>{category.get('title')}</ListItemText>
+                <ListItemText>{category.title}</ListItemText>
             </ListItem>
         })
     }
@@ -57,7 +57,7 @@ SideBar.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        categories: state.get('app').get('categories')
+        categories: state.get('categories')
     }
 }
 

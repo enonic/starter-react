@@ -26,13 +26,13 @@ export default class UserItemComponent extends Component {
             info
         } = this.props.item
 
-        console.log(this.props.item.image); 
         return (
-            <Card className="Card">
+            <Card className="Card" style={styles.card}>
                 <CardMedia
                     style={styles}
                     image={image}
                     title="Contemplative Reptile"
+                    style={styles.media}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="headline" component="h2">

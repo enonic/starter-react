@@ -40,10 +40,10 @@ class TopBar extends React.PureComponent {
                         <Typography variant="title" color="inherit" >
                             HEIHEI
                         </Typography>
-                        <Link to="/app/com.enonic.starter.react/admin">
+                        <Link to="/app/com.enonic.starter.react/user">
                             <Button color="inherit">User</Button>                        
                         </Link>
-                        <Link to="/app/com.enonic.starter.react/user">
+                        <Link to="/app/com.enonic.starter.react/admin">
                             <Button color="inherit">Admin</Button>                        
                         </Link>
                         <Link to="/app/com.enonic.starter.react/cart">
@@ -51,6 +51,10 @@ class TopBar extends React.PureComponent {
                         </Link>
                     </Toolbar>
                 </AppBar>
+                <ToasterComponent 
+                    visible={this.props.toasterVisible} 
+                    message={this.props.toasterMessage}
+                />
             </div>
         );
     }
@@ -58,6 +62,8 @@ class TopBar extends React.PureComponent {
 
 
 TopBar.propTypes = {
+    toasterVisible : PropTypes.bool,
+    toasterMessage : PropTypes.string
 
 };
 
@@ -68,14 +74,16 @@ TopBar.defaultProps = {
 
 
 function mapStateToProps(state) {
+    let toaster = state.get('app').get('toaster')
     return {
-
+        toasterVisible : toaster.get('visible'), 
+        toasterMessage : toaster.get('message')
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-
+        
     }
 }
 

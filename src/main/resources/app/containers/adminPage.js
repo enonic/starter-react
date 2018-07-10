@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Item from '../interfaces/item';
-import AdminItemComponentonent from '../components/adminItemComponent';
+import AdminItemComponent from '../components/adminItemComponent';
 import CreateItem from '../components/createItemComponent';
 
 import { connect } from 'react-redux';

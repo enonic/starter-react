@@ -15,12 +15,10 @@ export default class ToasterComponent extends React.PureComponent {
             visible,
             message
         } = this.props
-        return 
-            (<div>
-                {visible ? 
-                    <div>{message}</div> 
-                : null}
-            
-            </div>)
+        return (
+            <div>
+                {visible ? message : null}
+            </div>
+        )
     }
 }

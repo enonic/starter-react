@@ -64,6 +64,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
   return {
+    createItem: (arg) => { mainActions.createItem(dispatch, arg)}, 
     addItemToCart: (arg) => {mainActions.addItemToCart(dispatch,arg)},
   };
 }

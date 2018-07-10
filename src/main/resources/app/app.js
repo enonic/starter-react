@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import { Route, Switch } from 'react-router-dom'
+import { connect } from "react-redux";
 
 // Containers
 import UserPage from './containers/userPage';
@@ -9,17 +10,29 @@ import TopBar from './containers/TopBar';
 import SideBar from './containers/SideBar'; 
 import CartPage from './containers/cartPage'; 
 
+// Redux Actions 
+import * as mainActions from "./actions/mainActions";
+
+// Interfaces 
+import Item from './interfaces/item'; 
 // Stylesheet 
 import './styles/main.less'
+// Sample data 
+import SampleData from './sampleData.json'; 
 
 
-export default class App extends Component {
+class App extends Component {
 
     constructor(props) {
         super(props); 
         this.state = {
             menuVisible : false
         }
+    }
+
+    // STATE HOLDS TEST ITEMS 
+    componentDidMount() {
+        SampleData.items.map(item => this.props.createItem(new Item({ name: item.name, info: item.info, image: item.image })));
     }
 
     toggleMenu() {
@@ -48,3 +61,18 @@ export default class App extends Component {
         )
     }
 }
+
+function mapStateToProps(state) {
+    return {
+        items: state.get('app').get('allItems')
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        createItem: (arg) => { mainActions.createItem(dispatch, arg) },
+    };
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App) 

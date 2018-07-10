@@ -15,6 +15,7 @@ export default class AdminItemComponent extends React.PureComponent {
         
     }
 
+    /*
     remove() {
         this.props.remove(this.props.item);
     }
@@ -30,6 +31,7 @@ export default class AdminItemComponent extends React.PureComponent {
     editItem(id) {
         console.log("edit", id);
     }
+    */
 
     render(){ 
         return <TableRow className="AdminItemComponent">
@@ -43,15 +45,15 @@ export default class AdminItemComponent extends React.PureComponent {
             <TableCell>
                 <Checkbox 
                     checked={this.props.item.visible ? true : false}
-                    onChange={this.toggleVisible.bind(this)}/>
+                    onChange={this.props.toggleVisible.bind(this)}/>
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.removeItem(this.props.item.id)}>
+                <IconButton onClick={() => this.props.remove(this.props.item.id)}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.editItem(this.props.item.id)}>
+                <IconButton onClick={() => console.error("not yet implemented", this.props.id)}>
                     <EditIcon />
                 </IconButton>
             </TableCell>

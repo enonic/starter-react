@@ -51,5 +51,22 @@
             "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Hot_Cold_mug.jpg",
             "visible": false
         }
+    ], 
+    "categories": [
+        {
+            "title": "Clothes", 
+            "filter": "CATEGORY_CLOTHES", 
+            "id": 1
+        },
+        {
+            "title": "Shoes",
+            "filter": "CATEGORY_SHOES",
+            "id": 2
+        },
+        {
+            "title": "Furniture",
+            "filter": "CATEGORY_FURNITURE",
+            "id": 3
+        }
     ]
 }

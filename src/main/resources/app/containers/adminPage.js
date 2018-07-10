@@ -51,7 +51,8 @@ class AdminPage extends React.PureComponent {
 
   categorySubmitClick(data){
     this.setState({ showCategoryForm: false }) 
-    this.props.createCategory(new Category({title: data.title}))
+    this.props.createCategory(new Category({title: data.title, filter: data.filter})); 
+    console.log(this.props.categories); 
   }
 
 
@@ -66,58 +67,74 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
-      <Typography variant="display3" gutterBottom>
-        Items
-      </Typography>
+        <Typography variant="display3" gutterBottom>
+          Items
+        </Typography>
 
-      <button onClick={this.addItemClick.bind(this)}>add</button>
-      {this.state.showItemForm ? <CreateItem submit={this.itemSubmitClick.bind(this)} /> : null}
+        <button onClick={this.addItemClick.bind(this)}>add</button>
+        {this.state.showItemForm ? <CreateItem submit={this.itemSubmitClick.bind(this)} /> : null}
 
-      <Paper>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>Items</TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Info</TableCell>
-              <TableCell>Image</TableCell>
-              <TableCell>Id</TableCell>
-              <TableCell>Visible</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {this.props.items.map(item => (
-              <AdminItemComponent
-                item={item}
-                key={item.id}
-                remove={this.props.deleteItem}
-                visible={item.visible}
-                toggleVisible={this.props.toggleItemVisible}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </Paper>
+        <Paper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Items</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Info</TableCell>
+                <TableCell>Image</TableCell>
+                <TableCell>Id</TableCell>
+                <TableCell>Visible</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.props.items.map(item => (
+                <AdminItemComponent
+                  item={item}
+                  key={item.id}
+                  remove={this.props.deleteItem}
+                  visible={item.visible}
+                  toggleVisible={this.props.toggleItemVisible}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
 
-      <Typography variant="display3" gutterBottom>
-        Categories
-      </Typography>
+        <Typography variant="display3" gutterBottom>
+          Categories
+        </Typography>
 
-      <button onClick={this.addCategoryClick.bind(this)}>add Category</button>
-      {this.state.showCategoryForm ? <CreateComponent submit={this.categorySubmitClick.bind(this)} /> : null}
-      {this.props.categories.map(category => {
-        return <CategoryComponent
-          category={category}
-          key={category.id}
-          remove={this.props.deleteCategory}
-          visible={category.visible}
-          toggleVisible={this.props.toggleCategoryVisible}
-        />
-      })}
-    </div>;
-  
-        
-    
+        <button onClick={this.addCategoryClick.bind(this)}>
+          add Category
+        </button>
+        {this.state.showCategoryForm ? <CreateComponent submit={this.categorySubmitClick.bind(this)} /> : null}
+
+        <Paper>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Categories</TableCell>
+                <TableCell>Name</TableCell>
+                <TableCell>Filter</TableCell>
+                <TableCell>Id</TableCell>
+                <TableCell>Visible</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.props.categories.map(category => (
+                <CategoryComponent
+                  category={category}
+                  key={category.id}
+                  remove={this.props.deleteCategory}
+                  visible={category.visible}
+                  toggleVisible={this.props.toggleCategoryVisible}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </Paper>
+
+      </div>;
   }
 }
 

@@ -38,7 +38,6 @@ export default class AdminItemComponent extends React.PureComponent {
     }
 
     render(){ 
-        console.log(this.props.item.visible); 
         return <TableRow className="AdminItemComponent">
             <TableCell component="th" scope="row">
                 {this.props.name}

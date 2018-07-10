@@ -74,7 +74,7 @@ TopBar.defaultProps = {
 
 
 function mapStateToProps(state) {
-    let toaster = state.get('app').get('toaster')
+    let toaster = state.get('toaster')
     return {
         toasterVisible : toaster.get('visible'), 
         toasterMessage : toaster.get('message')

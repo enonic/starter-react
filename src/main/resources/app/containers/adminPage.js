@@ -29,6 +29,8 @@ import '../styles/adminPage.less'
 import { connect } from 'react-redux';
 
 import * as mainActions from '../actions/mainActions' 
+import * as categoryActions from '../actions/categoryActions'
+
 
 class AdminPage extends React.PureComponent { 
   
@@ -130,7 +132,7 @@ AdminPage.defaultProps = {
 function mapStateToProps(state){
 	return {
     items: state.get('app').get('allItems'),
-    categories: state.get('app').get('categories')
+    categories: state.get('categories')
 	};
 }
 
@@ -141,10 +143,10 @@ function mapDispatchToProps(dispatch) {
     changeItem : (item, arg) => {mainActions.changeItem(dispatch,item, arg)},
     toggleItemVisible: (arg) => {mainActions.toggleItemVisible(dispatch,arg)},  
 
-    createCategory : (arg) => {mainActions.createCategory(dispatch,arg)},
-    deleteCategory : (arg) => {mainActions.deleteCategory(dispatch,arg)},
-    changeCategory : (item, arg) => {mainActions.changeCategory(dispatch,item,arg)},
-    toggleCategoryVisible : () => {mainActions.toggleCategoryVisible(dispatch)},
+    createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},
+    deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
+    changeCategory : (item, arg) => {categoryActions.changeCategory(dispatch,item,arg)},
+    toggleCategoryVisible : () => {categoryActions.toggleCategoryVisible(dispatch)},
     
   };
 }

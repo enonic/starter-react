@@ -99,8 +99,24 @@ function hideToaster(oldState, action){
 }
 
 
+function checkout(oldState, action){
+  let state = oldState
+  state = state.updateIn(["cartItems"], function(items) {
+    items.foreEach(item => {
+      items = items.splice(items.indexOf(item), 1)
+    })
+    
+    return items;
+  });
+  return state
+}
+
+
+
 export function mainReducer(state = initialState, action) {
   switch (action.type) {
+    case mainActions.actions.checkout:
+      return checkout(state, action)
     case mainActions.actions.hideToaster:
       return hideToaster(state, action)
     case mainActions.actions.showToaster:

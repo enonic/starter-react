@@ -8,7 +8,8 @@ export const actions = {
   toggleVisible: 'TOGGLE_VISIBLE',
   addCategory: 'ADD_CATEGORY',
   hideToaster: 'HIDE_TOASTER',
-  showToaster: 'SHOW_TOASTER'
+  showToaster: 'SHOW_TOASTER',
+  checkout: 'CHECKOUT'
 }
 
 const timeOut = null
@@ -77,11 +78,21 @@ function showToasterAction(arg){
   }
 }
 
+function checkoutAction(){
+  return {
+    type: actions.checkout,
+  }
+}
 
+
+
+
+export function checkout(dispatch){
+  dispatch(checkoutAction())
+}
 
 
 export function showToaster(dispatch, arg){
-  console.log("show")
   if(timeOut){
     clearTimeout(timeOut)
   }
@@ -91,7 +102,6 @@ export function showToaster(dispatch, arg){
 
 
 export function hideToaster(dispatch){
-  console.log("hide")
   dispatch(hideToasterAction())
 }
 

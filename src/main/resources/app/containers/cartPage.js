@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import CartItemComp from '../components/cartItemComponent';
+import CheckoutComponent from '../components/checkoutComponent';
 
 import { connect } from 'react-redux';
 
@@ -11,9 +12,26 @@ class CartPage extends React.PureComponent {
   
   constructor(props){
     super(props)
+    this.state = {
+      checkout : false
+    }
   }
 
   componentDidMount(){
+  }
+
+  renderCheckout(){
+    if(this.state.checkout){
+      return <CheckoutComponent
+        checkout={this.props.checkout}
+        checkoutClick={this.buyClick.bind(this)}
+      />
+    }
+    return null
+  }
+
+  checkoutClick(){
+    this.setState('checkout', this.state.checkout ? false : true)
   }
 
   render() {
@@ -27,6 +45,8 @@ class CartPage extends React.PureComponent {
               remove = {this.props.deleteItem}
             />
           )}
+          <button onClick={this.checkoutClick.bind(this)}>Checkout</button>
+          {renderCheckout}
       </div>
       
     );
@@ -55,7 +75,8 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
   return {
-    deleteItem : (arg) => {mainActions.removeItemFromCart(dispatch,arg)}
+    deleteItem : (arg) => {mainActions.removeItemFromCart(dispatch,arg)},
+    checkout : () => {mainActions.checkout(dispatch)}
   };
 }
 

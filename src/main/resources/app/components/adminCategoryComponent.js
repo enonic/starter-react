@@ -6,12 +6,16 @@ export default class CategoryComponent extends React.PureComponent {
         
     }
 
-    remove(){
+    remove() {
         this.props.remove(this.props.category)
     }
 
-    toggleVisible(){
+    toggleVisible() {
         this.props.toggleVisible(this.props.category)
+    }
+
+    edit() {
+        console.error("edit category not implemented"); 
     }
 
     render(){
@@ -23,5 +27,26 @@ export default class CategoryComponent extends React.PureComponent {
             </button>
             <button onClick={this.remove.bind(this)}>X</button>
         </div>)
+        return <TableRow className="AdminCategoryComponent">
+            <TableCell component="th" scope="row">
+                {this.props.name}
+            </TableCell>
+            <TableCell>{this.props.category.title}</TableCell>
+            <TableCell>
+                <Checkbox
+                    checked={this.props.item.visible ? true : false}
+                    onChange={this.toggleVisible.bind(this)} />
+            </TableCell>
+            <TableCell>
+                <IconButton onClick={() => this.remove(this.props.item.id)}>
+                    <DeleteIcon />
+                </IconButton>
+            </TableCell>
+            <TableCell>
+                <IconButton onClick={() => this.edit(this.props.item.id)}>
+                    <EditIcon />
+                </IconButton>
+            </TableCell>
+        </TableRow>;
     }
 }

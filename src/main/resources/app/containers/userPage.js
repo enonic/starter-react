@@ -20,15 +20,8 @@ import '../styles/userPage.less'
 // Interfaces
 import Item from '../interfaces/item'; 
 
-// Sample data 
-import SampleData from '../sampleData.json'; 
 
 class UserPage extends React.PureComponent { 
-  
-  // STATE HOLDS TEST ITEMS 
-  componentDidMount() {
-    SampleData.items.map(item => this.props.createItem(new Item({ name: item.name, info: item.info, image: item.image }))); 
-  }
 
   renderItems() {
     return this.props.items.map((item, index) => {

@@ -9,6 +9,8 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Search from "@material-ui/icons/Search";
 
+// Stylesheets
+import '../styles/userSearchComponent.less'
 
 export default class UserSearchComponent extends Component {
     
@@ -41,9 +43,8 @@ export default class UserSearchComponent extends Component {
 
     render() {
         return (
-            <div>
+            <div className="UserSearchComponent">
                 <TextField
-                    label="Search"
                     value={this.state.value}
                     margin="normal"
                     InputProps={{
@@ -56,6 +57,8 @@ export default class UserSearchComponent extends Component {
                     helperText="Search in store"
                     onChange={this.inputChange.bind(this)}
                     onKeyDown={this.handleKeyDown.bind(this)}
+                    autoFocus
+                    fullWidth={true}
                 />
             </div>
         )
@@ -63,12 +66,12 @@ export default class UserSearchComponent extends Component {
 }
 
 UserSearchComponent.propTypes = {
-    autofocus : PropTypes.bool, 
+    // autofocus : PropTypes.bool, 
     error : PropTypes.bool,
     onEnter : PropTypes.func
 };
 
 UserSearchComponent.defaultProps = {
-    autofocus : false, 
+    // autofocus : false, 
     error : false 
 }

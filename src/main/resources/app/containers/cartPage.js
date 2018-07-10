@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import CartItemComp from '../components/cartItemComponent';
+
 import { connect } from 'react-redux';
 
 import * as mainActions from '../actions/mainActions' 
@@ -32,7 +34,7 @@ class CartPage extends React.PureComponent {
 }
 
 const styles = {
-  margin: "20%"
+  margin: "30%"
 }
 
 
@@ -47,7 +49,7 @@ CartPage.defaultProps = {
 function mapStateToProps(state){
   
 	return {
-    items: state.get('app').get('allItems')
+    items: state.get('app').get('cartItems')
 	};
 }
 

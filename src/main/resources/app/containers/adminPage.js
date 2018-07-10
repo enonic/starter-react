@@ -5,6 +5,8 @@ import Item from '../interfaces/item';
 import AdminItemComponent from '../components/adminItemComponent';
 import CreateItem from '../components/createItemComponent';
 
+import '../styles/adminPage.less'
+
 import { connect } from 'react-redux';
 
 import * as mainActions from '../actions/mainActions' 
@@ -32,7 +34,7 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return (
-      <div style={styles}>
+      <div className="AdminPage">
           <button onClick={this.addClick.bind(this)}>add</button>
           
           {this.state.showForm ? <CreateItem submit={this.submitClick.bind(this)} /> : null}
@@ -49,11 +51,6 @@ class AdminPage extends React.PureComponent {
       
     );
   }
-}
-
-const styles = {
-  position: "absolute",
-  margin: "20%"
 }
 
 AdminPage.propTypes = {

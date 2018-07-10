@@ -12,6 +12,9 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
+// Stylesheets
+import '../styles/userItemComponent.less'
+
 export default class UserItemComponent extends Component {
     
 
@@ -27,12 +30,11 @@ export default class UserItemComponent extends Component {
         } = this.props.item
 
         return (
-            <Card className="Card" style={styles.card}>
+            <Card className="Item-Card">
                 <CardMedia
-                    style={styles}
                     image={image}
                     title="Contemplative Reptile"
-                    style={styles.media}
+                    className="Item-Card-Media"
                 />
                 <CardContent>
                     <Typography gutterBottom variant="headline" component="h2">
@@ -51,16 +53,6 @@ export default class UserItemComponent extends Component {
         )
     }
 }
-
-const styles = {
-    card: {
-        maxWidth: 345,
-    },
-    media: {
-        height: "200px",
-        paddingTop: '56.25%', // 16:9
-    },
-};
 
 UserItemComponent.propTypes = {
     name : PropTypes.string, 

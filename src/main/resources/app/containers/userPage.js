@@ -10,6 +10,9 @@ import * as mainActions from '../actions/mainActions'
 import UserItemComponent from "../components/userItemComponent"
 import UserSearchComponent from "../components/UserSearchComponent"; 
 
+// Stylesheets
+import '../styles/userPage.less'
+
 // Interfaces
 import Item from '../interfaces/item'; 
 
@@ -36,16 +39,12 @@ class UserPage extends React.PureComponent {
 
   render() {
     return (
-      <div style={styles}>
+      <div className="UserPage">
         <UserSearchComponent />
         {this.renderItems()}
       </div>
     );
   }
-}
-
-const styles = {
-  margin: "20%"
 }
 
 UserPage.propTypes = {

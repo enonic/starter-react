@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import CartItemComp from '../components/cartItemComponent';
 
+import '../styles/cartPage.less'
+
 import { connect } from 'react-redux';
 
 import * as mainActions from '../actions/mainActions' 
@@ -18,7 +20,7 @@ class CartPage extends React.PureComponent {
 
   render() {
     return (
-      <div style={styles}>
+      <div className="CartPage">
           Items in cart: 
           {this.props.items.map(item => 
             <CartItemComp 
@@ -31,10 +33,6 @@ class CartPage extends React.PureComponent {
       
     );
   }
-}
-
-const styles = {
-  margin: "30%"
 }
 
 

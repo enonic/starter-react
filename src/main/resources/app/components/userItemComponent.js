@@ -15,12 +15,11 @@ import Typography from "@material-ui/core/Typography";
 export default class UserItemComponent extends Component {
 
     render() {
-        console.log(this.props.image); 
         return (
             <Card className="Card" style={styles.card}>
                 <CardMedia
                     style={styles}
-                    image={require('../images/image.jpg')}
+                    image={this.props.image}
                     title="Contemplative Reptile"
                     style={styles.media}
                 />

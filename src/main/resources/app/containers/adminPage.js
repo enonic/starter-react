@@ -18,13 +18,12 @@ class AdminPage extends React.PureComponent {
     }
   }
 
-  componentDidMount(){
-  }
+
 
   submitClick(data){
+    console.log(data); 
     this.setState({ showForm: false }) 
     this.props.createItem(new Item({name: data.name, info: data.info, image: data.image}))
-  
   }
 
   addClick(event){

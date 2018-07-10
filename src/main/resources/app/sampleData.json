@@ -1,0 +1,18 @@
+
+
+{
+    "images": [ 
+        {
+            "name": "camera",
+            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Agfa_Click_BW_1.JPG/1920px-Agfa_Click_BW_1.JPG"
+        },
+        {
+            "name": "chair",
+            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dining_chair_1939.jpg/1024px-Dining_chair_1939.jpg"
+        },
+        {
+            "name": "bed",
+            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg/1920px-Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg"
+        }
+    ]
+}

@@ -29,9 +29,10 @@ export const actions = {
   }
   
   
-  function toggleCategoryVisibleAction(){
+  function toggleCategoryVisibleAction(arg){
     return {
       type: actions.toggleCategoryVisible,
+      category: arg
     }
   }
   
@@ -43,8 +44,8 @@ export const actions = {
     dispatch(deleteCategoryAction(arg))
   }
   
-  export function toggleCategoryVisible(dispatch){
-    dispatch(toggleCategoryVisibleAction())
+  export function toggleCategoryVisible(dispatch, arg){
+    dispatch(toggleCategoryVisibleAction(arg,))
   }
   
   export function createCategory(dispatch, arg){

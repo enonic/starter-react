@@ -3,8 +3,7 @@ import * as mainActions from '../actions/mainActions'
 
 const initialState = fromJS({
   allItems: [],
-  cartItems: [],
-  visibleItem: [],
+  cartItems: []
 });
 
 function createItem(oldState, action){

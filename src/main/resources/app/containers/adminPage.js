@@ -108,8 +108,8 @@ function mapDispatchToProps(dispatch) {
 
     createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
-    changeCategory : (item, arg) => {categoryActions.changeCategory(dispatch,item,arg)},
-    toggleCategoryVisible : () => {categoryActions.toggleCategoryVisible(dispatch)},
+    changeCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
+    toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
     
   };
 }

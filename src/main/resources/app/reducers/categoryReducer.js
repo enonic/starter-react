@@ -14,14 +14,14 @@ function createCategory(oldState, action){
 
 function deleteCategory(oldState, action){
   let state = oldState
-  state = state.splice(categories.indexOf(action.category), 1)
+  state = state.splice(state.indexOf(action.category), 1)
   return state
 }
 
 function hideCategory(oldState, action){
   let state = oldState
   action.category.visible = action.category.visible ? false : true;
-  state = state.splice(categories.indexOf(action.category), 1, action.category)
+  state = state.splice(state.indexOf(action.category), 1, action.category)
   return state
 }
 

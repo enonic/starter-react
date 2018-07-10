@@ -13,14 +13,19 @@ module.exports = {
 		extensions: ['.js', '.jsx', '.less']
 	},
 	module: {
-		loaders: [{
-			test: /\.(js|jsx)$/,
-			exclude: /node_modules/,
-			loader: 'babel-loader'
-		}, {
-			test: /\.less$/,
-			loaders: ["style-loader", "css-loader", "less-loader"]
-		}
+		loaders: [
+			{
+				test: /\.(js|jsx)$/,
+				exclude: /node_modules/,
+				loader: 'babel-loader'
+			}, {
+				test: /\.less$/,
+				loaders: ["style-loader", "css-loader", "less-loader"]
+			}, 
+			{
+				test: /\.(png|jpg)$/, 
+				loader: 'url-loader?limit=8192' 
+			}
 		]
 	},
 	output: {

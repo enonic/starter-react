@@ -17,11 +17,12 @@ export default class UserItemComponent extends Component {
     render() {
         console.log(this.props.image); 
         return (
-            <Card className="Card">
+            <Card className="Card" style={styles.card}>
                 <CardMedia
                     style={styles}
-                    image={this.props.image}
+                    image={require('../images/image.jpg')}
                     title="Contemplative Reptile"
+                    style={styles.media}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="headline" component="h2">

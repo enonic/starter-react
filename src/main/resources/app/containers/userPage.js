@@ -10,6 +10,10 @@ import * as mainActions from '../actions/mainActions'
 import UserItemComponent from "../components/userItemComponent"
 import UserSearchComponent from "../components/UserSearchComponent"; 
 
+// Material UI 
+import Grid from '@material-ui/core/Grid'; 
+import Paper from '@material-ui/core/Paper'
+
 // Stylesheets
 import '../styles/userPage.less'
 
@@ -28,12 +32,12 @@ class UserPage extends React.PureComponent {
 
   renderItems() {
     return this.props.items.map((item, index) => {
-      return <UserItemComponent
-        item={item}
-        key={index}
-        add={this.props.addItemToCart}
-      >
-      </UserItemComponent>
+      return <Grid key={index}>
+        <UserItemComponent
+          item={item}
+          add={this.props.addItemToCart}
+        />
+      </Grid>
     })
   }
 
@@ -41,7 +45,11 @@ class UserPage extends React.PureComponent {
     return (
       <div className="UserPage">
         <UserSearchComponent />
-        {this.renderItems()}
+        <Grid item xs={12}>
+          <Grid container justify="center">
+            {this.renderItems()}
+          </Grid>
+        </Grid>
       </div>
     );
   }

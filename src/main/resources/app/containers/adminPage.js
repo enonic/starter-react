@@ -8,6 +8,7 @@ import AdminItemComponent from '../components/adminItemComponent';
 import CategoryComponent from '../components/adminCategoryComponent';
 import CreateItem from '../components/createItemComponent';
 import CreateComponent from '../components/createCategoryComponent';
+import SearchComponent from "../components/searchComponent"; 
 
 // Styles 
 import '../styles/adminPage.less'
@@ -38,11 +39,23 @@ class AdminPage extends React.PureComponent {
     super(props)
     this.state = {
       showItemForm: false,
-      showCategoryForm: false
+      showCategoryForm: false,
+      itemSearchValue: "",
+      categorySearchValue: ""
     }
   }
 
+  searchItemOnChange(value){
+    this.setState({
+      itemSearchValue : value
+    })
+  }
 
+  searchCategoryOnChange(value){
+    this.setState({
+      categorySearchValue : value
+    })
+  }
 
   itemSubmitClick(data){
     this.setState({ showItemForm: false }) 
@@ -70,7 +83,7 @@ class AdminPage extends React.PureComponent {
         <Typography variant="display3" gutterBottom>
           Items
         </Typography>
-
+        <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
         <button onClick={this.addItemClick.bind(this)}>add</button>
         {this.state.showItemForm ? <CreateItem submit={this.itemSubmitClick.bind(this)} /> : null}
 
@@ -87,15 +100,17 @@ class AdminPage extends React.PureComponent {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.items.map(item => (
-                <AdminItemComponent
-                  item={item}
-                  key={item.id}
-                  remove={this.props.deleteItem}
-                  visible={item.visible}
-                  toggleVisible={this.props.toggleItemVisible}
-                />
-              ))}
+              {this.props.items.map(item => {
+                if(item.name.toUpperCase().includes(this.state.itemSearchValue.toUpperCase())){
+                  return <AdminItemComponent
+                    item={item}
+                    key={item.id}
+                    remove={this.props.deleteItem}
+                    visible={item.visible}
+                    toggleVisible={this.props.toggleItemVisible}
+                  />
+                }
+              })}
             </TableBody>
           </Table>
         </Paper>
@@ -104,6 +119,7 @@ class AdminPage extends React.PureComponent {
           Categories
         </Typography>
 
+        <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
         <button onClick={this.addCategoryClick.bind(this)}>
           add Category
         </button>
@@ -121,15 +137,17 @@ class AdminPage extends React.PureComponent {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.props.categories.map(category => (
-                <CategoryComponent
-                  category={category}
-                  key={category.id}
-                  remove={this.props.deleteCategory}
-                  visible={category.visible}
-                  toggleVisible={this.props.toggleCategoryVisible}
-                />
-              ))}
+              {this.props.categories.map(category => {
+                if(category.title.toUpperCase().includes(this.state.categorySearchValue.toUpperCase())){
+                  return <CategoryComponent
+                      category={category}
+                      key={category.id}
+                      remove={this.props.deleteCategory}
+                      visible={category.visible}
+                      toggleVisible={this.props.toggleCategoryVisible}
+                    />
+                }
+              })}
             </TableBody>
           </Table>
         </Paper>

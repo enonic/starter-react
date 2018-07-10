@@ -1,5 +1,13 @@
 import React from 'react';
 
+// Material UI 
+import TableRow from '@material-ui/core/TableRow';
+import TableCell from '@material-ui/core/TableCell';
+import Checkbox from "@material-ui/core/Checkbox";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
+
 export default class CategoryComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
@@ -18,32 +26,24 @@ export default class CategoryComponent extends React.PureComponent {
         console.error("edit category not implemented"); 
     }
 
-    render(){
-        return (
-        <div key={this.props.category.id}>
-            Title: {this.props.category.title} 
-            <button onClick={this.toggleVisible.bind(this)}>
-                visible : {this.props.visible ? "true" : "false"}
-            </button>
-            <button onClick={this.remove.bind(this)}>X</button>
-        </div>)
+    render(){ 
         return <TableRow className="AdminCategoryComponent">
             <TableCell component="th" scope="row">
-                {this.props.name}
+                {this.props.category.title}
             </TableCell>
             <TableCell>{this.props.category.title}</TableCell>
             <TableCell>
                 <Checkbox
-                    checked={this.props.item.visible ? true : false}
+                    checked={this.props.category.visible ? true : false}
                     onChange={this.toggleVisible.bind(this)} />
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.remove(this.props.item.id)}>
+                <IconButton onClick={() => this.remove(this.props.category.id)}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.edit(this.props.item.id)}>
+                <IconButton onClick={() => this.edit(this.props.category.id)}>
                     <EditIcon />
                 </IconButton>
             </TableCell>

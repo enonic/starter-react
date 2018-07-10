@@ -33,6 +33,10 @@ export default class AdminItemComponent extends React.PureComponent {
     }
     */
 
+    toggleVisible(){
+        this.props.toggleVisible(this.props.item)
+    }
+
     render(){ 
         return <TableRow className="AdminItemComponent">
             <TableCell component="th" scope="row">
@@ -45,10 +49,11 @@ export default class AdminItemComponent extends React.PureComponent {
             <TableCell>
                 <Checkbox 
                     checked={this.props.item.visible ? true : false}
-                    onChange={this.props.toggleVisible.bind(this)}/>
+                    onChange={this.toggleVisible.bind(this)}
+                />
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.props.remove(this.props.item.id)}>
+                <IconButton onClick={() => this.props.remove(this.props.item)}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>

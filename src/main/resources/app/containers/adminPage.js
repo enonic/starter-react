@@ -6,8 +6,8 @@ import Item from '../interfaces/item';
 import Category from '../interfaces/category';
 import AdminItemComponent from '../components/adminItemComponent';
 import CategoryComponent from '../components/adminCategoryComponent';
-import CreateItem from '../components/createItemComponent';
-import CreateComponent from '../components/createCategoryComponent';
+import CreateItemComponent from '../components/createItemComponent';
+import CreateCategoryComponent from '../components/createCategoryComponent';
 
 // Styles 
 import '../styles/adminPage.less'
@@ -45,19 +45,17 @@ class AdminPage extends React.PureComponent {
 
 
   itemSubmitClick(data){
-    this.setState({ showItemForm: false }) 
-    this.props.createItem(new Item({name: data.name, info: data.info, image: data.image}))
+    this.setState({ showItemForm: false }); 
+    this.props.createItem(new Item({name: data.name, info: data.info, image: data.image, category: data.categoryName})); 
   }
 
   categorySubmitClick(data){
     this.setState({ showCategoryForm: false }) 
     this.props.createCategory(new Category({title: data.title, filter: data.filter})); 
-    console.log(this.props.categories); 
   }
 
 
   addItemClick(event){
-    console.log("I  want to show add form")
     this.setState({ showItemForm: true }) 
   }
 
@@ -72,7 +70,7 @@ class AdminPage extends React.PureComponent {
         </Typography>
 
         <button onClick={this.addItemClick.bind(this)}>add</button>
-        {this.state.showItemForm ? <CreateItem submit={this.itemSubmitClick.bind(this)} /> : null}
+        {this.state.showItemForm ? <CreateItemComponent submit={this.itemSubmitClick.bind(this)} categories={this.props.categories}/> : null}
 
         <Paper>
           <Table>
@@ -82,6 +80,7 @@ class AdminPage extends React.PureComponent {
                 <TableCell>Name</TableCell>
                 <TableCell>Info</TableCell>
                 <TableCell>Image</TableCell>
+                <TableCell>Category</TableCell>
                 <TableCell>Id</TableCell>
                 <TableCell>Visible</TableCell>
               </TableRow>
@@ -91,6 +90,7 @@ class AdminPage extends React.PureComponent {
                 <AdminItemComponent
                   item={item}
                   key={item.id}
+                  categoryname={item.categoryName}
                   remove={this.props.deleteItem}
                   visible={item.visible}
                   toggleVisible={this.props.toggleItemVisible}
@@ -107,7 +107,7 @@ class AdminPage extends React.PureComponent {
         <button onClick={this.addCategoryClick.bind(this)}>
           add Category
         </button>
-        {this.state.showCategoryForm ? <CreateComponent submit={this.categorySubmitClick.bind(this)} /> : null}
+        {this.state.showCategoryForm ? <CreateCategoryComponent submit={this.categorySubmitClick.bind(this)}/> : null}
 
         <Paper>
           <Table>

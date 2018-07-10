@@ -4,7 +4,7 @@ import { Form, Text, Select } from 'react-form';
 // Sample data 
 import SampleData from '../sampleData.json'
 
-export default class CreateItem extends React.PureComponent {
+export default class CreateItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         this.state = {
@@ -41,6 +41,17 @@ export default class CreateItem extends React.PureComponent {
         return options; 
     }
 
+    getCategoryOptions() {
+        let options = []; 
+        this.props.categories.map(category => {
+            options.push({
+                label : category.title, 
+                value : category.title
+            })
+        })
+        return options; 
+    }
+
     render(){
         return (<Form onSubmit={data => this.props.submit(data)}>
             {formApi => (
@@ -55,6 +66,11 @@ export default class CreateItem extends React.PureComponent {
                 <label htmlFor="hello">Image</label>                
                 <Select field="image" id="image" 
                         options={this.getImageOptions()} >
+                </Select>
+
+                <label htmlFor="hello">Category</label>                
+                <Select field="categoryName" id="categoryName" 
+                        options={this.getCategoryOptions()} >
                 </Select>
 
                 <button type="submit">

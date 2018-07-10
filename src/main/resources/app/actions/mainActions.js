@@ -3,10 +3,15 @@ export const actions = {
   createItem: 'CREATE_ITEM',
   deleteItem: 'DELETE_ITEM',
   changeItem: 'CHANGE_ITEM',
+  toggleItemVisible: 'TOGGLE_VISIBLE',
+
   addItemToCart: 'ADD_ITEM_TO_CART',
   removeItemFromCart: 'REMOVE_ITEM_FROM_CART',
-  toggleVisible: 'TOGGLE_VISIBLE',
-  addCategory: 'ADD_CATEGORY',
+
+  createCategory: 'ADD_CATEGORY',
+  deleteCategory: 'DELETE_CATEGORY',
+  toggleCategoryVisible: 'HIDE_CATEGORY',
+
   hideToaster: 'HIDE_TOASTER',
   showToaster: 'SHOW_TOASTER',
   checkout: 'CHECKOUT'
@@ -14,31 +19,47 @@ export const actions = {
 
 const timeOut = null
 
-function addCategoryAction(arg) {
+function changeCategoryAction(item, arg) {
+  return {
+    type: actions.addCategory,
+    item: item,
+    data: arg
+  }
+}
+
+function createCategoryAction(arg) {
   return {
     type: actions.addCategory,
     item: arg
   }
 }
 
-function createAction(arg){
+function deleteCategoryAction(arg) {
+  return {
+    type: actions.addCategory,
+    item: arg
+  }
+}
+
+function createItemAction(arg){
   return {
     type: actions.createItem,	
     item: arg
   }
 }
 
-function deleteAction(arg){
+function deleteItemAction(arg){
   return {
     type: actions.deleteItem,	
     item: arg
   }
 }
 
-function changeAction(arg){
+function changeItemAction(item, arg){
   return {
     type: actions.changeItem,	
-    item: arg
+    item: item,
+    data: arg
   }
 }
 
@@ -56,9 +77,9 @@ function removeItemFromCartAction(arg){
   }
 }
 
-function toggleVisibleAction(arg){
+function toggleItemVisibleAction(arg){
   return {
-    type: actions.toggleVisible,
+    type: actions.toggleItemVisible,
     item: arg
   }
 }
@@ -84,13 +105,17 @@ function checkoutAction(){
   }
 }
 
-
+function toggleCategoryVisibleAction(){
+  return {
+    type: actions.checkout,
+  }
+}
 
 
 export function checkout(dispatch){
+  showToaster(dispatch, "Thank you for your purchase!")
   dispatch(checkoutAction())
 }
-
 
 export function showToaster(dispatch, arg){
   if(timeOut){
@@ -105,28 +130,39 @@ export function hideToaster(dispatch){
   dispatch(hideToasterAction())
 }
 
-
-export function addCategory(dispatch, arg){
-  dispatch(addCategoryAction(arg))
+export function changeCategory(dispatch, item, arg){
+  dispatch(changeCategoryAction(item, arg))
 }
 
-export function toggleVisible(dispatch, arg){
-  dispatch(toggleVisibleAction(arg))
+export function deleteCategory(dispatch, arg){
+  dispatch(deleteCategoryAction(arg))
+}
+
+export function toggleCategoryVisible(dispatch){
+  dispatch(toggleCategoryVisibleAction())
+}
+
+export function createCategory(dispatch, arg){
+  dispatch(createCategoryAction(arg))
+}
+
+export function toggleItemVisible(dispatch, arg){
+  dispatch(toggleItemVisibleAction(arg))
 }
 
 export function createItem(dispatch, arg){ 
     //promise 
-    dispatch(createAction(arg))
+    dispatch(createItemAction(arg))
 }
 
 export function deleteItem(dispatch, arg){ 
     //promise 
-    dispatch(deleteAction(arg))
+    dispatch(deleteItemAction(arg))
 }
 
-export function changeItem(dispatch, arg){ 
+export function changeItem(dispatch, item, arg){ 
   //promise 
-  dispatch(changeAction(arg))
+  dispatch(changeItemAction(item, arg))
 }
 
 export function addItemToCart(dispatch, arg){ 

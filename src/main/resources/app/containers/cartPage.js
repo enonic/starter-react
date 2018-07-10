@@ -20,24 +20,25 @@ class CartPage extends React.PureComponent {
   componentDidMount(){
   }
 
-  renderCheckout(){
-    if(this.state.checkout){
-      return <CheckoutComponent
-        checkout={this.props.checkout}
-        checkoutClick={this.buyClick.bind(this)}
-      />
-    }
-    return null
-  }
 
   checkoutClick(){
-    this.setState('checkout', this.state.checkout ? false : true)
+    this.setState({checkout : this.state.checkout ? false : true})
   }
 
   render() {
     return (
       <div style={styles}>
-          Items in cart: 
+          {this.props.items.size > 0 
+            ? 
+              <div>
+                <div>Items in cart:</div>
+                <button onClick={this.checkoutClick.bind(this)}>Checkout</button>
+              </div>
+
+            : <div>You have no items in your cart</div>
+             
+          }
+          
           {this.props.items.map(item => 
             <CartItemComp 
               item = {item} 
@@ -45,8 +46,14 @@ class CartPage extends React.PureComponent {
               remove = {this.props.deleteItem}
             />
           )}
-          <button onClick={this.checkoutClick.bind(this)}>Checkout</button>
-          {renderCheckout}
+
+          {this.state.checkout ? 
+            <CheckoutComponent
+              checkout={this.props.checkout}
+              checkoutClick={this.checkoutClick.bind(this)}
+            />
+            : null
+          }
       </div>
       
     );

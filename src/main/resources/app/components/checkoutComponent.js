@@ -12,7 +12,7 @@ export default class CheckoutComponent extends React.PureComponent {
 
     render(){
         return <div>
-           Hello from checkout
+           Want to buy these items?
            <button onClick={this.buyClick.bind(this)}>Buy</button>
         </div>
     }

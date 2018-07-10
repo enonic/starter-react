@@ -14,7 +14,6 @@ import CategoryIcon from "@material-ui/icons/Store";
 
 
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 
 import * as mainActions from '../actions/mainActions'
 
@@ -22,7 +21,7 @@ class SideBar extends React.PureComponent {
 
     renderList() {
         return this.props.categories.map((category, index) => {
-            return <ListItem onClick={() => { alert("action dispatch: ", category.get('action')) }} key={index}>
+            return <ListItem onClick={() => { alert("action dispatch: ", category.get('filter')) }} key={index}>
                 <ListItemIcon>
                     <CategoryIcon />
                 </ListItemIcon>

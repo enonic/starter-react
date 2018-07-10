@@ -2,8 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Item from '../interfaces/item';
+import Category from '../interfaces/category';
+
 import AdminItemComponent from '../components/adminItemComponent';
+import CategoryComponent from '../components/adminCategoryComponent';
+
 import CreateItem from '../components/createItemComponent';
+import CreateComponent from '../components/createCategoryComponent';
+
 
 import { connect } from 'react-redux';
 
@@ -14,37 +20,62 @@ class AdminPage extends React.PureComponent {
   constructor(props){
     super(props)
     this.state = {
-      showForm: false
+      showItemForm: false,
+      showCategoryForm: false
     }
   }
 
 
 
-  submitClick(data){
-    console.log(data); 
-    this.setState({ showForm: false }) 
+  itemSubmitClick(data){
+    this.setState({ showItemForm: false }) 
     this.props.createItem(new Item({name: data.name, info: data.info, image: data.image}))
   }
 
-  addClick(event){
-    this.setState({ showForm: true }) 
+  categorySubmitClick(data){
+    this.setState({ showCategoryForm: false }) 
+    this.props.createCategory(new Category({title: data.title}))
+  }
+
+
+  addItemClick(event){
+    this.setState({ showItemForm: true }) 
+  }
+
+  addCategoryClick(event){
+    this.setState({ showCategoryForm: true }) 
   }
 
   render() {
     return (
       <div style={styles}>
-          <button onClick={this.addClick.bind(this)}>add</button>
           
-          {this.state.showForm ? <CreateItem submit={this.submitClick.bind(this)} /> : null}
+          <button onClick={this.addItemClick.bind(this)}>add Item</button>
+          
+          {this.state.showItemForm ? <CreateItem submit={this.itemSubmitClick.bind(this)} /> : null}
           {this.props.items.map(item => 
             <AdminItemComponent 
               item = {item} 
-              key = {item.id} 
               remove = {this.props.deleteItem}
               visible = {item.visible}
-              toggleVisible = {this.props.toggleVisible}
+              toggleVisible = {this.props.toggleItemVisible}
             />
           )}
+          
+          <button onClick={this.addCategoryClick.bind(this)}>add Category</button>
+          
+          {this.state.showCategoryForm ? <CreateComponent submit={this.categorySubmitClick.bind(this)} /> : null}
+          {this.props.categories.map(category => {
+            return <CategoryComponent 
+              category = {category} 
+              remove = {this.props.deleteCategory}
+              visible = {category.visible}
+              toggleVisible = {this.props.toggleCategoryVisible}
+            />
+          })}
+
+
+
       </div>
       
     );
@@ -57,7 +88,8 @@ const styles = {
 }
 
 AdminPage.propTypes = {
-  items: PropTypes.object
+  items: PropTypes.object,
+  categories: PropTypes.object
 };
 
 AdminPage.defaultProps = {
@@ -67,16 +99,23 @@ AdminPage.defaultProps = {
 function mapStateToProps(state){
   
 	return {
-    items: state.get('app').get('allItems')
+    items: state.get('app').get('allItems'),
+    categories: state.get('app').get('categories')
 	};
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    toggleVisible: (arg) => {mainActions.toggleVisible(dispatch,arg)},  
     createItem : (arg) => {mainActions.createItem(dispatch,arg)},
     deleteItem : (arg) => {mainActions.deleteItem(dispatch,arg)},
-    changeItem : (arg) => {mainActions.changeItem(dispatch,arg)}
+    changeItem : (item, arg) => {mainActions.changeItem(dispatch,item, arg)},
+    toggleItemVisible: (arg) => {mainActions.toggleItemVisible(dispatch,arg)},  
+
+    createCategory : (arg) => {mainActions.createCategory(dispatch,arg)},
+    deleteCategory : (arg) => {mainActions.deleteCategory(dispatch,arg)},
+    changeCategory : (item, arg) => {mainActions.changeCategory(dispatch,item,arg)},
+    toggleCategoryVisible : () => {mainActions.toggleCategoryVisible(dispatch)},
+    
   };
 }
 

@@ -1,25 +1,23 @@
 import React from 'react';
 
-export default class AdminItemComponent extends React.PureComponent {
+export default class CategoryComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         
     }
 
     remove(){
-        this.props.remove(this.props.item)
+        this.props.remove(this.props.category)
     }
 
     toggleVisible(){
-        this.props.toggleVisible(this.props.item)
+        this.props.toggleVisible(this.props.category)
     }
 
     render(){
         return (
-        <div key={this.props.item.id}>
-            Name: {this.props.item.name} 
-            Info: {this.props.item.info}
-            Image: {this.props.image}
+        <div key={this.props.category.id}>
+            Title: {this.props.category.title} 
             <button onClick={this.toggleVisible.bind(this)}>
                 visible : {this.props.visible ? "true" : "false"}
             </button>

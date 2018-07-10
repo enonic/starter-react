@@ -16,6 +16,8 @@ import Item from '../interfaces/item';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
+import ToasterComponent from '../components/ToasterComponent';
+
 import * as mainActions from '../actions/mainActions'
 
 class TopBar extends React.PureComponent {

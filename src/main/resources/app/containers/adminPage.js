@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import Item from '../interfaces/item';
-import AdminItemComp from '../components/adminItemComponent';
+import AdminItemComponentonent from '../components/adminItemComponent';
 import CreateItem from '../components/createItemComponent';
 
 import { connect } from 'react-redux';
@@ -38,7 +38,7 @@ class AdminPage extends React.PureComponent {
           
           {this.state.showForm ? <CreateItem submit={this.submitClick.bind(this)} /> : null}
           {this.props.items.map(item => 
-            <AdminItemComp 
+            <AdminItemComponent 
               item = {item} 
               key = {item.id} 
               remove = {this.props.deleteItem}

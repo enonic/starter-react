@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class AdminItemComp extends React.PureComponent {
+export default class AdminItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         

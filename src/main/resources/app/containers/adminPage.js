@@ -6,9 +6,9 @@ import Item from '../interfaces/item';
 import Category from '../interfaces/category';
 import AdminItemComponent from '../components/adminItemComponent';
 import CategoryComponent from '../components/adminCategoryComponent';
-import CreateItem from '../components/createItemComponent';
-import CreateComponent from '../components/createCategoryComponent';
-import SearchComponent from "../components/searchComponent"; 
+import CreateItemComponent from '../components/createItemComponent';
+import CreateCategoryComponent from '../components/createCategoryComponent';
+import SearchComponent from '../components/searchComponent';
 
 // Styles 
 import '../styles/adminPage.less'
@@ -58,19 +58,17 @@ class AdminPage extends React.PureComponent {
   }
 
   itemSubmitClick(data){
-    this.setState({ showItemForm: false }) 
-    this.props.createItem(new Item({name: data.name, info: data.info, image: data.image}))
+    this.setState({ showItemForm: false }); 
+    this.props.createItem(new Item({name: data.name, info: data.info, image: data.image, category: data.category})); 
   }
 
   categorySubmitClick(data){
     this.setState({ showCategoryForm: false }) 
     this.props.createCategory(new Category({title: data.title, filter: data.filter})); 
-    console.log(this.props.categories); 
   }
 
 
   addItemClick(event){
-    console.log("I  want to show add form")
     this.setState({ showItemForm: true }) 
   }
 
@@ -85,7 +83,7 @@ class AdminPage extends React.PureComponent {
         </Typography>
         <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
         <button onClick={this.addItemClick.bind(this)}>add</button>
-        {this.state.showItemForm ? <CreateItem submit={this.itemSubmitClick.bind(this)} /> : null}
+        {this.state.showItemForm ? <CreateItemComponent submit={this.itemSubmitClick.bind(this)} categories={this.props.categories}/> : null}
 
         <Paper>
           <Table>
@@ -95,13 +93,16 @@ class AdminPage extends React.PureComponent {
                 <TableCell>Name</TableCell>
                 <TableCell>Info</TableCell>
                 <TableCell>Image</TableCell>
+                <TableCell>Category</TableCell>
                 <TableCell>Id</TableCell>
                 <TableCell>Visible</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {this.props.items.map(item => {
-                if(item.name.toUpperCase().includes(this.state.itemSearchValue.toUpperCase())){
+                if(item.name.toUpperCase().includes(this.state.itemSearchValue.toUpperCase())||
+                    item.category.toUpperCase().includes(this.state.value.toUpperCase())
+                ){
                   return <AdminItemComponent
                     item={item}
                     key={item.id}
@@ -123,7 +124,7 @@ class AdminPage extends React.PureComponent {
         <button onClick={this.addCategoryClick.bind(this)}>
           add Category
         </button>
-        {this.state.showCategoryForm ? <CreateComponent submit={this.categorySubmitClick.bind(this)} /> : null}
+        {this.state.showCategoryForm ? <CreateCategoryComponent submit={this.categorySubmitClick.bind(this)}/> : null}
 
         <Paper>
           <Table>

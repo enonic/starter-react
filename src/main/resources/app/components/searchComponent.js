@@ -10,9 +10,9 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Search from "@material-ui/icons/Search";
 
 // Stylesheets
-import '../styles/userSearchComponent.less'
+import '../styles/searchComponent.less'
 
-export default class UserSearchComponent extends Component {
+export default class SearchComponent extends Component {
     
     constructor(props) {
         super(props); 
@@ -40,7 +40,7 @@ export default class UserSearchComponent extends Component {
 
     render() {
         return (
-            <div className="UserSearchComponent">
+            <div className="SearchComponent">
                 <TextField
                     value={this.state.value}
                     margin="normal"
@@ -62,13 +62,13 @@ export default class UserSearchComponent extends Component {
     }
 }
 
-UserSearchComponent.propTypes = {
+SearchComponent.propTypes = {
     // autofocus : PropTypes.bool, 
     error : PropTypes.bool,
     onEnter : PropTypes.func
 };
 
-UserSearchComponent.defaultProps = {
+SearchComponent.defaultProps = {
     // autofocus : false, 
     error : false 
 }

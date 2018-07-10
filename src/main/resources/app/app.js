@@ -9,6 +9,9 @@ import TopBar from './containers/TopBar';
 import SideBar from './containers/SideBar'; 
 import CartPage from './containers/cartPage'; 
 
+// Stylesheet 
+import './styles/main.less'
+
 
 export default class App extends Component {
 
@@ -27,7 +30,7 @@ export default class App extends Component {
     
     render () {
         return (
-            <div>
+            <div className="App">
                 <Switch>    
                     {/*
                     <Route path={/.+admin/} component={AdminPage} />

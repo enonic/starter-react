@@ -1,6 +1,6 @@
 /**
- * Made for testing 
- * Represents an item in the store 
+ * Searchbar. 
+ * Has its current input value as state. 
  */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';

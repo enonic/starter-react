@@ -16,19 +16,9 @@ export default class UserSearchComponent extends Component {
     
     constructor(props) {
         super(props); 
-        this.state = {value : ""}
-    }
-
-    componentDidMount() {
-        this.setState({
-            value : "" 
-        })
-    }
-
-    inputChange(event) {
-        this.setState({
-            value : event.target.value
-        })
+        this.state = {
+            value : this.props.value
+        }
     }
 
     handleKeyDown(event) {
@@ -39,6 +29,13 @@ export default class UserSearchComponent extends Component {
                 this.props.onEnter(this.state.value); 
             }
         }
+    }
+
+    onChange(event){
+        this.setState({
+            value : event.target.value
+        })
+        this.props.onChange(event.target.value)
     }
 
     render() {
@@ -55,7 +52,7 @@ export default class UserSearchComponent extends Component {
                         ),
                     }}
                     helperText="Search in store"
-                    onChange={this.inputChange.bind(this)}
+                    onChange={this.onChange.bind(this)}
                     onKeyDown={this.handleKeyDown.bind(this)}
                     autoFocus
                     fullWidth={true}

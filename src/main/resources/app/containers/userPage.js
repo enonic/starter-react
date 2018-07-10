@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+
 
 import * as mainActions from '../actions/mainActions' 
 
@@ -17,27 +17,41 @@ import Paper from '@material-ui/core/Paper'
 // Stylesheets
 import '../styles/userPage.less'
 
-// Interfaces
-import Item from '../interfaces/item'; 
-
-
 class UserPage extends React.PureComponent { 
+  constructor(props) {
+    super(props); 
+    this.state = {
+        value : ""
+    }
+  }
+
+  searchOnChange(value){
+    //change to set redux state
+    this.setState({
+      value : value
+    })
+  }
 
   renderItems() {
     return this.props.items.map((item, index) => {
-      return <Grid key={index}>
+      if(item.name.toUpperCase().includes(this.state.value.toUpperCase())){
+        return <Grid key={index}>
         <UserItemComponent
           item={item}
           add={this.props.addItemToCart}
         />
       </Grid>
+      }
+      return null
     })
   }
+
+ 
 
   render() {
     return (
       <div className="UserPage">
-        <UserSearchComponent />
+        <UserSearchComponent value={this.state.value} onChange={this.searchOnChange.bind(this)}/>
         <Grid item xs={12}>
           <Grid container justify="center">
             {this.renderItems()}

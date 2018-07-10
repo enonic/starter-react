@@ -38,13 +38,13 @@ class TopBar extends React.PureComponent {
                         <Typography variant="title" color="inherit" >
                             HEIHEI
                         </Typography>
-                        <Link to="user">
+                        <Link to="/app/com.enonic.starter.react/admin">
                             <Button color="inherit">User</Button>                        
                         </Link>
-                        <Link to="admin">
+                        <Link to="/app/com.enonic.starter.react/user">
                             <Button color="inherit">Admin</Button>                        
                         </Link>
-                        <Link to="cart">
+                        <Link to="/app/com.enonic.starter.react/cart">
                             <Button color="inherit">Cart</Button>
                         </Link>
                     </Toolbar>

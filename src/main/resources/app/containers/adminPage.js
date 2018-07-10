@@ -108,6 +108,7 @@ class AdminPage extends React.PureComponent {
       {this.props.categories.map(category => {
         return <CategoryComponent
           category={category}
+          key={category.id}
           remove={this.props.deleteCategory}
           visible={category.visible}
           toggleVisible={this.props.toggleCategoryVisible}

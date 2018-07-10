@@ -12,9 +12,11 @@ import CartPage from './containers/cartPage';
 
 // Redux Actions 
 import * as mainActions from "./actions/mainActions";
+import * as categoryActions from './actions/categoryActions';
 
 // Interfaces 
 import Item from './interfaces/item'; 
+import Category from './interfaces/category';
 // Stylesheet 
 import './styles/main.less'
 // Sample data 
@@ -32,7 +34,16 @@ class App extends Component {
 
     // STATE HOLDS TEST ITEMS 
     componentDidMount() {
-        SampleData.items.map(item => this.props.createItem(new Item({ name: item.name, info: item.info, image: item.image })));
+        SampleData.items.map(item => 
+            this.props.createItem(
+                new Item({ name: item.name, info: item.info, image: item.image })
+            )
+        );
+        SampleData.categories.map(data => 
+            this.props.createCategory(
+                new Category({title: data.title, filter: data.filter, id: data.id})
+            )
+        );
     }
 
     toggleMenu() {
@@ -71,6 +82,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
     return {
         createItem: (arg) => { mainActions.createItem(dispatch, arg) },
+        createCategory: (arg) => { categoryActions.createCategory(dispatch, arg) },
     };
 }
 

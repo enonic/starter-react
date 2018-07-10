@@ -11,6 +11,8 @@ import CreateItem from '../components/createItemComponent';
 import CreateComponent from '../components/createCategoryComponent';
 
 
+import '../styles/adminPage.less'
+
 import { connect } from 'react-redux';
 
 import * as mainActions from '../actions/mainActions' 
@@ -48,7 +50,8 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return (
-      <div style={styles}>
+      <div className="AdminPage">
+          <button onClick={this.addClick.bind(this)}>add</button>
           
           <button onClick={this.addItemClick.bind(this)}>add Item</button>
           
@@ -80,11 +83,6 @@ class AdminPage extends React.PureComponent {
       
     );
   }
-}
-
-const styles = {
-  position: "absolute",
-  margin: "20%"
 }
 
 AdminPage.propTypes = {

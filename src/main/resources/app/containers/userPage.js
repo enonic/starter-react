@@ -10,11 +10,21 @@ import * as mainActions from '../actions/mainActions'
 import UserItemComponent from "../components/userItemComponent"
 import UserSearchComponent from "../components/UserSearchComponent"; 
 
+// Interfaces
+import Item from '../interfaces/item'; 
+
+// Sample data 
+import SampleData from '../sampleData.json'; 
+
 class UserPage extends React.PureComponent { 
   
+  // STATE HOLDS TEST ITEMS 
+  componentDidMount() {
+    SampleData.items.map(item => this.props.createItem(new Item({ name: item.name, info: item.info, image: item.image }))); 
+  }
+
   renderItems() {
     return this.props.items.map((item, index) => {
-      console.log(item);
       return <UserItemComponent
         name={item.name}
         info={item.info}
@@ -55,7 +65,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
   return {
-    doSomething: (arg) => {item.doSomething(dispatch,arg)},
+    createItem: (arg) => { mainActions.createItem(dispatch, arg)}
   };
 }
 

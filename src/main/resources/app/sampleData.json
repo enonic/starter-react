@@ -13,6 +13,43 @@
         {
             "name": "bed",
             "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg/1920px-Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg"
+        },
+        {
+            "name": "fish",
+            "source": "https://upload.wikimedia.org/wikipedia/commons/6/68/UrolophusPaucimaculatus.jpg"
+        },
+        {
+            "name": "teapot",
+            "source": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cup_of_green_tea_and_tea_pot_on_table.jpg"
+        },
+        {
+            "name": "mug",
+            "source": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Hot_Cold_mug.jpg"
+        },
+        {
+            "name": "suit",
+            "source": "https://upload.wikimedia.org/wikipedia/commons/b/b5/John_Glenn_in_his_Mercury_pressure_suit.jpg"
+        }
+    ], 
+
+    "items": [
+        {
+            "name" : "Designer Chair", 
+            "info" : "This chair is the best chair you can find",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dining_chair_1939.jpg/1024px-Dining_chair_1939.jpg",
+            "visible": false
+        },
+        {
+            "name": "Pilot Suit!",
+            "info": "Used by pilots and now potentially yours.",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/b/b5/John_Glenn_in_his_Mercury_pressure_suit.jpg", 
+            "visible": false
+        },
+        {
+            "name": "Mug 0.3l",
+            "info": "A mug for every occation",
+            "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Hot_Cold_mug.jpg",
+            "visible": false
         }
     ]
 }

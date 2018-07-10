@@ -14,7 +14,11 @@ const initialState = fromJS({
       title: "Category 2",
       action: "FILTER CATEGORY 2"
     }
-  ]
+  ],
+  toaster : {
+    visible : false,
+    message : ""
+  }
 });
 
 function createItem(oldState, action){
@@ -74,9 +78,33 @@ function addCategory(oldState, action){
 }
 
 
+function showToaster(oldState, action){
+  let state = oldState
+  state = state.updateIn(["toaster"], function(toaster) {
+    toaster = toaster.set('visible', true)
+    toaster = toaster.set('message', action.message)
+    return toaster;
+  });
+  return state
+}
+
+function hideToaster(oldState, action){
+  let state = oldState
+  state = state.updateIn(["toaster"], function(toaster) {
+    toaster = toaster.set('visible', false)
+    toaster = toaster.set('message', "")
+    return toaster;
+  });
+  return state
+}
+
 
 export function mainReducer(state = initialState, action) {
   switch (action.type) {
+    case mainActions.actions.hideToaster:
+      return hideToaster(state, action)
+    case mainActions.actions.showToaster:
+      return showToaster(state, action)
     case mainActions.actions.toggleVisible:
       return toggleVisible(state, action)
     case mainActions.actions.removeItemFromCart:

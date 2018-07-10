@@ -16,6 +16,8 @@ import Item from '../interfaces/item';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
+import ToasterComponent from '../components/ToasterComponent';
+
 import * as mainActions from '../actions/mainActions'
 
 class TopBar extends React.PureComponent {
@@ -49,6 +51,10 @@ class TopBar extends React.PureComponent {
                         </Link>
                     </Toolbar>
                 </AppBar>
+                <ToasterComponent 
+                    visible={this.props.toasterVisible} 
+                    message={this.props.toasterMessage}
+                />
             </div>
         );
     }
@@ -56,6 +62,8 @@ class TopBar extends React.PureComponent {
 
 
 TopBar.propTypes = {
+    toasterVisible : PropTypes.bool,
+    toasterMessage : PropTypes.string
 
 };
 
@@ -66,14 +74,16 @@ TopBar.defaultProps = {
 
 
 function mapStateToProps(state) {
+    let toaster = state.get('app').get('toaster')
     return {
-
+        toasterVisible : toaster.get('visible'), 
+        toasterMessage : toaster.get('message')
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-
+        
     }
 }
 

@@ -13,26 +13,37 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 export default class UserItemComponent extends Component {
+    
+
+    addClick(){
+        this.props.add(this.props.item)
+    }
 
     render() {
+        const {
+            image,
+            name,
+            info
+        } = this.props.item
+
         return (
             <Card className="Card" style={styles.card}>
                 <CardMedia
                     style={styles}
-                    image={this.props.image}
+                    image={image}
                     title="Contemplative Reptile"
                     style={styles.media}
                 />
                 <CardContent>
                     <Typography gutterBottom variant="headline" component="h2">
-                        {this.props.name}
+                        {name}
                     </Typography>
                     <Typography component="p">
-                        {this.props.info}
+                        {info}
                     </Typography>
                 </CardContent>
                 <CardActions> 
-                    <Button size="medium" color="primary">
+                    <Button onClick={this.addClick.bind(this)} size="medium" color="primary">
                         Add to cart
                     </Button>
                 </CardActions>

@@ -6,8 +6,12 @@ export const actions = {
   addItemToCart: 'ADD_ITEM_TO_CART',
   removeItemFromCart: 'REMOVE_ITEM_FROM_CART',
   toggleVisible: 'TOGGLE_VISIBLE',
-  addCategory: 'ADD_CATEGORY'
+  addCategory: 'ADD_CATEGORY',
+  hideToaster: 'HIDE_TOASTER',
+  showToaster: 'SHOW_TOASTER'
 }
+
+const timeOut = null
 
 function addCategoryAction(arg) {
   return {
@@ -59,6 +63,39 @@ function toggleVisibleAction(arg){
 }
 
 
+function hideToasterAction(){
+  return {
+    type: actions.hideToaster
+  }
+}
+
+
+function showToasterAction(arg){
+  return {
+    type: actions.showToaster,
+    message: arg
+  }
+}
+
+
+
+
+export function showToaster(dispatch, arg){
+  console.log("show")
+  if(timeOut){
+    clearTimeout(timeOut)
+  }
+  setTimeout( () => hideToaster(dispatch) ,3000);
+  dispatch(showToasterAction(arg))
+}
+
+
+export function hideToaster(dispatch){
+  console.log("hide")
+  dispatch(hideToasterAction())
+}
+
+
 export function addCategory(dispatch, arg){
   dispatch(addCategoryAction(arg))
 }
@@ -84,6 +121,7 @@ export function changeItem(dispatch, arg){
 
 export function addItemToCart(dispatch, arg){ 
   //promise 
+  showToaster(dispatch, "Item was added to cart")
   dispatch(addItemToCartAction(arg))
 }
 

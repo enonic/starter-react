@@ -26,10 +26,9 @@ class UserPage extends React.PureComponent {
   renderItems() {
     return this.props.items.map((item, index) => {
       return <UserItemComponent
-        name={item.name}
-        info={item.info}
-        image={item.image}
+        item={item}
         key={index}
+        add={this.props.addItemToCart}
       >
       </UserItemComponent>
     })
@@ -65,7 +64,7 @@ function mapStateToProps(state){
 
 function mapDispatchToProps(dispatch) {
   return {
-    createItem: (arg) => { mainActions.createItem(dispatch, arg)}
+    addItemToCart: (arg) => {mainActions.addItemToCart(dispatch,arg)},
   };
 }
 

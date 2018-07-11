@@ -38,7 +38,7 @@ class TopBar extends React.PureComponent {
                             <MenuIcon />
                         </IconButton>
                         <Typography variant="title" color="inherit" >
-                            HEIHEI
+                            React Store Demo
                         </Typography>
                         <Link to="/app/com.enonic.starter.react/user">
                             <Button color="inherit">User</Button>                        

@@ -120,10 +120,8 @@ class AdminPage extends React.PureComponent {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Categories</TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>Title</TableCell>
                 <TableCell>Filter</TableCell>
-                <TableCell>Id</TableCell>
                 <TableCell>Visible</TableCell>
               </TableRow>
             </TableHead>

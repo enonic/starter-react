@@ -31,7 +31,9 @@ export default class CategoryComponent extends React.PureComponent {
             <TableCell component="th" scope="row">
                 {this.props.category.title}
             </TableCell>
-            <TableCell>{this.props.category.title}</TableCell>
+            <TableCell component="th" scope="row">
+                {this.props.category.filter}
+            </TableCell>
             <TableCell>
                 <Checkbox
                     checked={this.props.category.visible ? true : false}

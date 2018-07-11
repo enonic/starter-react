@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Text, Select } from 'react-form';
 
-// Sample data 
-import SampleData from '../sampleData.json'
+// Stylesheets
+import "../styles/createCategoryComponent.less"; 
 
-export default class CreateCategory extends React.PureComponent {
+export default class CreateCategoryComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         this.state = {
@@ -23,13 +23,12 @@ export default class CreateCategory extends React.PureComponent {
         */
     }
 
-    /**
-     * label
-     * value 
-     */
-   
+
     render(){
-        return (<Form onSubmit={data => this.props.submit(data)}>
+        return <Form 
+            className="CreateCategoryComponent" 
+            onSubmit={data => this.props.submit(data)}
+            >
             {formApi => (
                 <form onSubmit={formApi.submitForm} id="form1">
                 
@@ -38,12 +37,12 @@ export default class CreateCategory extends React.PureComponent {
                 
                 <label htmlFor="hello">Filter</label>
                 <Text field="filter" id="filter" validate={this.validate.bind(this)} />
-
+                
                 <button type="submit">
                     Submit
                 </button>
                 </form>
             )}
-            </Form>)
+            </Form>
     }
 }

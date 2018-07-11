@@ -108,7 +108,7 @@ class AdminPage extends React.PureComponent {
             <TableBody>
               {this.props.items.map(item => {
                 if(item.name.toUpperCase().includes(this.state.itemSearchValue.toUpperCase())||
-                    item.category.toUpperCase().includes(this.state.value.toUpperCase())
+                  item.categoryName.toUpperCase().includes(this.state.categorySearchValue.toUpperCase())
                 ){
                   return <AdminItemComponent
                     item={item}

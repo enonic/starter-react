@@ -1,3 +1,10 @@
+/**
+ * Some of this (tables and forms in particular) could benefint from 
+ * a refactor, as a lot of code is repeated. 
+ * 
+ * Do this if there is time left at the end of the project. 
+ */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -130,10 +137,8 @@ class AdminPage extends React.PureComponent {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Categories</TableCell>
-                <TableCell>Name</TableCell>
+                <TableCell>Title</TableCell>
                 <TableCell>Filter</TableCell>
-                <TableCell>Id</TableCell>
                 <TableCell>Visible</TableCell>
               </TableRow>
             </TableHead>

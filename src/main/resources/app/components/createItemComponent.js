@@ -1,5 +1,14 @@
 import React from 'react';
-import { Form, Text, Select } from 'react-form';
+import MaterialUIForm from 'material-ui-form'
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Button from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
+
+import '../styles/popup.less'
 
 // Sample data 
 import SampleData from '../sampleData.json'
@@ -18,11 +27,18 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     validate (value){
-        /*
-        error: !value || !/Hello World/.test(value) ? "Input must contain 'Hello World'" : null,
-        warning: !value || !/^Hello World$/.test(value) ? "Input should equal just 'Hello World'" : null,
-        success: value && /Hello World/.test(value) ? "Thanks for entering 'Hello World'!" : null
-        */
+        const errors = {}
+        const requiredFields = [
+          'firstName',
+          'lastName',
+        ]
+        requiredFields.forEach(field => {
+          if (!values[field]) {
+            errors[field] = 'Required'
+          }
+        })
+
+        return errors
     }
 
     /**
@@ -31,14 +47,9 @@ export default class CreateItemComponent extends React.PureComponent {
      */
     
     getImageOptions() {
-        let options = []; 
-        this.state.images.map(image => {
-            options.push({
-                label : image.name, 
-                value : image.source
-            })
-        })
-        return options; 
+        return this.state.images.map(image => 
+            <MenuItem value={image}>{image.name}</MenuItem>
+        )
     }
 
     getCategoryOptions() {
@@ -53,9 +64,46 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     render(){
-        return (<Form onSubmit={data => this.props.submit(data)}>
+        return (
+        <div className='popup'>
+            <div className='popup_inner'>
+                <MaterialUIForm onSubmit={this.props.submit}>
+                    <fieldset>
+                        <TextField
+                        label="Name"
+                        type="text"
+                        name="name"
+                        value=""
+                        onChange={this.customInputHandler}
+                        />
+                    </fieldset>
+                
+                    <fieldset>
+                        <FormControl required>
+                        <InputLabel>Image</InputLabel>
+                        <Select value="" name="age">
+                            <MenuItem value=""><em>Please select an image ...</em></MenuItem>
+                            {this.getImageOptions()}
+                        </Select>
+                        <FormHelperText>Some important helper text</FormHelperText>
+                        </FormControl>  
+                    </fieldset>
+                    <Button variant="raised" type="reset">Reset</Button>
+                    <Button variant="raised" type="submit">Submit</Button>
+                </MaterialUIForm>
+            </div>
+        </div>
+        
+        
+        )
+    }
+}
+
+/*
+
+<Form onSubmit={data => this.props.submit(data)}>
             {formApi => (
-                <form onSubmit={formApi.submitForm} id="form1">
+                
                 
                 <label htmlFor="hello">Name</label>
                 <Text field="name" id="name" validate={this.validate.bind(this)} />
@@ -79,5 +127,6 @@ export default class CreateItemComponent extends React.PureComponent {
                 </form>
             )}
             </Form>)
-    }
-}
+
+
+*/

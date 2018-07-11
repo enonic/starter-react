@@ -13,9 +13,8 @@ import Item from '../interfaces/item';
 import Category from '../interfaces/category';
 import AdminItemComponent from '../components/adminItemComponent';
 import CategoryComponent from '../components/adminCategoryComponent';
-import CreateItemComponent from '../components/createItemComponent';
-import CreateCategoryComponent from '../components/createCategoryComponent';
 import SearchComponent from '../components/searchComponent';
+import ModalComponent from '../components/modalComponent';
 
 // Styles 
 import '../styles/adminPage.less'
@@ -45,10 +44,9 @@ class AdminPage extends React.PureComponent {
   constructor(props){
     super(props)
     this.state = {
-      showItemForm: false,
-      showCategoryForm: false,
       itemSearchValue: "",
-      categorySearchValue: ""
+      categorySearchValue: "",
+      modalType: ""
     }
   }
 
@@ -74,23 +72,26 @@ class AdminPage extends React.PureComponent {
     this.props.createCategory(new Category({title: data.title, filter: data.filter})); 
   }
 
-
-  addItemClick(event){
-    this.setState({ showItemForm: true }) 
-  }
-
-  addCategoryClick(event){
-    this.setState({ showCategoryForm: true }) 
-  }
+  
 
   render() {
     return <div className="AdminPage">
+        <ModalComponent 
+          type={this.state.modalType} 
+          onClose={() => this.setState({ modalType: "" })}
+          itemSubmit = {this.itemSubmitClick.bind(this)}
+          categorySubmit = {this.categorySubmitClick.bind(this)}
+        />
+
         <Typography variant="display3" gutterBottom>
           Items
         </Typography>
-        <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)} />
-        <button onClick={this.addItemClick.bind(this)}>add</button>
-        {this.state.showItemForm ? <CreateItemComponent submit={this.itemSubmitClick.bind(this)} categories={this.props.categories} /> : null}
+        <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
+        <button onClick={() => this.setState({ modalType: "ITEM" }) }>
+          Add new item
+        </button>
+        
+        
 
         <Paper>
           <Table>
@@ -129,11 +130,11 @@ class AdminPage extends React.PureComponent {
           Categories
         </Typography>
 
-        <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)} />
-        <button onClick={this.addCategoryClick.bind(this)}>
+        <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
+        <button onClick={() => this.setState({ modalType: "CATEGORY" }) }>
           add Category
         </button>
-        {this.state.showCategoryForm ? <CreateCategoryComponent submit={this.categorySubmitClick.bind(this)} /> : null}
+        
 
         <Paper>
           <Table>
@@ -159,7 +160,7 @@ class AdminPage extends React.PureComponent {
             </TableBody>
           </Table>
         </Paper>
-      </div>;
+      </div>
   }
 }
 

@@ -17,7 +17,10 @@ import * as categoryActions from './actions/categoryActions';
 // Interfaces 
 import Item from './interfaces/item'; 
 import Category from './interfaces/category';
+// Material UI 
+import { MuiThemeProvider } from "@material-ui/core/styles";
 // Stylesheet 
+import Theme from "./theme";
 import './styles/main.less'
 // Sample data 
 import SampleData from './sampleData.json'; 
@@ -59,23 +62,25 @@ class App extends Component {
                 <TopBar onToggleMenu={this.toggleMenu.bind(this)} />
                 <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />
             */}
-                <Route path="/" render={(props) => 
-                    <TopBar {...props} onToggleMenu={this.toggleMenu.bind(this)} />}
-                /> 
-                <Route path="/" render={(props) => 
-                    <SideBar {...props} open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />}
-                /> 
-                <Switch>    
-                    {/*
-                    <Route path={/.+admin/} component={AdminPage} />
-                    <Route path={/.+user/} component={UserPage} />
-                    */}
-                    <Route path="/app/com.enonic.starter.react/admin" component={AdminPage} />
-                    <Route path="/app/com.enonic.starter.react/user" component={UserPage} />
-                    <Route path="/app/com.enonic.starter.react/cart" component={CartPage} />
+                <MuiThemeProvider theme={Theme}>
+                    <Route path="/" render={(props) => 
+                        <TopBar {...props} onToggleMenu={this.toggleMenu.bind(this)} />}
+                    /> 
+                    <Route path="/" render={(props) => 
+                        <SideBar {...props} open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />}
+                    /> 
+                    <Switch>    
+                        {/*
+                        <Route path={/.+admin/} component={AdminPage} />
+                        <Route path={/.+user/} component={UserPage} />
+                        */}
+                        <Route path="/app/com.enonic.starter.react/admin" component={AdminPage} />
+                        <Route path="/app/com.enonic.starter.react/user" component={UserPage} />
+                        <Route path="/app/com.enonic.starter.react/cart" component={CartPage} />
 
-                    <Route component={NotFound} />
-                </Switch>
+                        <Route component={NotFound} />
+                    </Switch>
+                </MuiThemeProvider>
             </div>
         )
     }

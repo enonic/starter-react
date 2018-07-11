@@ -104,20 +104,22 @@ class AdminPage extends React.PureComponent {
                 <TableCell>Category</TableCell>
                 <TableCell>Id</TableCell>
                 <TableCell>Visible</TableCell>
+                <TableCell>Delete</TableCell>
+                <TableCell>Edit</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {this.props.items.map(item => {
-                if(item.name.toUpperCase().includes(this.state.itemSearchValue.toUpperCase())||
-                    item.category.toUpperCase().includes(this.state.value.toUpperCase())
-                ){
-                  return <AdminItemComponent
-                    item={item}
-                    key={item.id}
-                    remove={this.props.deleteItem}
-                    visible={item.visible}
-                    toggleVisible={this.props.toggleItemVisible}
-                  />
+                if (item.name
+                    .toUpperCase()
+                    .includes(
+                      this.state.itemSearchValue.toUpperCase()
+                    ) || item.category
+                    .toUpperCase()
+                    .includes(
+                      this.state.categorySearchValue.toUpperCase()
+                    )) {
+                  return <AdminItemComponent item={item} key={item.id} remove={this.props.deleteItem} visible={item.visible} toggleVisible={this.props.toggleItemVisible} />;
                 }
               })}
             </TableBody>
@@ -141,18 +143,18 @@ class AdminPage extends React.PureComponent {
                 <TableCell>Title</TableCell>
                 <TableCell>Filter</TableCell>
                 <TableCell>Visible</TableCell>
+                <TableCell>Delete</TableCell>
+                <TableCell>Edit</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {this.props.categories.map(category => {
-                if(category.title.toUpperCase().includes(this.state.categorySearchValue.toUpperCase())){
-                  return <CategoryComponent
-                      category={category}
-                      key={category.id}
-                      remove={this.props.deleteCategory}
-                      visible={category.visible}
-                      toggleVisible={this.props.toggleCategoryVisible}
-                    />
+                if (category.title
+                    .toUpperCase()
+                    .includes(
+                      this.state.categorySearchValue.toUpperCase()
+                    )) {
+                  return <CategoryComponent category={category} key={category.id} remove={this.props.deleteCategory} visible={category.visible} toggleVisible={this.props.toggleCategoryVisible} />;
                 }
               })}
             </TableBody>

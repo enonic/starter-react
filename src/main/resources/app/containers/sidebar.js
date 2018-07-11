@@ -11,6 +11,8 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import CategoryIcon from "@material-ui/icons/Store"; 
+// Stylesheets 
+import '../styles/sidebar.less'; 
 
 
 import { connect } from 'react-redux';
@@ -25,7 +27,7 @@ class SideBar extends React.PureComponent {
 
     renderList() {
         return this.props.categories.map((category, index) => {
-            return <ListItem onClick={() =>  this.categoryOnClick(category)} key={index}>
+            return <ListItem className="SideBar-ListItem" onClick={() =>  this.categoryOnClick(category)} key={index}>
                 <ListItemIcon>
                     <CategoryIcon />
                 </ListItemIcon>

@@ -1,5 +1,9 @@
 import React from 'react';
 
+// Material UI 
+import Button from '@material-ui/core/Button'
+import Typography from "@material-ui/core/Typography";
+
 export default class CheckoutComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
@@ -12,8 +16,8 @@ export default class CheckoutComponent extends React.PureComponent {
 
     render(){
         return <div>
-           Want to buy these items?
-           <button onClick={this.buyClick.bind(this)}>Buy</button>
+            <Typography variant="display2">Buy items?</Typography>
+            <Button onClick={this.buyClick.bind(this)} color="secondary">Buy</Button>
         </div>
     }
 }

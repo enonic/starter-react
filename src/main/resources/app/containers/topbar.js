@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom'
 // Material UI 
 import AppBar from '@material-ui/core/AppBar'; 
 import Toolbar from '@material-ui/core/Toolbar';
-import Button from '@material-ui/core/Button';
-// import Grid from '@material-ui/core/Grid'; 
 import IconButton from '@material-ui/core/IconButton'; 
 import Typography from '@material-ui/core/Typography'; 
 import MenuIcon from '@material-ui/icons/Menu'; 
 import StoreIcon from '@material-ui/icons/Store'; 
 import CartIcon from "@material-ui/icons/ShoppingCart"; 
+import Badge from '@material-ui/core/Badge'; 
 // Stylesheets  
 import '../styles/topbar.less'; 
 
@@ -54,7 +53,9 @@ class TopBar extends React.PureComponent {
                         </Link>
                         <Link to="/app/com.enonic.starter.react/cart">
                             <IconButton>
-                                <CartIcon />
+                                <Badge badgeContent={this.props.cartItems.size} color="secondary">
+                                    <CartIcon />
+                                </Badge>
                             </IconButton>
                         </Link>
                         <Typography 
@@ -92,10 +93,12 @@ TopBar.defaultProps = {
 
 
 function mapStateToProps(state) {
-    let toaster = state.get('toaster')
+    let toaster = state.get('toaster'); 
+    let cartItems = state.get('app').get('cartItems');
     return {
         toasterVisible : toaster.get('visible'), 
-        toasterMessage : toaster.get('message')
+        toasterMessage : toaster.get('message'), 
+        cartItems: cartItems, 
     }
 }
 

@@ -1,14 +1,12 @@
 import React from 'react';
-import MaterialUIForm from 'material-ui-form'
+
+import Card from "@material-ui/core/Card";
+import CardMedia from "@material-ui/core/CardMedia";
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import Button from '@material-ui/core/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
-
-import '../styles/popup.less'
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
 
 // Sample data 
 import SampleData from '../sampleData.json'
@@ -18,7 +16,11 @@ export default class CreateItemComponent extends React.PureComponent {
         super(arg)
         this.state = {
             formData: this.props.formData, 
-            images : []
+            images : [],
+            name: "",
+            info: "",
+            image: null,
+            category: "",
         };
     }
 
@@ -26,72 +28,85 @@ export default class CreateItemComponent extends React.PureComponent {
         this.setState({ images: SampleData.images })
     }
 
-    validate (value){
-        const errors = {}
-        const requiredFields = [
-          'firstName',
-          'lastName',
-        ]
-        requiredFields.forEach(field => {
-          if (!values[field]) {
-            errors[field] = 'Required'
-          }
-        })
-
-        return errors
-    }
-
-    /**
-     * label
-     * value 
-     */
     
-    getImageOptions() {
+    getImageItems() {
         return this.state.images.map(image => 
-            <MenuItem value={image}>{image.name}</MenuItem>
+            <MenuItem id={image.name} value={image}>{image.name}</MenuItem>
         )
     }
 
-    getCategoryOptions() {
-        let options = []; 
-        this.props.categories.map(category => {
-            options.push({
-                label : category.title, 
-                value : category.title
-            })
-        })
-        return options; 
+    getCategoryItems() {
+        return this.props.categories.map(category => 
+            <MenuItem id={category.title} value={category}>{category.title}</MenuItem>
+        )
     }
 
+    handleChange = event => {
+        this.setState({ [event.target.id]: event.target.value })
+    }
+
+    handleImageChange = event => {
+        this.setState({ image: event.target.value.source })
+    }
     render(){
         return (
-        <div className='popup'>
-            <div className='popup_inner'>
-                <MaterialUIForm onSubmit={this.props.submit}>
-                    <fieldset>
-                        <TextField
-                        label="Name"
-                        type="text"
-                        name="name"
-                        value=""
-                        onChange={this.customInputHandler}
-                        />
-                    </fieldset>
+        <div>
+            <form>
                 
-                    <fieldset>
-                        <FormControl required>
-                        <InputLabel>Image</InputLabel>
-                        <Select value="" name="age">
-                            <MenuItem value=""><em>Please select an image ...</em></MenuItem>
-                            {this.getImageOptions()}
-                        </Select>
-                        <FormHelperText>Some important helper text</FormHelperText>
-                        </FormControl>  
-                    </fieldset>
-                    <Button variant="raised" type="reset">Reset</Button>
-                    <Button variant="raised" type="submit">Submit</Button>
-                </MaterialUIForm>
-            </div>
+                {this.state.image ? 
+                    <Card className="Item-Card">
+                        <CardMedia
+                            image={this.state.image.source}
+                            className="Item-Card-Media"
+                    
+                        /> 
+                    </Card> : null}
+                    
+
+                <FormControl >
+
+                    <TextField
+                        label="Name"
+                        id="name"
+                        value={this.state.name}
+                        margin="normal"
+                        onChange={this.handleChange}
+                    />
+
+                    <TextField
+                        label="Info"
+                        id="info"
+                        value={this.state.info}
+                        margin="normal"
+                        onChange={this.handleChange}
+                    />
+                
+                    
+                    <Select
+                        value={this.state.image}
+                        onChange={this.handleImageChange}
+                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        {this.getImageItems()}
+                    </Select>
+
+                    <Select
+                        value={this.state.category}
+                        onChange={this.handleChange}
+                    >
+                        <MenuItem value="">
+                            <em>None</em>
+                        </MenuItem>
+                        {this.getCategoryItems()}
+                    </Select>
+
+                </FormControl>
+
+            </form>
+            
+
         </div>
         
         
@@ -100,6 +115,25 @@ export default class CreateItemComponent extends React.PureComponent {
 }
 
 /*
+
+
+
+                <TextField
+                    id="info"
+                    label="Info"
+                    value={this.state.info}
+                    onChange={this.handleChange('info')}
+                    margin="normal"
+                />
+                <FormControl>
+                    <InputLabel htmlFor="image">Image</InputLabel>
+                    <Select
+                        value={this.state.image}
+                        onChange={this.handleImageChange}
+                    >
+                    {this.getImageOptions}
+                    </Select>
+                </FormControl>
 
 <Form onSubmit={data => this.props.submit(data)}>
             {formApi => (

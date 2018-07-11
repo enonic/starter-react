@@ -1,5 +1,8 @@
 import React from 'react';
 
+//Material UI 
+import Snackbar from "@material-ui/core/Snackbar";
+
 export default class ToasterComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
@@ -16,9 +19,18 @@ export default class ToasterComponent extends React.PureComponent {
             message
         } = this.props
         return (
-            <div>
-                {visible ? message : null}
-            </div>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                }}
+                open={visible}
+                autoHideDuration={1500}
+                ContentProps={{
+                    'aria-describedby': 'message-id',
+                }}
+                message={<span id="message-id">{message}</span>}
+            />
         )
     }
 }

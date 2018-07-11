@@ -12,8 +12,8 @@ export default class CheckoutComponent extends React.PureComponent {
 
     render(){
         return <div>
-           Want to buy these items?
-           <button onClick={this.buyClick.bind(this)}>Buy</button>
+            Want to buy these items?
+            <button onClick={this.buyClick.bind(this)}>Buy</button>
         </div>
     }
 }

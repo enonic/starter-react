@@ -1,14 +1,20 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+// Components
 import CartItemComp from '../components/cartItemComponent';
 import CheckoutComponent from '../components/checkoutComponent';
-
+// Material UI
+import Paper from '@material-ui/core/Paper'; 
+import Typography from "@material-ui/core/Typography";
+// Stylesheets
 import '../styles/cartPage.less'
 
 import { connect } from 'react-redux';
 
+// Redux Actions 
 import * as mainActions from '../actions/mainActions' 
+import * as toasterActions from '../actions/toasterActions'; 
 
 class CartPage extends React.PureComponent { 
   
@@ -36,9 +42,8 @@ class CartPage extends React.PureComponent {
                 <div>Items in cart:</div>
                 <button onClick={this.checkoutClick.bind(this)}>Checkout</button>
               </div>
-
-            : <div>You have no items in your cart</div>
-             
+            : this.props.openToaster("Empty cart")
+            
           }
           
           {this.props.items.map(item => 
@@ -81,7 +86,8 @@ function mapStateToProps(state){
 function mapDispatchToProps(dispatch) {
   return {
     deleteItem : (arg) => {mainActions.removeItemFromCart(dispatch,arg)},
-    checkout : () => {mainActions.checkout(dispatch)}
+    checkout : () => {mainActions.checkout(dispatch)}, 
+    openToaster: (message) => { toasterActions.showToaster(dispatch, message)}
   };
 }
 

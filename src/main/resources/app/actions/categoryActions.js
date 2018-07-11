@@ -4,6 +4,7 @@ export const actions = {
     deleteCategory: 'DELETE_CATEGORY',
     toggleCategoryVisible: 'HIDE_CATEGORY',
     changeCategory: 'CHANGE_CATEGORY',
+    
   }
   
   function changeCategoryAction(category, arg) {
@@ -36,6 +37,8 @@ export const actions = {
     }
   }
   
+
+
   export function changeCategory(dispatch, category, arg){
     dispatch(changeCategoryAction(category, arg))
   }

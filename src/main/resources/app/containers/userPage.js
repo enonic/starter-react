@@ -21,20 +21,26 @@ class UserPage extends React.PureComponent {
   constructor(props) {
     super(props); 
     this.state = {
-        value : ""
+      searchValue: this.props.searchValue
+    }
+  }
+
+
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.searchValue !== this.props.searchValue) {
+        this.setState({searchValue:nextProps.searchValue});
     }
   }
 
   searchOnChange(value){
-    this.setState({
-      value : value
-    })
+    this.setState({searchValue: value })
   }
 
   renderItems() {
     return this.props.items.map((item, index) => {
-      if(item.name.toUpperCase().includes(this.state.value.toUpperCase()) ||
-        item.category.toUpperCase().includes(this.state.value.toUpperCase())
+      if(item.name.toUpperCase().includes(this.state.searchValue.toUpperCase()) ||
+        item.category.toUpperCase().includes(this.state.searchValue.toUpperCase())
         ){ 
         if(item.visible){
           return <Grid key={index}>
@@ -55,7 +61,7 @@ class UserPage extends React.PureComponent {
   render() {
     return (
       <div className="UserPage">
-        <SearchComponent value={this.state.value} onChange={this.searchOnChange.bind(this)}/>
+        <SearchComponent value={this.state.searchValue} onChange={this.searchOnChange.bind(this)}/>
         <Grid item xs={12}>
           <Grid container justify="center">
             {this.renderItems()}
@@ -67,7 +73,8 @@ class UserPage extends React.PureComponent {
 }
 
 UserPage.propTypes = {
-  items: PropTypes.object
+  items: PropTypes.object,
+  searchValue: PropTypes.string
 };
 
 UserPage.defaultProps = {
@@ -76,7 +83,8 @@ UserPage.defaultProps = {
 
 function mapStateToProps(state){
 	return {
-    items: state.get('app').get('allItems')
+    items: state.get('app').get('allItems'),
+    searchValue: state.get('app').get('searchValue')
 	};
 }
 

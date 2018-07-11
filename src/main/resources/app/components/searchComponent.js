@@ -21,6 +21,13 @@ export default class SearchComponent extends Component {
         }
     }
 
+
+    componentWillReceiveProps(nextProps){
+        if(nextProps.value !== this.props.value) {
+            this.setState({value:nextProps.value});
+        }
+    }
+
     handleKeyDown(event) {
                         //  ENTER 
         if(event.keyCode === 13) {

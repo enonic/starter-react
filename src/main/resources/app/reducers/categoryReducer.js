@@ -29,7 +29,6 @@ function hideCategory(oldState, action){
 
 export function categoryReducer(state = initialState, action) {
   switch (action.type) {
-    
     case categoryActions.actions.toggleCategoryVisible:
       return hideCategory(state, action)
     case categoryActions.actions.deleteCategory:
@@ -37,6 +36,7 @@ export function categoryReducer(state = initialState, action) {
     case categoryActions.actions.createCategory:
       return createCategory(state, action)
 
+      
     default:
       return state;
   }

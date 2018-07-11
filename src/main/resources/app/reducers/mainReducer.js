@@ -3,7 +3,8 @@ import * as mainActions from '../actions/mainActions'
 
 const initialState = fromJS({
   allItems: [],
-  cartItems: []
+  cartItems: [],
+  searchValue: ""
 });
 
 function createItem(oldState, action){
@@ -72,9 +73,18 @@ function checkout(oldState, action){
 
 
 
+function searchCategory(oldState, action){
+  let state = oldState
+  state  = state.set('searchValue', action.data)
+  return state
+}
+
+
+
 export function mainReducer(state = initialState, action) {
   switch (action.type) {
-    
+    case mainActions.actions.searchCategory:
+      return searchCategory(state, action)
     case mainActions.actions.checkout:
       return checkout(state, action)
 

@@ -19,9 +19,13 @@ import * as mainActions from '../actions/mainActions'
 
 class SideBar extends React.PureComponent {
 
+    categoryOnClick(category){
+        this.props.searchCategory(category.filter)
+    }
+
     renderList() {
         return this.props.categories.map((category, index) => {
-            return <ListItem onClick={() => { alert("action dispatch: ", category.filter )}} key={index}>
+            return <ListItem onClick={() =>  this.categoryOnClick(category)} key={index}>
                 <ListItemIcon>
                     <CategoryIcon />
                 </ListItemIcon>
@@ -63,6 +67,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
+        searchCategory: (arg) => {mainActions.searchCategory(dispatch, arg)}
     }
 }
 

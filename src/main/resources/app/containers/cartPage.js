@@ -46,7 +46,7 @@ class CartPage extends React.PureComponent {
 
         <Button 
           onClick={this.toggleCheckoutMode.bind(this)} 
-          align="center"
+          fullWidth
           color="secondary">Checkout</Button>
       </div>
       

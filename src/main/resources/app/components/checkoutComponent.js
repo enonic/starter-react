@@ -12,7 +12,10 @@ export default class CheckoutComponent extends React.PureComponent {
     render(){
         return <div>
             <Typography variant="display1">Buy items?</Typography>
-            <Button onClick={this.props.onItemsBought} color="secondary">Buy</Button>
+            <Button 
+                onClick={this.props.onItemsBought} 
+                color="secondary"
+                fullWidth>Buy</Button>
         </div>
     }
 }

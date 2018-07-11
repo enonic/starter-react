@@ -58,12 +58,13 @@ class TopBar extends React.PureComponent {
                             </IconButton>
                         </Link>
                         <Typography 
+                            className="TopBar-PageTitle"
                             align="center" 
                             variant="title" 
                             color="textSecondary" >
                             Enonic Webstore
                         </Typography>
-                        <Link to="/app/com.enonic.starter.react/admin">
+                        <Link to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
                             <Typography variant="button">Admin</Typography>
                         </Link>
                     </Toolbar>

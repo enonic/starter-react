@@ -38,28 +38,32 @@
             "info" : "This chair is the best chair you can find",
             "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dining_chair_1939.jpg/1024px-Dining_chair_1939.jpg",
             "visible": true,
-            "category": "furniture"
+            "category": "furniture",
+            "id" : 1
         },
         {
             "name": "Pilot Suit!",
             "info": "Used by pilots and now potentially yours.",
             "image": "https://upload.wikimedia.org/wikipedia/commons/b/b5/John_Glenn_in_his_Mercury_pressure_suit.jpg", 
             "visible": true,
-            "category": "clothes"
+            "category": "clothes",
+            "id" : 2
         },
         {
             "name": "Mug 0.3l",
             "info": "A mug for every occation",
             "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Hot_Cold_mug.jpg",
             "visible": true,
-            "category": "others"
+            "category": "others",
+            "id" : 3
         },
         {
             "name": "Fish",
             "info": "This is a nice fish. So nice",
             "image": "https://upload.wikimedia.org/wikipedia/commons/6/68/UrolophusPaucimaculatus.jpg",
             "visible": true,
-            "category": "food"
+            "category": "food",
+            "id" : 4
         }
     ], 
     "categories": [

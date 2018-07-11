@@ -36,7 +36,7 @@ class App extends Component {
     componentDidMount() {
         SampleData.items.map(item => 
             this.props.createItem(
-                new Item({ name: item.name, info: item.info, image: item.image , visible: item.visible, category: item.category })
+                new Item({ name: item.name, info: item.info, image: item.image , visible: item.visible, category: item.category, id : item.id })
             )
         );
         SampleData.categories.map(data =>
@@ -55,6 +55,16 @@ class App extends Component {
     render () {
         return (
             <div className="App">
+            {/*
+                <TopBar onToggleMenu={this.toggleMenu.bind(this)} />
+                <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />
+            */}
+                <Route path="/" render={(props) => 
+                    <TopBar {...props} onToggleMenu={this.toggleMenu.bind(this)} />}
+                /> 
+                <Route path="/" render={(props) => 
+                    <SideBar {...props} open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />}
+                /> 
                 <Switch>    
                     {/*
                     <Route path={/.+admin/} component={AdminPage} />
@@ -66,8 +76,6 @@ class App extends Component {
 
                     <Route component={NotFound} />
                 </Switch>
-                <TopBar onToggleMenu={this.toggleMenu.bind(this)}/>
-                <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)}/>
             </div>
         )
     }

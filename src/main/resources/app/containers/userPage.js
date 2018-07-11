@@ -39,9 +39,8 @@ class UserPage extends React.PureComponent {
 
   renderItems() {
     return this.props.items.map((item, index) => {
-      
-      if(item.category.toUpperCase().includes(this.state.searchValue.toUpperCase()) ||
-        item.category.toUpperCase().includes(this.state.searchValue.toUpperCase())
+      if(item.name.toUpperCase().includes(this.state.searchValue.toUpperCase()) ||
+        item.categoryName.toUpperCase().includes(this.state.searchValue.toUpperCase())
         ){ 
         if(item.visible){
           return <Grid key={index}>

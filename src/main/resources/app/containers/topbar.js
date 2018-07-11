@@ -6,12 +6,14 @@ import { Link } from 'react-router-dom'
 import AppBar from '@material-ui/core/AppBar'; 
 import Toolbar from '@material-ui/core/Toolbar';
 import Button from '@material-ui/core/Button';
+// import Grid from '@material-ui/core/Grid'; 
 import IconButton from '@material-ui/core/IconButton'; 
 import Typography from '@material-ui/core/Typography'; 
 import MenuIcon from '@material-ui/icons/Menu'; 
-
-// Interfaces 
-import Item from '../interfaces/item';
+import StoreIcon from '@material-ui/icons/Store'; 
+import CartIcon from "@material-ui/icons/ShoppingCart"; 
+// Stylesheets  
+import '../styles/topbar.less'; 
 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
@@ -29,26 +31,40 @@ class TopBar extends React.PureComponent {
         }
     }
 
+    renderMenuIcon(){
+        if (this.props.location.pathname === "/app/com.enonic.starter.react/user") {
+            return <IconButton color="secondary" aria-label="Menu" onClick={this.props.onToggleMenu}>
+                <MenuIcon />
+            </IconButton>;
+        }
+        return <IconButton></IconButton>
+    }
+
+
     render() {
         return (
             <div>
-                <AppBar>
+                <AppBar color="primary">
                     <Toolbar>
-                        <IconButton color="inherit" aria-label="Menu" onClick={this.props.onToggleMenu}>
-                            {this.props.location.pathname === "/app/com.enonic.starter.react/user" ? 
-                                <MenuIcon/> : null}
-                        </IconButton>
-                        <Typography variant="title" color="inherit" >
-                            Enonic Webstore
-                        </Typography>
+                        {this.renderMenuIcon()}
                         <Link to="/app/com.enonic.starter.react/user">
-                            <Button color="inherit">User</Button>                        
-                        </Link>
-                        <Link to="/app/com.enonic.starter.react/admin">
-                            <Button color="inherit">Admin</Button>                        
+                            <IconButton>
+                                <StoreIcon />
+                            </IconButton>
                         </Link>
                         <Link to="/app/com.enonic.starter.react/cart">
-                            <Button color="inherit">Cart</Button>
+                            <IconButton>
+                                <CartIcon />
+                            </IconButton>
+                        </Link>
+                        <Typography 
+                            align="center" 
+                            variant="title" 
+                            color="textSecondary" >
+                            Enonic Webstore
+                        </Typography>
+                        <Link to="/app/com.enonic.starter.react/admin">
+                            <Typography variant="button">Admin</Typography>
                         </Link>
                     </Toolbar>
                 </AppBar>

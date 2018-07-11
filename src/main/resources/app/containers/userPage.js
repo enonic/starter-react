@@ -28,13 +28,13 @@ class UserPage extends React.PureComponent {
   searchOnChange(value){
     this.setState({
       value : value
-    })
+    }); 
   }
 
   renderItems() {
     return this.props.items.map((item, index) => {
       if(item.name.toUpperCase().includes(this.state.value.toUpperCase()) ||
-        item.category.toUpperCase().includes(this.state.value.toUpperCase())
+        item.categoryName.toUpperCase().includes(this.state.value.toUpperCase())
         ){ 
         if(item.visible){
           return <Grid key={index}>

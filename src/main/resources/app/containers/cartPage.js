@@ -26,8 +26,15 @@ class CartPage extends React.PureComponent {
     }
   }
 
-  checkoutClick(){
-    this.setState({checkout : this.state.checkout ? false : true})
+  toggleCheckoutMode() {
+    this.setState({ checkout: this.state.checkout ? false : true }); 
+  }
+
+  onItemsBought() {
+    this.props.checkout(); 
+    this.toggleCheckoutMode(); 
+    this.props.history.push("/app/com.enonic.starter.react/user"); 
+    this.props.openToaster("Thanks for buying!"); 
   }
 
   renderItems() {
@@ -38,7 +45,7 @@ class CartPage extends React.PureComponent {
         })}
 
         <Button 
-          onClick={this.checkoutClick.bind(this)} 
+          onClick={this.toggleCheckoutMode.bind(this)} 
           align="center"
           color="secondary">Checkout</Button>
       </div>
@@ -62,13 +69,11 @@ class CartPage extends React.PureComponent {
 
         {this.state.checkout ?
           <CheckoutComponent
-            checkout={this.props.checkout}
-            checkoutClick={this.checkoutClick.bind(this)}
+            onItemsBought={this.onItemsBought.bind(this)}
           />
           : null
         }
       </Paper>
-      
     );
   }
 }

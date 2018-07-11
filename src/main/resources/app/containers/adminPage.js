@@ -14,7 +14,7 @@ import Category from '../interfaces/category';
 import AdminItemComponent from '../components/adminItemComponent';
 import CategoryComponent from '../components/adminCategoryComponent';
 import SearchComponent from '../components/searchComponent';
-import ModalComponent from '../components/modalComponent';
+import DialogComponent from '../components/dialogComponent';
 
 // Styles 
 import '../styles/adminPage.less'
@@ -46,7 +46,8 @@ class AdminPage extends React.PureComponent {
     this.state = {
       itemSearchValue: "",
       categorySearchValue: "",
-      modalType: ""
+      modalType: "",
+      dialogOpen: false
     }
   }
 
@@ -84,18 +85,20 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
-        <ModalComponent 
+        <DialogComponent 
           type={this.state.modalType} 
-          onClose={() => this.setState({ modalType: "" })}
+          onClose={() => this.setState({ modalType: "", dialogOpen: false })}
           itemSubmit = {this.itemSubmitClick.bind(this)}
           categorySubmit = {this.categorySubmitClick.bind(this)}
+          open = {this.state.dialogOpen}
+          categories={this.props.categories}
         />
 
         <Typography variant="display3" gutterBottom>
           Items
         </Typography>
         <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ modalType: "ITEM" }) }>
+        <button onClick={() => this.setState({ modalType: "ITEM" , dialogOpen: true}) }>
           Add new item
         </button>
         
@@ -118,10 +121,8 @@ class AdminPage extends React.PureComponent {
             </TableHead>
             <TableBody>
               {this.props.items.map(item => {
-                if (item.name
-                    .toUpperCase()
-                    .includes(
-                      this.state.itemSearchValue.toUpperCase()
+                if (item.name.toUpperCase()
+                    .includes(this.state.itemSearchValue.toUpperCase()
                     ) || item.category
                     .toUpperCase()
                     .includes(
@@ -144,7 +145,7 @@ class AdminPage extends React.PureComponent {
         </Typography>
 
         <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ modalType: "CATEGORY" }) }>
+        <button onClick={() => this.setState({ modalType: "CATEGORY" , dialogOpen: true}) }>
           add Category
         </button>
         
@@ -162,10 +163,8 @@ class AdminPage extends React.PureComponent {
             </TableHead>
             <TableBody>
               {this.props.categories.map(category => {
-                if (category.title
-                    .toUpperCase()
-                    .includes(
-                      this.state.categorySearchValue.toUpperCase()
+                if (category.title.toUpperCase()
+                    .includes(this.state.categorySearchValue.toUpperCase()
                     )) {
                   return <CategoryComponent 
                     category={category} 

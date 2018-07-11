@@ -34,13 +34,12 @@ class App extends Component {
 
     // STATE HOLDS TEST ITEMS 
     componentDidMount() {
-        console.log(SampleData.items); 
         SampleData.items.map(item => 
             this.props.createItem(
-                new Item({ name: item.name, info: item.info, image: item.image , visible: item.visible})
+                new Item({ name: item.name, info: item.info, image: item.image , visible: item.visible, category: item.category })
             )
         );
-        SampleData.categories.map(data => 
+        SampleData.categories.map(data =>
             this.props.createCategory(
                 new Category({title: data.title, filter: data.filter, id: data.id})
             )

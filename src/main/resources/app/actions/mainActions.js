@@ -10,7 +10,9 @@ export const actions = {
   addItemToCart: 'ADD_ITEM_TO_CART',
   removeItemFromCart: 'REMOVE_ITEM_FROM_CART',
 
-  checkout: 'CHECKOUT'
+  checkout: 'CHECKOUT',
+
+  searchCategory: 'SEARCH_CATEGORY',
 }
 
 
@@ -62,6 +64,18 @@ function checkoutAction(){
   return {
     type: actions.checkout,
   }
+}
+
+
+function searchCategoryAction(arg){
+  return {
+    type: actions.searchCategory,
+    data: arg
+  }
+}
+
+export function searchCategory(dispatch, arg){
+  dispatch(searchCategoryAction(arg))
 }
 
 

@@ -7,6 +7,6 @@ export default function createRootReducer() {
   return combineReducers({
     app: mainReducer,
     categories: categoryReducer,
-    toaster: toasterReducer
+    toaster: toasterReducer,
   });
 }

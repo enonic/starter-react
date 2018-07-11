@@ -65,17 +65,17 @@
     "categories": [
         {
             "title": "Clothes", 
-            "filter": "CATEGORY_CLOTHES", 
+            "filter": "clothes", 
             "id": 1
         },
         {
             "title": "Shoes",
-            "filter": "CATEGORY_SHOES",
+            "filter": "shoes",
             "id": 2
         },
         {
             "title": "Furniture",
-            "filter": "CATEGORY_FURNITURE",
+            "filter": "furniture",
             "id": 3
         }
     ]

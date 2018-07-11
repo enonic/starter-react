@@ -54,6 +54,16 @@ class App extends Component {
     render () {
         return (
             <div className="App">
+            {/*
+                <TopBar onToggleMenu={this.toggleMenu.bind(this)} />
+                <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />
+            */}
+                <Route path="/" render={(props) => 
+                    <TopBar {...props} onToggleMenu={this.toggleMenu.bind(this)} />}
+                /> 
+                <Route path="/" render={(props) => 
+                    <SideBar {...props} open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />}
+                /> 
                 <Switch>    
                     {/*
                     <Route path={/.+admin/} component={AdminPage} />
@@ -65,8 +75,6 @@ class App extends Component {
 
                     <Route component={NotFound} />
                 </Switch>
-                <TopBar onToggleMenu={this.toggleMenu.bind(this)}/>
-                <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)}/>
             </div>
         )
     }

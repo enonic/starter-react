@@ -7,6 +7,7 @@ import CheckoutComponent from '../components/checkoutComponent';
 // Material UI
 import Paper from '@material-ui/core/Paper'; 
 import Typography from "@material-ui/core/Typography";
+import Button from "@material-ui/core/Button";
 // Stylesheets
 import '../styles/cartPage.less'
 
@@ -25,43 +26,48 @@ class CartPage extends React.PureComponent {
     }
   }
 
-  componentDidMount(){
-  }
-
-
   checkoutClick(){
     this.setState({checkout : this.state.checkout ? false : true})
   }
 
+  renderItems() {
+    if(this.props.items.size > 0) {
+      return <div>
+        {this.props.items.map((item, index) => {
+          return <CartItemComp item={item} key={index} remove={this.props.deleteItem} />
+        })}
+
+        <Button 
+          onClick={this.checkoutClick.bind(this)} 
+          align="center"
+          color="secondary">Checkout</Button>
+      </div>
+      
+    }
+
+    this.props.openToaster("Empty cart.")
+    return <Typography variant="headline" align="center">:-/</Typography>;
+  }
+
   render() {
     return (
-      <div className="CartPage">
-          {this.props.items.size > 0 
-            ? 
-              <div>
-                <div>Items in cart:</div>
-                <button onClick={this.checkoutClick.bind(this)}>Checkout</button>
-              </div>
-            : this.props.openToaster("Empty cart")
-            
-          }
-          
-          {this.props.items.map(item => 
-            <CartItemComp 
-              item = {item} 
-              key = {item.id} 
-              remove = {this.props.deleteItem}
-            />
-          )}
+      <Paper className="CartPage">
+        <Typography 
+          variant="headline" 
+          align="center" 
+          className="CartPage-Headline">Items in cart
+        </Typography>
+        
+        {this.renderItems()}
 
-          {this.state.checkout ? 
-            <CheckoutComponent
-              checkout={this.props.checkout}
-              checkoutClick={this.checkoutClick.bind(this)}
-            />
-            : null
-          }
-      </div>
+        {this.state.checkout ?
+          <CheckoutComponent
+            checkout={this.props.checkout}
+            checkoutClick={this.checkoutClick.bind(this)}
+          />
+          : null
+        }
+      </Paper>
       
     );
   }

@@ -56,6 +56,9 @@ class App extends Component {
     }
     
     render () {
+        
+        fetch("/app/com.enonic.starter.react/_/service/com.enonic.starter.react/repo", response => console.log(response.json()));
+
         return (
             <div className="App">
             {/*

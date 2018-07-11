@@ -42,12 +42,11 @@ export default class AdminItemComponent extends React.PureComponent {
                 </IconButton>
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => console.error("not yet implemented", this.props.id)}>
+                <IconButton onClick={() => this.props.edit(this.props.item)}>
                     <EditIcon />
                 </IconButton>
             </TableCell>
         </TableRow>;
     }
 }
-// ADD VISIBILITY TOGGLE 
 

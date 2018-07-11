@@ -26,21 +26,6 @@ export default class CreateItemComponent extends React.PureComponent {
         this.setState({ images: SampleData.images })
     }
 
-    validate (value){
-        const errors = {}
-        const requiredFields = [
-          'firstName',
-          'lastName',
-        ]
-        requiredFields.forEach(field => {
-          if (!values[field]) {
-            errors[field] = 'Required'
-          }
-        })
-
-        return errors
-    }
-
     /**
      * label
      * value 
@@ -66,32 +51,7 @@ export default class CreateItemComponent extends React.PureComponent {
     render(){
         return (
         <div className='popup'>
-            <div className='popup_inner'>
-                <MaterialUIForm onSubmit={this.props.submit}>
-                    <fieldset>
-                        <TextField
-                        label="Name"
-                        type="text"
-                        name="name"
-                        value=""
-                        onChange={this.customInputHandler}
-                        />
-                    </fieldset>
-                
-                    <fieldset>
-                        <FormControl required>
-                        <InputLabel>Image</InputLabel>
-                        <Select value="" name="age">
-                            <MenuItem value=""><em>Please select an image ...</em></MenuItem>
-                            {this.getImageOptions()}
-                        </Select>
-                        <FormHelperText>Some important helper text</FormHelperText>
-                        </FormControl>  
-                    </fieldset>
-                    <Button variant="raised" type="reset">Reset</Button>
-                    <Button variant="raised" type="submit">Submit</Button>
-                </MaterialUIForm>
-            </div>
+
         </div>
         
         

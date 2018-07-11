@@ -37,7 +37,7 @@ class App extends Component {
         console.log(SampleData.items); 
         SampleData.items.map(item => 
             this.props.createItem(
-                new Item({ name: item.name, info: item.info, image: item.image })
+                new Item({ name: item.name, info: item.info, image: item.image , visible: item.visible})
             )
         );
         SampleData.categories.map(data => 

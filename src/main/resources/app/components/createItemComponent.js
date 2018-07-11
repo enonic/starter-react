@@ -69,7 +69,7 @@ export default class CreateItemComponent extends React.PureComponent {
                 </Select>
 
                 <label htmlFor="hello">Category</label>                
-                <Select field="categoryName" id="categoryName" 
+                <Select field="category" id="category" 
                         options={this.getCategoryOptions()} >
                 </Select>
 

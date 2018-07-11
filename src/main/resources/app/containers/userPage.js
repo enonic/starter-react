@@ -8,7 +8,7 @@ import * as mainActions from '../actions/mainActions'
 
 // Components 
 import UserItemComponent from "../components/userItemComponent"
-import UserSearchComponent from "../components/UserSearchComponent"; 
+import SearchComponent from "../components/searchComponent"; 
 
 // Material UI 
 import Grid from '@material-ui/core/Grid'; 
@@ -26,7 +26,6 @@ class UserPage extends React.PureComponent {
   }
 
   searchOnChange(value){
-    //change to set redux state
     this.setState({
       value : value
     })
@@ -34,14 +33,19 @@ class UserPage extends React.PureComponent {
 
   renderItems() {
     return this.props.items.map((item, index) => {
-      if(item.name.toUpperCase().includes(this.state.value.toUpperCase())){
-        return <Grid key={index}>
-        <UserItemComponent
-          item={item}
-          add={this.props.addItemToCart}
-        />
-      </Grid>
-      }
+      if(item.name.toUpperCase().includes(this.state.value.toUpperCase()) ||
+        item.category.toUpperCase().includes(this.state.value.toUpperCase())
+        ){ 
+        if(item.visible){
+          return <Grid key={index}>
+              <UserItemComponent
+                item={item}
+                add={this.props.addItemToCart}
+              />
+            </Grid>
+          }
+
+        }
       return null
     })
   }
@@ -51,7 +55,7 @@ class UserPage extends React.PureComponent {
   render() {
     return (
       <div className="UserPage">
-        <UserSearchComponent value={this.state.value} onChange={this.searchOnChange.bind(this)}/>
+        <SearchComponent value={this.state.value} onChange={this.searchOnChange.bind(this)}/>
         <Grid item xs={12}>
           <Grid container justify="center">
             {this.renderItems()}

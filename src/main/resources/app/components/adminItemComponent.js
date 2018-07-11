@@ -20,7 +20,6 @@ export default class AdminItemComponent extends React.PureComponent {
     }
 
     render(){ 
-        console.log(this.props.item); 
         return <TableRow className="AdminItemComponent">
             <TableCell component="th" scope="row">
                 {this.props.name}
@@ -28,7 +27,7 @@ export default class AdminItemComponent extends React.PureComponent {
             <TableCell>{this.props.item.name}</TableCell>
             <TableCell>{this.props.item.info}</TableCell>
             <TableCell>{this.props.item.image}</TableCell>
-            <TableCell>{this.props.item.categoryName}</TableCell>
+            <TableCell>{this.props.item.category}</TableCell>
             <TableCell>{this.props.item.id}</TableCell>
 
             <TableCell>

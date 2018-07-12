@@ -85,6 +85,31 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
+      {/*BUTTONS ONLY FOR TESTING OF BACKEND, REMOVE LATER*/}
+      <button onClick={() => {
+        const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
+        fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8"
+          },
+          body: JSON.stringify({
+            property1: ":D",
+            property2: "^-^"
+          })
+        }).then(response => {
+          var result = response.json();
+          result.then(data => console.log(data));
+        });
+      }}>Test POST</button>
+      <button onClick={() => {
+        const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
+        fetch(url).then(response => console.log(response)); 
+      }}>Test GET</button>
+      <button onClick={() => {
+        const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
+        console.log("PUT TESTING NOT IMPLEMENTED"); 
+      }}>Test PUT</button>
         <DialogComponent 
           type={this.state.modalType} 
           onClose={() => this.setState({ modalType: "", dialogOpen: false })}

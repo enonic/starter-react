@@ -12,12 +12,16 @@ exports.get = function(req) {
      * Convert repo-node to item that client expects 
      * Return the item
      */
-    log.info(JSON.stringify(req, null, 4));
-    return {
-        body: {
-            notice: "Get not implemented"
+    var responseFromGetting = getStoreItems(); 
+
+    if(responseFromGetting === "NOT_FOUND") {
+        return {
+            status : 400, 
+            message : "Not found"
         }
-    };
+    }
+
+    log.info("Response from getting: " + JSON.stringify(responseFromGetting, null, 4)); 
 }
 
 
@@ -31,9 +35,9 @@ exports.post = function(req) {
         return { status: 400, message: message };
     }
 
-    var wasSuccessFul = createNode(item).success; 
+    var wasSuccessful = createNode(item).success; 
     
-    if(wasSuccessFul) {
+    if(wasSuccessful) {
         log.info("Added Item:" + JSON.stringify(item, null, 4)); 
     }
 }
@@ -50,46 +54,24 @@ exports.put = function(req) {
     }
 }
 
-/*
-var REPO_NAME = app.name; // STORE CONFIG ONE PLACE INSTEAD OF THESE DUPLICATES
-var REPO_BRANCH = "master";
-var ROOT_PERMISSIONS = [
-    {
-        principal: "role:system.everyone",
-        allow: [
-            "READ",
-            "CREATE",
-            "MODIFY",
-            "DELETE",
-            "PUBLISH",
-            "READ_PERMISSIONS",
-            "WRITE_PERMISSIONS"
-        ],
-        deny: []
-    }
-];
-var STORE_PATH = "/store";
-*/ 
-
 /**
  * NOT DONE 
  * Returns all items in repo
  */
 function getStoreItems() {
-    var repoConn = repoLib.getRepoConnection(StoreConfig.name, StoreConfig.branch); 
-    var hits = repoConn.query({
-        query: "item.id = " + id
-    }).hits;
+    var repoConn = repoLib.getRepoConnection(StoreConfig.name, StoreConfig.branch);
+    var hits = repoConn.query().hits;
 
     if (!hits || hits.length < 1) {
         return "NOT_FOUND";
     }
 
-    var todoItems = hits.map(function (hit) {
+    var items = hits.map(function (hit) {
         return repoConn.get(hit.id);
     });
-    if (todoItems) {
-        return todoItems;
+
+    if (items) {
+        return items;
     } else {
         return "NOT_FOUND";
     } 

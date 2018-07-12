@@ -27,11 +27,4 @@ function handleGet(req) {
 exports.get = handleGet;
 
 
-repoLib.initialize(
-    StoreConfig.name, 
-    StoreConfig.permissions, 
-    StoreConfig.user,
-    StoreConfig.principal, 
-    StoreConfig.path, 
-    StoreConfig.branch
-); 
+repoLib.initialize(StoreConfig); 

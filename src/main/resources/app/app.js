@@ -56,22 +56,6 @@ class App extends Component {
     }
     
     render () {
-        
-        const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
-        fetch(url, {
-            method: "POST", 
-            headers: {
-                "Content-Type": "application/json; charset=utf-8"
-            },
-            body: JSON.stringify({
-                property1 : ":D", 
-                property2 : "^-^"
-            })
-        }).then(response => {
-            var result = response.json(); 
-            result.then(data => console.log(data)); 
-        }); 
-
         return (
             <div className="App">
             {/*

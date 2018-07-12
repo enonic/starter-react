@@ -91,18 +91,13 @@ function createNode(path, permissions, name, branch) {
 
 /**
  * Initializing connection with repo 
- * @param name of repository 
- * @param permissions permissions of repository 
- * @param user user for the repository 
- * @param principal principal for repository 
- * @param path path to repository 
- * @param branch in repository 
+ * @param config configuration of repo 
  */
-exports.initialize = function(name, permissions, user, principal, path, branch) {
+exports.initialize = function(config) {
     log.info("Initializing repository...");
     exports.sudo(function() {
-        doInitialize(name, permissions, path, branch);
-    },user, principal); 
+        doInitialize(config.name, config.permissions, config.path, config.branch);
+    }, config.user, config.principal); 
 };
 
 /**

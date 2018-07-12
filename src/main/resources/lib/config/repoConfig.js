@@ -4,7 +4,7 @@
 module.exports = {
     name : app.name, 
     branch : "master",
-    path : "/store",
+    path : "/repo",
     user : {
         login: "su",
         userStore: "system"

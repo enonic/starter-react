@@ -1,5 +1,7 @@
 import * as toasterActions from './toasterActions';
 
+import * as repo from '../services/repoService';
+
 // fetch api
 export const actions = {
   createItem: 'CREATE_ITEM',
@@ -91,6 +93,7 @@ export function toggleItemVisible(dispatch, arg){
 
 export function createItem(dispatch, arg){ 
     //promise 
+    repo.add(arg)
     dispatch(createItemAction(arg))
 }
 

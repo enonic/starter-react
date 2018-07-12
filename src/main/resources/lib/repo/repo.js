@@ -74,9 +74,9 @@ var nodeWithPathExists = function(repoConnection, path) {
 function createNode(path, permissions, name, branch) {
     var repoConn = getRepoConnection(name, branch);
 
-    var pushSubscriptionsExist = nodeWithPathExists(repoConn, path);
+    var node = nodeWithPathExists(repoConn, path);
 
-    if (pushSubscriptionsExist) {
+    if (node) {
         // Node exists
         return;
     }
@@ -101,7 +101,7 @@ exports.initialize = function(config) {
 };
 
 /**
- * @param func {(name, permissions) => void} intialize function 
+ * @param func {(name, permissions) => void} initialize function 
  * @param user repo user 
  * @param principal principal of repo 
  */
@@ -121,11 +121,11 @@ exports.sudo = function (func, user, principal) {
  * @param name of repository 
  * @param branch in repository 
  */
-exports.storeItemAndCreateNode = function(item, path, permissions, name, branch) {
-    var repoConn = getRepoConnection(name, branch);
+exports.storeItemAndCreateNode = function(item, config) {
+    var repoConn = getRepoConnection(config.name, config.branch);
     var node = repoConn.create({
-        _parentPath: path,
-        _permissions: permissions,
+        _parentPath: config.path,
+        _permissions: config.permissions,
         item: item
     })
 

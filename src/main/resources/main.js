@@ -1,8 +1,9 @@
 var portal = require('/lib/xp/portal');
 var mustache = require('/lib/xp/mustache');
 var repoLib = require('./lib/repo/repo');
-var StoreConfig = require('./lib/storeConfig/storeConfig'); 
+var repoConfig = require('./lib/config/repoConfig'); 
 
+repoLib.initialize(repoConfig); 
 
 var view = resolve('./index.html');
 
@@ -26,5 +27,3 @@ function handleGet(req) {
 
 exports.get = handleGet;
 
-
-repoLib.initialize(StoreConfig); 

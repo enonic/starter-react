@@ -45,26 +45,11 @@ export default class DialogComponent extends React.PureComponent {
 
   renderDialog(){
     switch (this.props.type) {
-      case "ITEM" || "CATEGORY":
-        return (
-          <Dialog
-            disableBackdropClick
-            open={this.state.open}
-            onClose={this.props.onClose}
-          >
-            <DialogContent>
-              {this.getFormType()}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.props.onClose} color="primary">
-                Cancel
-              </Button>
-              <Button onClick={this.handleClose} color="primary">
-                Submit
-              </Button>
-            </DialogActions>
-          </Dialog>
-        )
+      case "ITEM": 
+      case "CATEGORY":
+        return <Dialog disableBackdropClick open={this.state.open} onClose={this.props.onClose}>
+            <DialogContent>{this.getFormType()}</DialogContent>
+          </Dialog>;
       case "ITEM_VIEW":
         return (
           <Dialog
@@ -94,7 +79,7 @@ export default class DialogComponent extends React.PureComponent {
           >
           <DialogTitle>Choose your payment method</DialogTitle>
             <DialogContent>
-              <CheckoutComponent/>
+              <CheckoutComponent onItemsBought={this.props.onItemsBought}/>
             </DialogContent>
           </Dialog>
         )
@@ -108,9 +93,9 @@ export default class DialogComponent extends React.PureComponent {
 	getFormType(){
 		switch (this.props.type) {
 			case "ITEM":
-				return <CreateItemComponent submit={this.props.itemSubmit} categories={this.props.categories}/>
-			case "CATEGORY":
-				return <CreateCategoryComponent submit={this.props.categorySubmit}/>
+        return <CreateItemComponent submit={this.props.itemSubmit} onClose={this.props.onClose} categories={this.props.categories}/>
+      case "CATEGORY":
+				return <CreateCategoryComponent submit={this.props.categorySubmit} onClose={this.props.onClose}/>
 			default:
 				return null;
 		}

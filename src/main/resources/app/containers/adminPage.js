@@ -30,6 +30,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow'; 
 import TableCell from '@material-ui/core/TableCell'; 
 import Typography from '@material-ui/core/Typography'; 
+import Button from '@material-ui/core/Button'; 
 
 // Stylesheet 
 import '../styles/adminPage.less'
@@ -66,13 +67,13 @@ class AdminPage extends React.PureComponent {
   }
 
   itemSubmitClick(data){
-    this.setState({ showItemForm: false }); 
+    this.setState({ dialogOpen: false }); 
     this.props.createItem(new Item({name: data.name, info: data.info, image: data.image, category: data.category})); 
   }
 
   categorySubmitClick(data){
-    this.setState({ showCategoryForm: false }) 
-    this.props.createCategory(new Category({title: data.title, filter: data.filter})); 
+    this.setState({ dialogOpen: false }) 
+    this.props.createCategory(new Category({title: data.title, filter: data.filter, visible : data.visible})); 
   }
   
   editItem(item) {
@@ -93,7 +94,7 @@ class AdminPage extends React.PureComponent {
           onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
           itemSubmit = {this.itemSubmitClick.bind(this)}
           categorySubmit = {this.categorySubmitClick.bind(this)}
-          open = {this.state.dialogOpen}
+          open = {this.state.dialogOpen} 
           categories={this.props.categories}
         />
 
@@ -101,9 +102,11 @@ class AdminPage extends React.PureComponent {
           Items
         </Typography>
         <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true}) }>
+        <Button 
+          onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true})}
+          color="primary">
           Add new item
-        </button>
+        </Button>
         
         <Paper>
           <Table>
@@ -146,9 +149,11 @@ class AdminPage extends React.PureComponent {
         </Typography>
 
         <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true}) }>
+        <Button 
+          onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true})}
+          color="primary">
           add Category
-        </button>
+        </Button>
         
 
         <Paper>

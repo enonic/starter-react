@@ -1,5 +1,8 @@
 import React from 'react';
 
+// Components 
+import ToasterComponent from './ToasterComponent'; 
+// Material UI 
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import TextField from '@material-ui/core/TextField';
@@ -7,9 +10,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
 // Sample data 
 import SampleData from '../sampleData.json'
@@ -55,8 +57,13 @@ export default class CreateItemComponent extends React.PureComponent {
         this.setState({category: event.target.value.title})
     }
 
+    validateAndSubmit = () => {
+        if (this.state.name !== "" && this.state.info !== "") {
+            this.props.submit(this.state);
+        }
+    }
+
     render(){
-        
         return (
         <div>
             <form>
@@ -78,6 +85,8 @@ export default class CreateItemComponent extends React.PureComponent {
                         value={this.state.name}
                         margin="normal"
                         onChange={this.handleChange}
+                        required
+                        error={this.state.name === ""}
                     />
 
                     <TextField
@@ -86,6 +95,8 @@ export default class CreateItemComponent extends React.PureComponent {
                         value={this.state.info}
                         margin="normal"
                         onChange={this.handleChange}
+                        required
+                        error={this.state.info === ""}
                     />
                 
                     <FormControl>
@@ -119,6 +130,15 @@ export default class CreateItemComponent extends React.PureComponent {
                 </FormControl>
 
             </form>
+            <DialogActions>
+                
+                <Button onClick={this.validateAndSubmit} color="primary">
+                    Submit
+                </Button>
+                <Button onClick={this.props.onClose.bind(this)} color="primary">
+                    Cancel
+                </Button>
+            </DialogActions>
             
 
         </div>
@@ -127,54 +147,3 @@ export default class CreateItemComponent extends React.PureComponent {
         )
     }
 }
-
-/*
-
-
-
-                <TextField
-                    id="info"
-                    label="Info"
-                    value={this.state.info}
-                    onChange={this.handleChange('info')}
-                    margin="normal"
-                />
-                <FormControl>
-                    <InputLabel htmlFor="image">Image</InputLabel>
-                    <Select
-                        value={this.state.image}
-                        onChange={this.handleImageChange}
-                    >
-                    {this.getImageOptions}
-                    </Select>
-                </FormControl>
-
-<Form onSubmit={data => this.props.submit(data)}>
-            {formApi => (
-                
-                
-                <label htmlFor="hello">Name</label>
-                <Text field="name" id="name" validate={this.validate.bind(this)} />
-                
-                <label htmlFor="hello">Info</label>
-                <Text field="info" id="info" validate={this.validate.bind(this)} />
-                
-                <label htmlFor="hello">Image</label>                
-                <Select field="image" id="image" 
-                        options={this.getImageOptions()} >
-                </Select>
-
-                <label htmlFor="hello">Category</label>                
-                <Select field="category" id="category" 
-                        options={this.getCategoryOptions()} >
-                </Select>
-
-                <button type="submit">
-                    Submit
-                </button>
-                </form>
-            )}
-            </Form>)
-
-
-*/

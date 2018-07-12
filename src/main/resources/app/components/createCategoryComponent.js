@@ -8,6 +8,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from '@material-ui/core/FormControl';
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+// Stylesheet
+import '../styles/createCategoryComponent.less'
 
 export default class CreateItemComponent extends React.PureComponent {
     constructor(arg) {
@@ -35,7 +37,7 @@ export default class CreateItemComponent extends React.PureComponent {
 
     render() {
         return (
-            <div>
+            <div className="CreateCategoryComponent">
                 <form>
                     <FormControl >
                         <TextField
@@ -48,7 +50,7 @@ export default class CreateItemComponent extends React.PureComponent {
                             error={this.state.title === ""}
                         />
                     </FormControl>
-                    <FormControl >
+                    <FormControl > 
                         <TextField
                             label="Filter"
                             id="filter"

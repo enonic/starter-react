@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Components 
-import ToasterComponent from './ToasterComponent'; 
 // Material UI 
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -13,8 +11,11 @@ import FormControl from '@material-ui/core/FormControl';
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 
+// Stylesheets 
+import '../styles/createItemComponent.less'
+
 // Sample data 
-import SampleData from '../sampleData.json'
+import SampleData from '../sampleData.json'; 
 
 export default class CreateItemComponent extends React.PureComponent {
     constructor(arg){
@@ -65,13 +66,14 @@ export default class CreateItemComponent extends React.PureComponent {
 
     render(){
         return (
-        <div>
+        <div className="CreateItemComponent">
             <form>
                 
                 {this.state.image != "none" ? 
                     <Card className="Item-Card">
                         <CardMedia
                             image={this.state.image}
+                            className="Item-Card-Media"
                         /> 
                     </Card> : null}
                     
@@ -105,7 +107,7 @@ export default class CreateItemComponent extends React.PureComponent {
                             name="image"
                             onChange={this.handleImageChange}
                             autoWidth
-                        >
+                            SelectDisplayProps={{text : "hei"}}>
                             <MenuItem value="" disabled>
                                 <em>None</em>
                             </MenuItem>
@@ -118,8 +120,7 @@ export default class CreateItemComponent extends React.PureComponent {
                             value={this.state.category}
                             name="category"
                             onChange={this.handleCategoryChange}
-                            autoWidth
-                        >
+                            autoWidth>
                             <MenuItem value="" disabled>
                                 <em>None</em>
                             </MenuItem>

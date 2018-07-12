@@ -1,4 +1,4 @@
-var repoLib = require("/lib/xp/repo");
+var repo = require("/lib/xp/repo");
 var nodeLib = require("/lib/xp/node");
 var contextLib = require("/lib/xp/context");
 
@@ -24,12 +24,12 @@ var getRepoConnection = exports.getRepoConnection = function(name, branch) {
  * @param branch in repository
  */
 var doInitialize = function (name, permissions, path, branch) {
-    var result = repoLib.get(name);
+    var result = repo.get(name);
     if (!result) {
         createRepo(name, permissions);
     }
 
-    if (!repoLib.get(name)) {
+    if (!repo.get(name)) {
         throw Error('Something went wrong when creating (and/or getting) repo:' + name);
     }
 
@@ -44,7 +44,7 @@ var doInitialize = function (name, permissions, path, branch) {
  */
 var createRepo = function (name, permissions) {
     log.info('Creating repository: ' + name);
-    repoLib.create({
+    repo.create({
         id: name,
         rootPermissions: permissions
     });

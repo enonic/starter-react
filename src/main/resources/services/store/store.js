@@ -1,5 +1,5 @@
-var repoLib = require("../repo/repo"); 
-
+var repoLib = require("../../lib/repo/repo"); 
+var StoreConfig = require("../../lib/storeConfig/storeConfig"); 
 
 /**
  * Get get items from Repo 
@@ -15,7 +15,7 @@ exports.get = function(req) {
     log.info(JSON.stringify(req, null, 4));
     return {
         body: {
-            text: "Hello from Server - GET"
+            notice: "Get not implemented"
         }
     };
 }
@@ -25,16 +25,6 @@ exports.get = function(req) {
  * Add to repo 
  */
 exports.post = function(req) {
-    /**
-     * Get item from request 
-     * if item is valid JSON, continue. 
-     * 
-     * Create a node based on the item. 
-     * If creation successful, continue. 
-     * 
-     * Push node to repo 
-     */
-
     var item = JSON.parse(req.body); 
     if(!item) {
         var message = "Missing/invalid item";
@@ -60,7 +50,7 @@ exports.put = function(req) {
     }
 }
 
-
+/*
 var REPO_NAME = app.name; // STORE CONFIG ONE PLACE INSTEAD OF THESE DUPLICATES
 var REPO_BRANCH = "master";
 var ROOT_PERMISSIONS = [
@@ -79,9 +69,14 @@ var ROOT_PERMISSIONS = [
     }
 ];
 var STORE_PATH = "/store";
+*/ 
 
+/**
+ * NOT DONE 
+ * Returns all items in repo
+ */
 function getStoreItems() {
-    var repoConn = repoLib.getRepoConnection(REPO_NAME, REPO_BRANCH); 
+    var repoConn = repoLib.getRepoConnection(StoreConfig.name, StoreConfig.branch); 
     var hits = repoConn.query({
         query: "item.id = " + id
     }).hits;
@@ -100,9 +95,19 @@ function getStoreItems() {
     } 
 }
 
+/**
+ * Adds an item to repo 
+ * @param item 
+ */
 var createNode = function(item) {
     try {
-        var node = repoLib.storeItemAndCreateNode(item, STORE_PATH, ROOT_PERMISSIONS, REPO_NAME, REPO_BRANCH); 
+        var node = repoLib.storeItemAndCreateNode(
+            item, 
+            StoreConfig.path, 
+            StoreConfig.permissions, 
+            StoreConfig.name, 
+            StoreConfig.branch
+        ); 
         if (!node) {
             log.error(
                 "Tried creating node, but something seems wrong: " +

@@ -4,7 +4,7 @@ export default class Item {
                 this.info = data.info;  
                 this.image = data.image; 
                 this.id = data.id || new Date().valueOf();
-                this.visible = data.visible || false
-                this.category = data.category || "others"
+                this.visible = data.visible || true; 
+                this.category = data.category || "others"; 
         }
 }

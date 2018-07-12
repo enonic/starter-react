@@ -9,15 +9,13 @@ export default class CheckoutComponent extends React.PureComponent {
         super(arg)
     }
 
-    buyClick(){
-        this.props.checkout()
-        this.props.checkoutClick()
-    }
-
     render(){
         return <div>
-            <Typography variant="display2">Buy items?</Typography>
-            <Button onClick={this.buyClick.bind(this)} color="secondary">Buy</Button>
+            <Typography variant="display1">Buy items?</Typography>
+            <Button 
+                onClick={this.props.onItemsBought} 
+                color="secondary"
+                fullWidth>Buy</Button>
         </div>
     }
 }

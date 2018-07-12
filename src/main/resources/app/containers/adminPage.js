@@ -72,7 +72,15 @@ class AdminPage extends React.PureComponent {
     this.setState({ showCategoryForm: false }) 
     this.props.createCategory(new Category({title: data.title, filter: data.filter})); 
   }
+  
+  editItem(item) {
+    console.log("edit me", item); 
 
+  }
+
+  editTestMethod(newValues) {
+    console.log(newValues); 
+  }
   
 
   render() {
@@ -120,7 +128,12 @@ class AdminPage extends React.PureComponent {
                     .includes(
                       this.state.categorySearchValue.toUpperCase()
                     )) {
-                  return <AdminItemComponent item={item} key={item.id} remove={this.props.deleteItem} visible={item.visible} toggleVisible={this.props.toggleItemVisible} />;
+                  return <AdminItemComponent 
+                    item={item} key={item.id} 
+                    remove={this.props.deleteItem} 
+                    edit={this.editItem}
+                    visible={item.visible} 
+                    toggleVisible={this.props.toggleItemVisible} />;
                 }
               })}
             </TableBody>
@@ -153,7 +166,12 @@ class AdminPage extends React.PureComponent {
                 if (category.title.toUpperCase()
                     .includes(this.state.categorySearchValue.toUpperCase()
                     )) {
-                  return <CategoryComponent category={category} key={category.id} remove={this.props.deleteCategory} visible={category.visible} toggleVisible={this.props.toggleCategoryVisible} />;
+                  return <CategoryComponent 
+                    category={category} 
+                    key={category.id} 
+                    remove={this.props.deleteCategory} 
+                    visible={category.visible} 
+                    toggleVisible={this.props.toggleCategoryVisible} />;
                 }
               })}
             </TableBody>

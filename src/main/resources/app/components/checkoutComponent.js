@@ -1,21 +1,47 @@
-import React from 'react';
+/**
+ * Made for testing 
+ * Represents an item in the store 
+ */
+import React, {Component} from 'react'; 
+
 
 // Material UI 
-import Button from '@material-ui/core/Button'
+import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
+import ButtonBase from '@material-ui/core/ButtonBase';
+// Stylesheets
+import '../styles/userItemComponent.less'
 
-export default class CheckoutComponent extends React.PureComponent {
-    constructor(arg){
-        super(arg)
+import SampleData from '../sampleData.json';
+
+export default class CheckoutComponent extends Component {
+    
+
+    addClick(){
+        this.props.add(this.props.item)
+    }
+    
+    renderMedia(){
+        return SampleData.cardImages.map((image,index) => 
+            <div onClick={this.props.onItemsBought}>
+                <CardMedia
+                    key={index}
+                    image={image}
+                    className="CartPage-Card-Media"
+                />
+            </div>
+        )
     }
 
-    render(){
-        return <div>
-            <Typography variant="display1">Buy items?</Typography>
-            <Button 
-                onClick={this.props.onItemsBought} 
-                color="secondary"
-                fullWidth>Buy</Button>
-        </div>
+    render() {
+
+        return (
+            <div>
+                
+                <Typography variant="headline">
+                    {this.renderMedia()}
+                </Typography>
+            </div>
+        )
     }
 }

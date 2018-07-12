@@ -30,26 +30,22 @@ export default class UserItemComponent extends Component {
         } = this.props.item
 
         return (
-            <Card className="Item-Card">
-                <CardMedia
-                    image={image}
-                    title="Contemplative Reptile"
-                    className="Item-Card-Media"
-                />
-                <CardContent>
-                    <Typography gutterBottom variant="headline" component="h2">
-                        {name}
-                    </Typography>
-                    <Typography component="p">
-                        {info}
-                    </Typography>
-                </CardContent>
-                <CardActions> 
-                    <Button onClick={this.addClick.bind(this)} size="medium" color="primary">
-                        Add to cart
-                    </Button>
-                </CardActions>
-            </Card>
+            <div onClick={()=> this.props.onClick(this.props.item)}>
+                <Card className="Item-Card">
+                    <CardMedia
+                        image={image}
+                        className="Item-Card-Media"
+                    />
+                    <CardContent>
+                        <Typography gutterBottom variant="headline" component="h2">
+                            {name}
+                        </Typography>
+                        <Typography component="p">
+                            {info}
+                        </Typography>
+                    </CardContent>
+                </Card>
+            </div>
         )
     }
 }

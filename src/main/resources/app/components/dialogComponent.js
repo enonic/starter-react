@@ -2,6 +2,8 @@ import React from 'react';
 
 import CreateCategoryComponent from './createCategoryComponent';
 import CreateItemComponent from './createItemComponent';
+import UserItemViewComponent from './userItemViewComponent';
+import CheckoutComponent from './checkoutComponent';
 
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -40,33 +42,67 @@ export default class DialogComponent extends React.PureComponent {
     this.setState({ [prop]: event.target.value });
   };
 
-	renderItemModal(){
-		return 
-				
 
-	}
-
-	renderCategoryModal(){
-		return 
-				
-	}
-  
-  getButtonType(){
+  renderDialog(){
     switch (this.props.type) {
-			case "ITEM" || "CATEGORY":
-				return (
-          <DialogActions>
-            <Button onClick={this.props.onClose} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.handleClose} color="primary">
-              Submit
-            </Button>
-          </DialogActions>
+      case "ITEM" || "CATEGORY":
+        return (
+          <Dialog
+            disableBackdropClick
+            open={this.state.open}
+            onClose={this.props.onClose}
+          >
+            <DialogContent>
+              {this.getFormType()}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.props.onClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={this.handleClose} color="primary">
+                Submit
+              </Button>
+            </DialogActions>
+          </Dialog>
         )
-			default:
-				return null;
-		}
+      case "ITEM_VIEW":
+        return (
+          <Dialog
+            open={this.state.open}
+            onClose={this.props.onClose}
+          >
+            <DialogContent>
+              <UserItemViewComponent item={this.props.item}/>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.props.onClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={() =>this.props.addToCart(this.props.item)} 
+                color="primary">
+                Add to cart +
+              </Button>
+            </DialogActions>
+          </Dialog>
+        )
+
+      case "CHECKOUT":
+        return (
+          <Dialog
+            open={this.state.open}
+            onClose={this.props.onClose}
+          >
+          <DialogTitle>Choose your payment method</DialogTitle>
+            <DialogContent>
+              <CheckoutComponent/>
+            </DialogContent>
+          </Dialog>
+        )
+
+
+      default:
+        return null;
+    }
   }
 
 	getFormType(){
@@ -84,16 +120,7 @@ export default class DialogComponent extends React.PureComponent {
   render() {
 		return(
 			<div>
-        <Dialog
-          disableBackdropClick
-          open={this.state.open}
-          onClose={this.props.onClose}
-        >
-          <DialogContent>
-            {this.getFormType()}
-          </DialogContent>
-           {this.getButtonType()}
-        </Dialog>
+        {this.renderDialog()}
       </div>
 		)
 	}

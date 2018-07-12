@@ -19,6 +19,8 @@ import DialogComponent from '../components/dialogComponent';
 // Styles 
 import '../styles/adminPage.less'
 
+import * as repo from '../services/repoService';
+
 
 // Material UI
 import Paper from '@material-ui/core/Paper'; 
@@ -75,7 +77,7 @@ class AdminPage extends React.PureComponent {
   }
   
   editItem(item) {
-    console.log("edit me", item); 
+    console.log("edit me please! it's not implemented!!", item); 
 
   }
 
@@ -86,40 +88,6 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
-
-
-
-
-
-      {/*BUTTONS ONLY FOR TESTING OF BACKEND, REMOVE LATER*/}
-      <button onClick={() => {
-        const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
-        fetch(url, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json; charset=utf-8"
-          },
-          body: JSON.stringify({
-            property1: ":D",
-            property2: "^-^"
-          })
-        }).then(response => {
-          var result = response.json();
-          result.then(data => console.log(data));
-        });
-      }}>Test POST</button>
-      <button onClick={() => {
-        const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
-        fetch(url).then(response => console.log(response)); 
-      }}>Test GET</button>
-      <button onClick={() => {
-        const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
-        console.log("PUT TESTING NOT IMPLEMENTED"); 
-      }}>Test PUT</button>
-
-
-
-
 
         <DialogComponent 
           type={this.state.dialogType} 
@@ -140,8 +108,6 @@ class AdminPage extends React.PureComponent {
           Add new item
         </Button>
         
-        
-
         <Paper>
           <Table>
             <TableHead>

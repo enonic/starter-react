@@ -46,7 +46,7 @@ class AdminPage extends React.PureComponent {
     this.state = {
       itemSearchValue: "",
       categorySearchValue: "",
-      modalType: "",
+      dialogType: "",
       dialogOpen: false
     }
   }
@@ -111,8 +111,8 @@ class AdminPage extends React.PureComponent {
         console.log("PUT TESTING NOT IMPLEMENTED"); 
       }}>Test PUT</button>
         <DialogComponent 
-          type={this.state.modalType} 
-          onClose={() => this.setState({ modalType: "", dialogOpen: false })}
+          type={this.state.dialogType} 
+          onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
           itemSubmit = {this.itemSubmitClick.bind(this)}
           categorySubmit = {this.categorySubmitClick.bind(this)}
           open = {this.state.dialogOpen}
@@ -123,7 +123,7 @@ class AdminPage extends React.PureComponent {
           Items
         </Typography>
         <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ modalType: "ITEM" , dialogOpen: true}) }>
+        <button onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true}) }>
           Add new item
         </button>
         
@@ -170,7 +170,7 @@ class AdminPage extends React.PureComponent {
         </Typography>
 
         <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ modalType: "CATEGORY" , dialogOpen: true}) }>
+        <button onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true}) }>
           add Category
         </button>
         

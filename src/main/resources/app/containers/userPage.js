@@ -9,6 +9,7 @@ import * as mainActions from '../actions/mainActions'
 // Components 
 import UserItemComponent from "../components/userItemComponent"
 import SearchComponent from "../components/searchComponent"; 
+import DialogComponent from '../components/dialogComponent';
 
 // Material UI 
 import Grid from '@material-ui/core/Grid'; 
@@ -21,7 +22,10 @@ class UserPage extends React.PureComponent {
   constructor(props) {
     super(props); 
     this.state = {
-      searchValue: this.props.searchValue
+      searchValue: this.props.searchValue,
+      dialogType: "",
+      dialogOpen: false,
+      displayedItem: null
     }
   }
 
@@ -37,6 +41,10 @@ class UserPage extends React.PureComponent {
     this.setState({searchValue: value })
   }
 
+  itemOnClick = item =>{  
+    this.setState({displayedItem: item, dialogOpen: true, dialogType: "ITEM_VIEW"})
+  }
+
   renderItems() {
     return this.props.items.map((item, index) => {
       if(item.name.toUpperCase().includes(this.state.searchValue.toUpperCase()) ||
@@ -47,6 +55,7 @@ class UserPage extends React.PureComponent {
               <UserItemComponent
                 item={item}
                 add={this.props.addItemToCart}
+                onClick={this.itemOnClick}
               />
             </Grid>
           }
@@ -61,6 +70,13 @@ class UserPage extends React.PureComponent {
   render() {
     return (
       <div className="UserPage">
+        <DialogComponent 
+          type={this.state.dialogType} 
+          onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
+          addToCart={(item) => this.props.addItemToCart(item)}
+          open = {this.state.dialogOpen}
+          item = {this.state.displayedItem}
+        />
         <SearchComponent value={this.state.searchValue} onChange={this.searchOnChange.bind(this)}/>
         <Grid item xs={12}>
           <Grid container justify="center">

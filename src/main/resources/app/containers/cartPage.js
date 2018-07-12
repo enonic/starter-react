@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 // Components
 import CartItemComp from '../components/cartItemComponent';
-import CheckoutComponent from '../components/checkoutComponent';
+import DialogComponent from '../components/dialogComponent';
 // Material UI
 import Paper from '@material-ui/core/Paper'; 
 import Typography from "@material-ui/core/Typography";
@@ -22,19 +22,21 @@ class CartPage extends React.PureComponent {
   constructor(props){
     super(props)
     this.state = {
-      checkout : false
+      dialogOpen: false,
+      displayedItem: null,
+      dialogType: "",
     }
   }
 
   toggleCheckoutMode() {
-    this.setState({ checkout: this.state.checkout ? false : true }); 
+    this.setState({ dialogType: "CHECKOUT", dialogOpen: true})
   }
 
-  onItemsBought() {
+  onItemsBought = () => {
     this.props.checkout(); 
     this.toggleCheckoutMode(); 
     this.props.history.push("/app/com.enonic.starter.react/user"); 
-    this.props.openToaster("Thanks for buying!"); 
+    this.props.openToaster("Thank you for your purchase!"); 
   }
 
   renderItems() {
@@ -58,22 +60,24 @@ class CartPage extends React.PureComponent {
 
   render() {
     return (
-      <Paper className="CartPage">
-        <Typography 
-          variant="headline" 
-          align="center" 
-          className="CartPage-Headline">Items in cart
-        </Typography>
-        
-        {this.renderItems()}
-
-        {this.state.checkout ?
-          <CheckoutComponent
-            onItemsBought={this.onItemsBought.bind(this)}
-          />
-          : null
-        }
-      </Paper>
+      <div>
+        <DialogComponent 
+          type={this.state.dialogType} 
+          onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
+          onItemsBought={this.onItemsBought}
+          open = {this.state.dialogOpen}
+          item = {this.state.displayedItem}
+        />
+        <Paper className="CartPage">
+          <Typography 
+            variant="headline" 
+            align="center" 
+            className="CartPage-Headline">Items in cart
+          </Typography>
+          
+          {this.renderItems()}
+        </Paper>
+      </div>
     );
   }
 }

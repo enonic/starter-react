@@ -82,5 +82,9 @@
             "filter": "furniture",
             "id": 3
         }
+    ],
+    "cardImages": [
+        "https://upload.wikimedia.org/wikipedia/commons/d/d7/Credit-card-front.svg",
+        "https://upload.wikimedia.org/wikipedia/commons/f/f4/Hsbc-card.jpg"
     ]
 }

@@ -7,6 +7,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
@@ -56,7 +58,7 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     render(){
-        
+        console.log(this.props); 
         return (
         <div>
             <form>
@@ -119,6 +121,15 @@ export default class CreateItemComponent extends React.PureComponent {
                 </FormControl>
 
             </form>
+            <DialogActions>
+                
+                <Button onClick={() => this.props.submit(this.state)} color="primary">
+                    Submit
+                </Button>
+                <Button onClick={this.props.onClose.bind(this)} color="primary">
+                    Cancel
+                </Button>
+            </DialogActions>
             
 
         </div>

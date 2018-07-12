@@ -33,7 +33,6 @@ class CartPage extends React.PureComponent {
   }
 
   onItemsBought = () => {
-    console.log("items boght kjører"); 
     this.props.checkout(); 
     this.toggleCheckoutMode(); 
     this.props.history.push("/app/com.enonic.starter.react/user"); 

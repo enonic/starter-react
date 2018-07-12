@@ -64,7 +64,7 @@ class AdminPage extends React.PureComponent {
   }
 
   itemSubmitClick(data){
-    this.setState({ showItemForm: false }); 
+    this.setState({ dialogOpen : false }); 
     this.props.createItem(new Item({name: data.name, info: data.info, image: data.image, category: data.category})); 
   }
 
@@ -115,7 +115,7 @@ class AdminPage extends React.PureComponent {
           onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
           itemSubmit = {this.itemSubmitClick.bind(this)}
           categorySubmit = {this.categorySubmitClick.bind(this)}
-          open = {this.state.dialogOpen}
+          open = {this.state.dialogOpen} 
           categories={this.props.categories}
         />
 

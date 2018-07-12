@@ -7,4 +7,4 @@ export default class Item {
                 this.visible = data.visible || true; 
                 this.category = data.category || "others"; 
         }
-}
+} 

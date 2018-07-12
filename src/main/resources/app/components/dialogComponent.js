@@ -53,7 +53,7 @@ export default class DialogComponent extends React.PureComponent {
             onClose={this.props.onClose}
           >
             <DialogContent>
-              {this.getFormType()}
+              {this.getFormType()} 
             </DialogContent>
             <DialogActions>
               <Button onClick={this.props.onClose} color="primary">
@@ -94,7 +94,7 @@ export default class DialogComponent extends React.PureComponent {
           >
           <DialogTitle>Choose your payment method</DialogTitle>
             <DialogContent>
-              <CheckoutComponent/>
+              <CheckoutComponent onItemsBought={this.props.onItemsBought}/>
             </DialogContent>
           </Dialog>
         )

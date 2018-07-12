@@ -22,6 +22,7 @@ export default class CheckoutComponent extends Component {
     }
     
     renderMedia(){
+        console.log(this.props); 
         return SampleData.cardImages.map((image,index) => 
             <div onClick={this.props.onItemsBought}>
                 <CardMedia

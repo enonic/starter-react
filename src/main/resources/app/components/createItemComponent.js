@@ -1,5 +1,8 @@
 import React from 'react';
 
+// Components 
+import ToasterComponent from './ToasterComponent'; 
+// Material UI 
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import TextField from '@material-ui/core/TextField';
@@ -54,6 +57,12 @@ export default class CreateItemComponent extends React.PureComponent {
         this.setState({category: event.target.value.title})
     }
 
+    validateAndSubmit = () => {
+        if (this.state.name !== "" && this.state.info !== "") {
+            this.props.submit(this.state);
+        }
+    }
+
     render(){
         return (
         <div>
@@ -76,6 +85,8 @@ export default class CreateItemComponent extends React.PureComponent {
                         value={this.state.name}
                         margin="normal"
                         onChange={this.handleChange}
+                        required
+                        error={this.state.name === ""}
                     />
 
                     <TextField
@@ -84,6 +95,8 @@ export default class CreateItemComponent extends React.PureComponent {
                         value={this.state.info}
                         margin="normal"
                         onChange={this.handleChange}
+                        required
+                        error={this.state.info === ""}
                     />
                 
                     <FormControl>
@@ -119,7 +132,7 @@ export default class CreateItemComponent extends React.PureComponent {
             </form>
             <DialogActions>
                 
-                <Button onClick={() => this.props.submit(this.state)} color="primary">
+                <Button onClick={this.validateAndSubmit} color="primary">
                     Submit
                 </Button>
                 <Button onClick={this.props.onClose.bind(this)} color="primary">

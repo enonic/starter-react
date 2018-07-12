@@ -1,6 +1,7 @@
 
 import React from 'react';
 
+// Material UI 
 import TextField from '@material-ui/core/TextField';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -14,7 +15,7 @@ export default class CreateItemComponent extends React.PureComponent {
         this.state = {
             title: "",
             visible: false,
-            filter: "none"
+            filter: ""
         };
     }
 
@@ -24,6 +25,12 @@ export default class CreateItemComponent extends React.PureComponent {
 
     handleVisibleChange = event => {
         this.setState({visible : !this.state.visible})
+    }
+
+    validateAndSubmit = () => {
+        if(this.state.title !== "" && this.state.filter !== "") {
+            this.props.submit(this.state); 
+        }
     }
 
     render() {
@@ -37,15 +44,19 @@ export default class CreateItemComponent extends React.PureComponent {
                             value={this.state.title}
                             margin="normal"
                             onChange={this.handleChange}
+                            required
+                            error={this.state.title === ""}
                         />
                     </FormControl>
-                    <FormControl>
+                    <FormControl >
                         <TextField
                             label="Filter"
                             id="filter"
                             value={this.state.filter}
                             margin="normal"
                             onChange={this.handleChange}
+                            required
+                            error={this.state.filter === ""}
                         />
                     </FormControl>
                     <FormControlLabel
@@ -62,7 +73,7 @@ export default class CreateItemComponent extends React.PureComponent {
                 </form>
                 <DialogActions>
 
-                    <Button onClick={() => this.props.submit(this.state)} color="primary">
+                    <Button onClick={this.validateAndSubmit} color="primary">
                         Submit
                 </Button>
                     <Button onClick={this.props.onClose.bind(this)} color="primary">

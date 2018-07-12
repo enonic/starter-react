@@ -13,9 +13,9 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 // Stylesheets
-import '../styles/userItemComponent.less'
+import "../../styles/storefront/storefrontItemComponent.less";
 
-export default class UserItemComponent extends Component {
+export default class StorefrontItemComponent extends Component {
     
 
     addClick(){
@@ -50,11 +50,11 @@ export default class UserItemComponent extends Component {
     }
 }
 
-UserItemComponent.propTypes = {
+StorefrontItemComponent.propTypes = {
     name : PropTypes.string, 
     info : PropTypes.string, 
     image : PropTypes.string
 };
 
-UserItemComponent.defaultProps = {
+StorefrontItemComponent.defaultProps = {
 }

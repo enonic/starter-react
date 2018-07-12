@@ -10,7 +10,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import ButtonBase from '@material-ui/core/ButtonBase';
 // Stylesheets
-import '../styles/userItemComponent.less'
+import "../styles/cartPage.less";
 
 import SampleData from '../sampleData.json';
 

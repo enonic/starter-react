@@ -2,7 +2,7 @@ import React from 'react';
 
 import CreateCategoryComponent from './createCategoryComponent';
 import CreateItemComponent from './createItemComponent';
-import UserItemViewComponent from './userItemViewComponent';
+import StorefrontItemViewComponent from './storefront/storefrontItemViewComponent';
 import CheckoutComponent from './checkoutComponent';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -10,6 +10,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import StorefrontItemComponent from './storefront/storefrontItemComponent';
 
 const styles = theme => ({
   container: {
@@ -57,7 +58,7 @@ export default class DialogComponent extends React.PureComponent {
             onClose={this.props.onClose}
           >
             <DialogContent>
-              <UserItemViewComponent item={this.props.item}/>
+              <StorefrontItemComponent item={this.props.item}/>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.props.onClose} color="primary">

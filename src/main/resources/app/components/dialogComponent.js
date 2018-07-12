@@ -1,7 +1,7 @@
 import React from 'react';
 
-import CreateCategoryComponent from './createCategoryComponent';
-import CreateItemComponent from './createItemComponent';
+import CreateCategoryComponent from './admin/createCategoryComponent';
+import CreateItemComponent from './admin/createItemComponent';
 import UserItemViewComponent from './userItemViewComponent';
 import CheckoutComponent from './checkoutComponent';
 

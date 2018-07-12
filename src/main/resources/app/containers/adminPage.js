@@ -11,8 +11,8 @@ import PropTypes from 'prop-types';
 // Components 
 import Item from '../interfaces/item';
 import Category from '../interfaces/category';
-import AdminItemComponent from '../components/adminItemComponent';
-import CategoryComponent from '../components/adminCategoryComponent';
+import AdminItemComponent from '../components/admin/itemListComponent';
+import CategoryComponent from '../components/admin/categoryListComponent';
 import SearchComponent from '../components/searchComponent';
 import DialogComponent from '../components/dialogComponent';
 
@@ -88,101 +88,8 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
-
-        <DialogComponent 
-          type={this.state.dialogType} 
-          onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
-          itemSubmit = {this.itemSubmitClick.bind(this)}
-          categorySubmit = {this.categorySubmitClick.bind(this)}
-          open = {this.state.dialogOpen} 
-          categories={this.props.categories}
-        />
-
-        <Typography variant="display3" gutterBottom>
-          Items
-        </Typography>
-        <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
-        <Button 
-          onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true})}
-          color="primary">
-          Add new item
-        </Button>
+        Not so much on admin page anymore :-/  
         
-        <Paper>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Items</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Info</TableCell>
-                <TableCell>Image</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Id</TableCell>
-                <TableCell>Visible</TableCell>
-                <TableCell>Delete</TableCell>
-                <TableCell>Edit</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.items.map(item => {
-                if (item.name.toUpperCase()
-                    .includes(this.state.itemSearchValue.toUpperCase()
-                    ) || item.category
-                    .toUpperCase()
-                    .includes(
-                      this.state.categorySearchValue.toUpperCase()
-                    )) {
-                  return <AdminItemComponent 
-                    item={item} key={item.id} 
-                    remove={this.props.deleteItem} 
-                    edit={this.editItem}
-                    visible={item.visible} 
-                    toggleVisible={this.props.toggleItemVisible} />;
-                }
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
-
-        <Typography variant="display3" gutterBottom>
-          Categories
-        </Typography>
-
-        <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
-        <Button 
-          onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true})}
-          color="primary">
-          add Category
-        </Button>
-        
-
-        <Paper>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Title</TableCell>
-                <TableCell>Filter</TableCell>
-                <TableCell>Visible</TableCell>
-                <TableCell>Delete</TableCell>
-                <TableCell>Edit</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.categories.map(category => {
-                if (category.title.toUpperCase()
-                    .includes(this.state.categorySearchValue.toUpperCase()
-                    )) {
-                  return <CategoryComponent 
-                    category={category} 
-                    key={category.id} 
-                    remove={this.props.deleteCategory} 
-                    visible={category.visible} 
-                    toggleVisible={this.props.toggleCategoryVisible} />;
-                }
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
       </div>
   }
 }

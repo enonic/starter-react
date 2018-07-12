@@ -30,22 +30,15 @@ class TopBar extends React.PureComponent {
         }
     }
 
-    renderMenuIcon(){
-        if (this.props.location.pathname === "/app/com.enonic.starter.react/user") {
-            return <IconButton color="secondary" aria-label="Menu" onClick={this.props.onToggleMenu}>
-                <MenuIcon />
-            </IconButton>;
-        }
-        return <IconButton></IconButton>
-    }
-
 
     render() {
         return (
             <div>
                 <AppBar color="primary">
                     <Toolbar>
-                        {this.renderMenuIcon()}
+                    <IconButton color="secondary" aria-label="Menu" onClick={this.props.onToggleMenu}>
+                        <MenuIcon />
+                    </IconButton>;
                         <Link to="/app/com.enonic.starter.react/user">
                             <IconButton>
                                 <StoreIcon />

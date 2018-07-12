@@ -9,7 +9,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
 
-export default class AdminItemComponent extends React.PureComponent {
+export default class ItemListComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         
@@ -20,7 +20,7 @@ export default class AdminItemComponent extends React.PureComponent {
     }
 
     render(){ 
-        return <TableRow className="AdminItemComponent">
+        return <TableRow className="ItemListComponent">
             <TableCell component="th" scope="row">
                 {this.props.name}
             </TableCell>

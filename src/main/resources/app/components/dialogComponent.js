@@ -45,7 +45,8 @@ export default class DialogComponent extends React.PureComponent {
 
   renderDialog(){
     switch (this.props.type) {
-      case "ITEM" || "CATEGORY":
+      case "ITEM": 
+      case "CATEGORY":
         return <Dialog disableBackdropClick open={this.state.open} onClose={this.props.onClose}>
             <DialogContent>{this.getFormType()}</DialogContent>
           </Dialog>;
@@ -92,9 +93,9 @@ export default class DialogComponent extends React.PureComponent {
 	getFormType(){
 		switch (this.props.type) {
 			case "ITEM":
-				return <CreateItemComponent submit={this.props.itemSubmit} categories={this.props.categories} onClose={this.props.onClose}/>
-			case "CATEGORY":
-				return <CreateCategoryComponent submit={this.props.categorySubmit}/>
+        return <CreateItemComponent submit={this.props.itemSubmit} onClose={this.props.onClose} categories={this.props.categories}/>
+      case "CATEGORY":
+				return <CreateCategoryComponent submit={this.props.categorySubmit} onClose={this.props.onClose}/>
 			default:
 				return null;
 		}

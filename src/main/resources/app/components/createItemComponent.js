@@ -9,9 +9,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
 
 // Sample data 
 import SampleData from '../sampleData.json'
@@ -58,7 +55,6 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     render(){
-        console.log(this.props); 
         return (
         <div>
             <form>
@@ -138,54 +134,3 @@ export default class CreateItemComponent extends React.PureComponent {
         )
     }
 }
-
-/*
-
-
-
-                <TextField
-                    id="info"
-                    label="Info"
-                    value={this.state.info}
-                    onChange={this.handleChange('info')}
-                    margin="normal"
-                />
-                <FormControl>
-                    <InputLabel htmlFor="image">Image</InputLabel>
-                    <Select
-                        value={this.state.image}
-                        onChange={this.handleImageChange}
-                    >
-                    {this.getImageOptions}
-                    </Select>
-                </FormControl>
-
-<Form onSubmit={data => this.props.submit(data)}>
-            {formApi => (
-                
-                
-                <label htmlFor="hello">Name</label>
-                <Text field="name" id="name" validate={this.validate.bind(this)} />
-                
-                <label htmlFor="hello">Info</label>
-                <Text field="info" id="info" validate={this.validate.bind(this)} />
-                
-                <label htmlFor="hello">Image</label>                
-                <Select field="image" id="image" 
-                        options={this.getImageOptions()} >
-                </Select>
-
-                <label htmlFor="hello">Category</label>                
-                <Select field="category" id="category" 
-                        options={this.getCategoryOptions()} >
-                </Select>
-
-                <button type="submit">
-                    Submit
-                </button>
-                </form>
-            )}
-            </Form>)
-
-
-*/

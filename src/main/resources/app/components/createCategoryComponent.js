@@ -1,48 +1,78 @@
+
 import React from 'react';
-import { Form, Text, Select } from 'react-form';
 
-// Stylesheets
-import "../styles/createCategoryComponent.less"; 
+import TextField from '@material-ui/core/TextField';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from '@material-ui/core/FormControl';
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 
-export default class CreateCategoryComponent extends React.PureComponent {
-    constructor(arg){
+export default class CreateItemComponent extends React.PureComponent {
+    constructor(arg) {
         super(arg)
         this.state = {
-            formData: this.props.formData
+            title: "",
+            visible: false,
+            filter: "none"
         };
     }
 
-    componentDidMount() {
+    handleChange = event => {
+        this.setState({ [event.target.id]: event.target.value })
     }
 
-    validate (value){
-        /*
-        error: !value || !/Hello World/.test(value) ? "Input must contain 'Hello World'" : null,
-        warning: !value || !/^Hello World$/.test(value) ? "Input should equal just 'Hello World'" : null,
-        success: value && /Hello World/.test(value) ? "Thanks for entering 'Hello World'!" : null
-        */
+    handleVisibleChange = event => {
+        this.setState({visible : !this.state.visible})
     }
 
+    render() {
+        return (
+            <div>
+                <form>
+                    <FormControl >
+                        <TextField
+                            label="Title"
+                            id="title"
+                            value={this.state.title}
+                            margin="normal"
+                            onChange={this.handleChange}
+                        />
+                    </FormControl>
+                    <FormControl>
+                        <TextField
+                            label="Filter"
+                            id="filter"
+                            value={this.state.filter}
+                            margin="normal"
+                            onChange={this.handleChange}
+                        />
+                    </FormControl>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                id="visible"
+                                checked={this.state.visible}
+                                onChange={this.handleVisibleChange}
+                            />
+                        }
+                        label="Visible"
+                    />
 
-    render(){
-        return <Form 
-            className="CreateCategoryComponent" 
-            onSubmit={data => this.props.submit(data)}
-            >
-            {formApi => (
-                <form onSubmit={formApi.submitForm} id="form1">
-                
-                <label htmlFor="hello">Title</label>
-                <Text field="title" id="title" validate={this.validate.bind(this)} />
-                
-                <label htmlFor="hello">Filter</label>
-                <Text field="filter" id="filter" validate={this.validate.bind(this)} />
-                
-                <button type="submit">
-                    Submit
-                </button>
                 </form>
-            )}
-            </Form>
+                <DialogActions>
+
+                    <Button onClick={() => this.props.submit(this.state)} color="primary">
+                        Submit
+                </Button>
+                    <Button onClick={this.props.onClose.bind(this)} color="primary">
+                        Cancel
+                </Button>
+                </DialogActions>
+
+
+            </div>
+
+        )
     }
 }

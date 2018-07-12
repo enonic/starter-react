@@ -70,7 +70,7 @@ class AdminPage extends React.PureComponent {
 
   categorySubmitClick(data){
     this.setState({ showCategoryForm: false }) 
-    this.props.createCategory(new Category({title: data.title, filter: data.filter})); 
+    this.props.createCategory(new Category({title: data.title, filter: data.filter, visible : data.visible})); 
   }
   
   editItem(item) {
@@ -85,6 +85,11 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
+
+
+
+
+
       {/*BUTTONS ONLY FOR TESTING OF BACKEND, REMOVE LATER*/}
       <button onClick={() => {
         const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
@@ -110,6 +115,11 @@ class AdminPage extends React.PureComponent {
         const url = "/app/com.enonic.starter.react/_/service/com.enonic.starter.react/store";
         console.log("PUT TESTING NOT IMPLEMENTED"); 
       }}>Test PUT</button>
+
+
+
+
+
         <DialogComponent 
           type={this.state.dialogType} 
           onClose={() => this.setState({ dialogType: "", dialogOpen: false })}

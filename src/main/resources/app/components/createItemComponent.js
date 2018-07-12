@@ -7,6 +7,9 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 // Sample data 
 import SampleData from '../sampleData.json'
@@ -15,12 +18,11 @@ export default class CreateItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         this.state = {
-            formData: this.props.formData, 
             images : [],
             name: "",
             info: "",
-            image: null,
-            category: "",
+            image: "none",
+            category: "none",
         };
     }
 
@@ -30,14 +32,14 @@ export default class CreateItemComponent extends React.PureComponent {
 
     
     getImageItems() {
-        return this.state.images.map(image => 
-            <MenuItem id={image.name} value={image}>{image.name}</MenuItem>
+        return this.state.images.map( (image, index) => 
+            <MenuItem key={index} value={image}>{image.name}</MenuItem>
         )
     }
 
     getCategoryItems() {
-        return this.props.categories.map(category => 
-            <MenuItem id={category.title} value={category}>{category.title}</MenuItem>
+        return this.props.categories.map( (category, index) => 
+            <MenuItem key={index} value={category}>{category.title}</MenuItem>
         )
     }
 
@@ -46,19 +48,24 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     handleImageChange = event => {
-        this.setState({ image: event.target.value.source })
+        this.setState({ image: event.target.value.source})
     }
+
+    handleCategoryChange = event => {
+        this.setState({category: event.target.value.title})
+    }
+
     render(){
+        
         return (
         <div>
             <form>
                 
-                {this.state.image ? 
+                {this.state.image != "none" ? 
                     <Card className="Item-Card">
                         <CardMedia
-                            image={this.state.image.source}
+                            image={this.state.image}
                             className="Item-Card-Media"
-                    
                         /> 
                     </Card> : null}
                     
@@ -81,27 +88,34 @@ export default class CreateItemComponent extends React.PureComponent {
                         onChange={this.handleChange}
                     />
                 
-                    
-                    <Select
-                        value={this.state.image}
-                        onChange={this.handleImageChange}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        {this.getImageItems()}
-                    </Select>
-
-                    <Select
-                        value={this.state.category}
-                        onChange={this.handleChange}
-                    >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        {this.getCategoryItems()}
-                    </Select>
-
+                    <FormControl>
+                        <InputLabel>Image</InputLabel>
+                        <Select
+                            value={this.state.image}
+                            name="image"
+                            onChange={this.handleImageChange}
+                            autoWidth
+                        >
+                            <MenuItem value="" disabled>
+                                <em>None</em>
+                            </MenuItem>
+                            {this.getImageItems()}
+                        </Select>
+                    </FormControl>       
+                    <FormControl>
+                        <InputLabel>Category</InputLabel> 
+                        <Select
+                            value={this.state.category}
+                            name="category"
+                            onChange={this.handleCategoryChange}
+                            autoWidth
+                        >
+                            <MenuItem value="" disabled>
+                                <em>None</em>
+                            </MenuItem>
+                            {this.getCategoryItems()}
+                        </Select>
+                    </FormControl>
                 </FormControl>
 
             </form>

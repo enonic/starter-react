@@ -28,6 +28,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow'; 
 import TableCell from '@material-ui/core/TableCell'; 
 import Typography from '@material-ui/core/Typography'; 
+import Button from '@material-ui/core/Button'; 
 
 // Stylesheet 
 import '../styles/adminPage.less'
@@ -133,9 +134,11 @@ class AdminPage extends React.PureComponent {
           Items
         </Typography>
         <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true}) }>
+        <Button 
+          onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true})}
+          color="primary">
           Add new item
-        </button>
+        </Button>
         
         
 
@@ -180,9 +183,11 @@ class AdminPage extends React.PureComponent {
         </Typography>
 
         <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
-        <button onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true}) }>
+        <Button 
+          onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true})}
+          color="primary">
           add Category
-        </button>
+        </Button>
         
 
         <Paper>

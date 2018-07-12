@@ -9,14 +9,14 @@ var contextLib = require("/lib/xp/context");
  * @param name of the repo 
  * @param branch in the repo 
  */
-function getRepoConnection(name, branch) {
+var getRepoConnection = exports.getRepoConnection = function(name, branch) { 
     return nodeLib.connect({
         repoId: name,
         branch: branch,
     });
 }
 
-/**
+/** 
  * Initialize a repository 
  * @param name of the repo   
  * @param permissions for the repository 
@@ -34,9 +34,7 @@ var doInitialize = function (name, permissions, path, branch) {
     }
 
     //Creates repositories
-    // createSubscriptionNode();
-    // createBackgroundSyncNode();
-    createStoreNode(path, permissions, name, branch); 
+    createNode(path, permissions, name, branch); 
 };
 
 /**
@@ -73,7 +71,7 @@ var nodeWithPathExists = function(repoConnection, path) {
  * @param name of repo 
  * @param branch in repo 
  */
-function createStoreNode(path, permissions, name, branch) {
+function createNode(path, permissions, name, branch) {
     var repoConn = getRepoConnection(name, branch);
 
     var pushSubscriptionsExist = nodeWithPathExists(repoConn, path);
@@ -118,3 +116,24 @@ exports.sudo = function (func, user, principal) {
         principals: principal,
     }, func);
 };
+
+// Very similar to createNode above. Refactor. 
+/**
+ * DESCRIPTION 
+ * @param item to store
+ * @param path path to repository
+ * @param permissions for repository
+ * @param name of repository 
+ * @param branch in repository 
+ */
+exports.storeItemAndCreateNode = function(item, path, permissions, name, branch) {
+    var repoConn = getRepoConnection(name, branch);
+    var node = repoConn.create({
+        _parentPath: path,
+        _permissions: permissions,
+        item: item
+    })
+
+    repoConn.refresh();
+    return node;
+}

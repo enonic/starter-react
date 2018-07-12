@@ -25,32 +25,30 @@ function handleGet(req) {
 
 exports.get = handleGet;
 
-var REPO_NAME = app.name;
+var REPO_NAME = app.name; // STORE CONFIG ONE PLACE INSTEAD OF THESE DUPLICATES
 var REPO_BRANCH = "master";
-// var PUSH_SUBSCRIPTIONS_PATH = '/push';
-// var BACKGROUND_SYNC_PATH = '/background-sync';
 var STORE_PATH = "/store";
 var REPO_USER = {
-login: "su",
-userStore: "system"
+    login: "su",
+    userStore: "system"
 };
 
 var REPO_PRINCIPAL = ["role:system.admin"];
 
 var ROOT_PERMISSIONS = [
-{
-    principal: "role:system.everyone",
-    allow: [
-    "READ",
-    "CREATE",
-    "MODIFY",
-    "DELETE",
-    "PUBLISH",
-    "READ_PERMISSIONS",
-    "WRITE_PERMISSIONS"
-    ],
-    deny: []
-}
+    {
+        principal: "role:system.everyone",
+        allow: [
+        "READ",
+        "CREATE",
+        "MODIFY",
+        "DELETE",
+        "PUBLISH",
+        "READ_PERMISSIONS",
+        "WRITE_PERMISSIONS"
+        ],
+        deny: []
+    }
 ];
 
 repoLib.initialize(REPO_NAME, ROOT_PERMISSIONS, REPO_USER, REPO_PRINCIPAL, STORE_PATH, REPO_BRANCH); 

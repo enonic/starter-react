@@ -13,6 +13,7 @@ import ItemComponent from '../components/admin/itemComponent';
 import CategoryComponent from '../components/admin/categoryComponent';
 import SearchComponent from '../components/searchComponent';
 import DialogComponent from '../components/dialogComponent';
+
 // Interfaces 
 import Item from "../interfaces/item";
 import Category from "../interfaces/category";
@@ -57,12 +58,12 @@ class AdminPage extends React.PureComponent {
 
   
 
-  itemSubmitClick(data){
+  itemSubmitClick = (data) => {
     this.setState({ dialogOpen: false }); 
     this.props.createItem(new Item({name: data.name, info: data.info, image: data.image, category: data.category})); 
   }
 
-  categorySubmitClick(data){
+  categorySubmitClick = (data) => {
     this.setState({ dialogOpen: false }) 
     this.props.createCategory(new Category({title: data.title, filter: data.filter, visible : data.visible})); 
   }

@@ -42,7 +42,7 @@ class SideBar extends React.PureComponent {
     renderAdminRoutes(){
         return [ 
             <Link  to={"/app/com.enonic.starter.react/admin"}>
-                <ListItem className="SideBar-ListItem" key={"items"}>
+                <ListItem className="SideBar-ListItem" key="items">
                     <ListItemIcon>
                         <CategoryIcon />
                     </ListItemIcon>
@@ -51,7 +51,7 @@ class SideBar extends React.PureComponent {
             </Link>,
 
             <Link to="/app/com.enonic.starter.react/admin/categories">
-                <ListItem className="SideBar-ListItem" key={"categories"}>
+                <ListItem className="SideBar-ListItem" key="categories">
                     <ListItemIcon>
                         <CategoryIcon />
                     </ListItemIcon>

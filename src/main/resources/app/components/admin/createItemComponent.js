@@ -62,6 +62,7 @@ export default class CreateItemComponent extends React.PureComponent {
     validateAndSubmit = () => {
         if (this.state.name !== "" && this.state.info !== "") {
             this.props.submit(this.state);
+            this.props.onClose()
         }
     }
 

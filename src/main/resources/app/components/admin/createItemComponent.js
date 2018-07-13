@@ -18,9 +18,8 @@ import Image from '../interfaces/Image';
 
 
 // Stylesheets 
-import '../styles/createItemComponent.less'
-// Sample data 
-import SampleData from '../sampleData.json'; 
+import '../../styles/createItemComponent.less'
+
 
 export default class CreateItemComponent extends React.PureComponent {
     constructor(arg){

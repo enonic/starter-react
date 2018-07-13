@@ -6,8 +6,11 @@ const initialState = fromJS({
     message : ""
 });
 
+var interval = null;
+
 function showToaster(oldState, action){
   let state = oldState
+  clearInterval(interval)
   state = state.set('visible', true)
   state = state.set('message', action.message)
   return state
@@ -16,7 +19,8 @@ function showToaster(oldState, action){
 function hideToaster(oldState){
   let state = oldState
   state = state.set('visible', false)
-  state = state.set('message', "")
+  interval = setTimeout(() => () => state = state.set('message', "") ,500);
+  
   return state
 }
 

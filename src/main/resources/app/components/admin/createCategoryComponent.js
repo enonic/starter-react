@@ -9,7 +9,7 @@ import FormControl from '@material-ui/core/FormControl';
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 // Stylesheet
-import '../styles/createCategoryComponent.less'
+import '../../styles/createCategoryComponent.less'
 
 export default class CreateItemComponent extends React.PureComponent {
     constructor(arg) {

@@ -9,18 +9,25 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
 
-export default class AdminItemComponent extends React.PureComponent {
+export default class ItemListComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         
     }
+    remove() {
+        this.props.remove(this.props.item)
+    }
 
+    edit() {
+        console.error("edit category not implemented"); 
+    }
+    
     toggleVisible(){
         this.props.toggleVisible(this.props.item)
     }
 
     render(){ 
-        return <TableRow className="AdminItemComponent">
+        return <TableRow className="ItemListComponent">
             <TableCell component="th" scope="row">
                 {this.props.name}
             </TableCell>
@@ -37,7 +44,7 @@ export default class AdminItemComponent extends React.PureComponent {
                 />
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.props.remove(this.props.item)}>
+                <IconButton onClick={() => this.props.toggleDialog("DELETE", this.props.item.name, this.props.item)}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>

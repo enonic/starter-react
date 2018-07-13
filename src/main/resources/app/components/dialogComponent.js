@@ -1,16 +1,19 @@
 import React from 'react';
 
-import CreateCategoryComponent from './createCategoryComponent';
-import CreateItemComponent from './createItemComponent';
-import StorefrontItemViewComponent from './storefront/storefrontItemViewComponent';
-import CheckoutComponent from './checkoutComponent';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography'; 
+
 import StorefrontItemComponent from './storefront/storefrontItemComponent';
+
+import CheckoutComponent from './checkoutComponent';
+
+import CreateItemComponent from './admin/createItemComponent';
+import CreateCategoryComponent from './admin/createCategoryComponent';
+
 
 const styles = theme => ({
   container: {
@@ -84,6 +87,27 @@ export default class DialogComponent extends React.PureComponent {
             </DialogContent>
           </Dialog>
         )
+      case "DELETE":
+        return (
+          <Dialog
+            open={this.state.open}
+            onClose={this.props.onClose}
+          >
+          <DialogTitle>Do you want to delete this item?</DialogTitle>
+            <DialogContent>
+              <Typography>{this.props.message}</Typography>
+              <Button onClick={this.props.onClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={() => {
+                  this.props.remove(this.props.toBeRemoved)
+                  this.props.onClose()
+                }} >
+                Delete
+              </Button>
+            </DialogContent>
+          </Dialog>
+        )
 
 
       default:
@@ -93,16 +117,16 @@ export default class DialogComponent extends React.PureComponent {
 
 	getFormType(){
 		switch (this.props.type) {
-			case "ITEM":
+      case "ITEM":
         return <CreateItemComponent 
-          submit={this.props.itemSubmit} 
+          submit={this.props.submit} 
           onClose={this.props.onClose} 
-          addImage={this.props.addImage} 
           categories={this.props.categories}
+          addImage={this.props.addImage} 
           images={this.props.images}/>
       case "CATEGORY":
         return <CreateCategoryComponent 
-          submit={this.props.categorySubmit} 
+          submit={this.props.submit} 
           onClose={this.props.onClose}/>
 			default:
 				return null;

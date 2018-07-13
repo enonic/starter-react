@@ -9,19 +9,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Components 
-import AdminItemComponent from '../components/adminItemComponent';
-import CategoryComponent from '../components/adminCategoryComponent';
+import ItemComponent from '../components/admin/itemComponent';
+import CategoryComponent from '../components/admin/categoryComponent';
 import SearchComponent from '../components/searchComponent';
 import DialogComponent from '../components/dialogComponent';
 // Interfaces 
 import Item from "../interfaces/item";
 import Category from "../interfaces/category";
 
+import { Route } from 'react-router-dom'
+
 // Styles 
 import '../styles/adminPage.less'
 
 import * as repo from '../services/repoService';
-
+import * as toasterActions from '../actions/toasterActions'; 
 
 // Material UI
 import Paper from '@material-ui/core/Paper'; 
@@ -49,25 +51,11 @@ class AdminPage extends React.PureComponent {
   
   constructor(props){
     super(props)
-    this.state = {
-      itemSearchValue: "",
-      categorySearchValue: "",
-      dialogType: "",
-      dialogOpen: false
-    }
   }
 
-  searchItemOnChange(value){
-    this.setState({
-      itemSearchValue : value
-    })
-  }
+  
 
-  searchCategoryOnChange(value){
-    this.setState({
-      categorySearchValue : value
-    })
-  }
+  
 
   itemSubmitClick(data){
     this.setState({ dialogOpen: false }); 
@@ -91,103 +79,29 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
-
-        <DialogComponent 
-          type={this.state.dialogType} 
-          onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
-          itemSubmit = {this.itemSubmitClick.bind(this)}
-          categorySubmit = {this.categorySubmitClick.bind(this)}
-          addImage={this.props.addImage}
-          images={this.props.images}
-          open = {this.state.dialogOpen} 
-          categories={this.props.categories}
+        <Typography varian="display4">ADMIN</Typography>    
+        <Typography varian="display2">ALL ACCESS GRANTED</Typography>   
+        <Route exact path={`/app/com.enonic.starter.react/admin`} render={() => 
+          <ItemComponent 
+            submit={this.itemSubmitClick}
+            deleteItem={this.props.deleteItem}
+            items={this.props.items}
+            categories={this.props.categories}
+            toggleVisible={this.props.toggleItemVisible}
+            openToaster={this.props.openToaster}
+          
+          />}  
         />
-
-        <Typography variant="display3" gutterBottom>
-          Items
-        </Typography>
-        <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
-        <Button 
-          onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true})}
-          color="primary"> 
-          Add new item
-        </Button>
+        <Route path={`/app/com.enonic.starter.react/admin/categories`} render={() => 
+          <CategoryComponent 
+            submit={this.categorySubmitClick}
+            deleteCategory={this.props.deleteCategory} 
+            categories={this.props.categories}
+            toggleVisible={this.props.toggleCategoryVisible}  
+            openToaster={this.props.openToaster}
+          />}
+        />
         
-        <Paper>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Items</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Info</TableCell>
-                <TableCell>Image</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Id</TableCell>
-                <TableCell>Visible</TableCell>
-                <TableCell>Delete</TableCell>
-                <TableCell>Edit</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.items.map(item => {
-                if (item.name.toUpperCase()
-                    .includes(this.state.itemSearchValue.toUpperCase()
-                    ) || item.category
-                    .toUpperCase()
-                    .includes(
-                      this.state.categorySearchValue.toUpperCase()
-                    )) {
-                  return <AdminItemComponent 
-                    item={item} key={item.id} 
-                    remove={this.props.deleteItem} 
-                    edit={this.editItem}
-                    visible={item.visible} 
-                    toggleVisible={this.props.toggleItemVisible} />;
-                }
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
-
-        <Typography variant="display3" gutterBottom>
-          Categories
-        </Typography>
-
-        <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
-        <Button 
-          onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true})}
-          color="primary">
-          add Category
-        </Button>
-        
-
-        <Paper>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Title</TableCell>
-                <TableCell>Filter</TableCell>
-                <TableCell>Visible</TableCell>
-                <TableCell>Delete</TableCell>
-                <TableCell>Edit</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {this.props.categories.map(category => {
-                if (category.title.toUpperCase()
-                    .includes(this.state.categorySearchValue.toUpperCase()
-                    )) {
-                  return <CategoryComponent 
-                    category={category} 
-                    key={category.id} 
-                    remove={this.props.deleteCategory} 
-                    visible={category.visible} 
-                    toggleVisible={this.props.toggleCategoryVisible} />;
-                }
-              })}
-            </TableBody>
-          </Table>
-        </Paper>
       </div>
   }
 }
@@ -221,7 +135,8 @@ function mapDispatchToProps(dispatch) {
     changeCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
     toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
 
-    addImage : (arg) => {imageActions.addImage(dispatch, arg)}
+    addImage : (arg) => {imageActions.addImage(dispatch, arg)},
+    openToaster: (message) => { toasterActions.showToaster(dispatch, message)}
   };
 }
 

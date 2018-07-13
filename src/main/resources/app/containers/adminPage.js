@@ -9,12 +9,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Components 
-import Item from '../interfaces/item';
-import Category from '../interfaces/category';
 import AdminItemComponent from '../components/adminItemComponent';
 import CategoryComponent from '../components/adminCategoryComponent';
 import SearchComponent from '../components/searchComponent';
 import DialogComponent from '../components/dialogComponent';
+// Interfaces 
+import Item from "../interfaces/item";
+import Category from "../interfaces/category";
 
 // Styles 
 import '../styles/adminPage.less'
@@ -40,6 +41,8 @@ import { connect } from 'react-redux';
 
 import * as mainActions from '../actions/mainActions' 
 import * as categoryActions from '../actions/categoryActions'
+import * as imageActions from "../actions/imageActions"; 
+
 
 
 class AdminPage extends React.PureComponent { 
@@ -94,6 +97,7 @@ class AdminPage extends React.PureComponent {
           onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
           itemSubmit = {this.itemSubmitClick.bind(this)}
           categorySubmit = {this.categorySubmitClick.bind(this)}
+          images={this.props.images}
           open = {this.state.dialogOpen} 
           categories={this.props.categories}
         />
@@ -104,7 +108,7 @@ class AdminPage extends React.PureComponent {
         <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
         <Button 
           onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true})}
-          color="primary">
+          color="primary"> 
           Add new item
         </Button>
         
@@ -199,7 +203,8 @@ AdminPage.defaultProps = {
 function mapStateToProps(state){
 	return {
     items: state.get('app').get('allItems'),
-    categories: state.get('categories')
+    categories: state.get('categories'), 
+    images: state.get('images')
 	};
 }
 
@@ -214,7 +219,6 @@ function mapDispatchToProps(dispatch) {
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
     changeCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
     toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
-    
   };
 }
 

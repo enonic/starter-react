@@ -94,9 +94,15 @@ export default class DialogComponent extends React.PureComponent {
 	getFormType(){
 		switch (this.props.type) {
 			case "ITEM":
-        return <CreateItemComponent submit={this.props.itemSubmit} onClose={this.props.onClose} categories={this.props.categories}/>
+        return <CreateItemComponent 
+          submit={this.props.itemSubmit} 
+          onClose={this.props.onClose} 
+          categories={this.props.categories}
+          images={this.props.images}/>
       case "CATEGORY":
-				return <CreateCategoryComponent submit={this.props.categorySubmit} onClose={this.props.onClose}/>
+        return <CreateCategoryComponent 
+          submit={this.props.categorySubmit} 
+          onClose={this.props.onClose}/>
 			default:
 				return null;
 		}

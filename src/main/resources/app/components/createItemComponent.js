@@ -11,12 +11,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl'; 
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-// Interfaces 
-import Image from '../interfaces/image'; // ADDED FOR TESTING ONLY 
-// Actions 
-import * as imageActions from "../actions/imageActions"; 
-
-import { connect } from "react-redux";
 
 
 // Stylesheets 
@@ -24,36 +18,18 @@ import '../styles/createItemComponent.less'
 // Sample data 
 import SampleData from '../sampleData.json'; 
 
-class CreateItemComponent extends React.PureComponent {
+export default class CreateItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         this.state = {
-            images : [],
             name: "",
             info: "",
             image: "none",
             category: "none",
         };
     }
-
-    /*
-    componentDidMount() {
-        this.setState({ images: SampleData.images })
-    }
-    */
-    componentDidMount() {
-        this.props.addImage(new Image({ name: "testimage 1", source: "https://www.w3schools.com/w3css/img_lights.jpg" }));
-        this.props.addImage(new Image({ name: "testimage 2", source: "https://www.w3schools.com/w3css/img_lights.jpg" }));
-        this.props.addImage(new Image({ name: "testimage 3", source: "https://www.w3schools.com/w3css/img_lights.jpg" })); 
-    }
-
     
     getImageItems() {
-        /*
-        return this.state.images.map( (image, index) => 
-            <MenuItem key={index} value={image}>{image.name}</MenuItem>
-        )
-        */
         return this.props.images.map((image, index) =>
             <MenuItem key={index} value={image}>{image.name}</MenuItem>
         )
@@ -165,29 +141,3 @@ class CreateItemComponent extends React.PureComponent {
     }
 }
 
-CreateItemComponent.propTypes = {
-    items: PropTypes.array,
-    categories: PropTypes.object, 
-    images : PropTypes.object
-};
-
-CreateItemComponent.defaultProps = {
-    items: [],
-    categories: [],
-    images: [] 
-}
-
-function mapStateToProps(state) {
-    return {
-        images: state.get('images')
-    };
-}
-
-function mapDispatchToProps(dispatch) {
-    return { 
-        addImage: (arg) => { imageActions.addImage(dispatch, arg); },
-        deleteImage: (arg) => { imageActions.deleteImage(dispatch, arg) },
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CreateItemComponent)

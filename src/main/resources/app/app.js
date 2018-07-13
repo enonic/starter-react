@@ -13,10 +13,12 @@ import CartPage from './containers/cartPage';
 // Redux Actions 
 import * as mainActions from "./actions/mainActions";
 import * as categoryActions from './actions/categoryActions';
+import * as imageActions from './actions/imageActions'; 
 
 // Interfaces 
 import Item from './interfaces/item'; 
 import Category from './interfaces/category';
+import Image from "./interfaces/image";
 // Material UI 
 import { MuiThemeProvider } from "@material-ui/core/styles";
 // Stylesheet 
@@ -24,6 +26,7 @@ import Theme from "./theme";
 import './styles/main.less'
 // Sample data 
 import SampleData from './sampleData.json'; 
+
 
 
 class App extends Component {
@@ -47,6 +50,9 @@ class App extends Component {
                 new Category({title: data.title, filter: data.filter, id: data.id})
             )
         );
+        SampleData.images.map(image => 
+            this.props.addImage(new Image(image))
+        ); 
     }
 
     toggleMenu() {
@@ -97,6 +103,7 @@ function mapDispatchToProps(dispatch) {
     return {
         createItem: (arg) => { mainActions.createItem(dispatch, arg) },
         createCategory: (arg) => { categoryActions.createCategory(dispatch, arg) },
+        addImage: (arg) => { imageActions.addImage(dispatch, arg) }
     };
 }
 

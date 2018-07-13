@@ -46,8 +46,19 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     handleImageChange = event => {
-        console.log(event.target.value); 
-        this.setState({ image: event.target.value})
+        const file = event.target.files[0]; 
+        console.log("file: ", file); 
+
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            this.setState({ image: e.target.result});
+            this.props.addImage(new Image({source : e.target.result})); // adds url only for now. In future, should add new Image(name, source) 
+        }.bind(this);
+
+        reader.readAsDataURL(file);
+
+        
     }
 
     handleCategoryChange = event => {
@@ -104,7 +115,7 @@ export default class CreateItemComponent extends React.PureComponent {
                             multiple
                             type="file"
                             className="CreateItemComponent-FileInput"
-                            onChange={this.handleImageChange}
+                            onChange={this.handleImageChange.bind(this)}
                         />
                         <label htmlFor="raised-button-file">
                             <Button 

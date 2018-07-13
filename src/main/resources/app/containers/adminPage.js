@@ -97,6 +97,7 @@ class AdminPage extends React.PureComponent {
           onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
           itemSubmit = {this.itemSubmitClick.bind(this)}
           categorySubmit = {this.categorySubmitClick.bind(this)}
+          addImage={this.props.addImage}
           images={this.props.images}
           open = {this.state.dialogOpen} 
           categories={this.props.categories}
@@ -219,6 +220,8 @@ function mapDispatchToProps(dispatch) {
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
     changeCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
     toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
+
+    addImage : (arg) => {imageActions.addImage(dispatch, arg)}
   };
 }
 

@@ -14,7 +14,14 @@ export default class ItemListComponent extends React.PureComponent {
         super(arg)
         
     }
+    remove() {
+        this.props.remove(this.props.item)
+    }
 
+    edit() {
+        console.error("edit category not implemented"); 
+    }
+    
     toggleVisible(){
         this.props.toggleVisible(this.props.item)
     }

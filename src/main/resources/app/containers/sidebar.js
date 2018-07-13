@@ -16,6 +16,7 @@ import '../styles/sidebar.less';
 
 
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom'
 
 import * as mainActions from '../actions/mainActions'
 
@@ -25,27 +26,68 @@ class SideBar extends React.PureComponent {
         this.props.searchCategory(category.filter)
     }
 
-    renderList() {
+    renderCategories() {
         return this.props.categories.map((category, index) => {
-            return <ListItem className="SideBar-ListItem" onClick={() =>  this.categoryOnClick(category)} key={index}>
-                <ListItemIcon>
-                    <CategoryIcon />
-                </ListItemIcon>
-                <ListItemText>{category.title}</ListItemText>
-            </ListItem>
+            return <Link to="/app/com.enonic.starter.react/storefront">
+                <ListItem className="SideBar-ListItem" onClick={() =>  this.categoryOnClick(category)} key={index}>
+                    <ListItemIcon>
+                        <CategoryIcon />
+                    </ListItemIcon>
+                    <ListItemText>{category.title}</ListItemText>
+                </ListItem>
+            </Link>
         })
+    }
+
+    renderAdminRoutes(){
+        return [ 
+            <Link  to={"/app/com.enonic.starter.react/admin"}>
+                <ListItem className="SideBar-ListItem" key={"items"}>
+                    <ListItemIcon>
+                        <CategoryIcon />
+                    </ListItemIcon>
+                    <ListItemText>Items</ListItemText>
+                </ListItem>
+            </Link>,
+
+            <Link to="/app/com.enonic.starter.react/admin/categories">
+                <ListItem className="SideBar-ListItem" key={"categories"}>
+                    <ListItemIcon>
+                        <CategoryIcon />
+                    </ListItemIcon>
+                    <ListItemText>Categories</ListItemText>
+                </ListItem>
+            </Link>
+
+        ]
+    }
+
+    renderContent(){
+        let path = this.props.location.pathname
+        return path.includes("admin") ? this.renderAdminRoutes() : this.renderCategories()
     }
 
     render() {
         return (
-            <Drawer anchor="left" open={this.props.open}>
-                <IconButton color="inherit" aria-label="Menu" onClick={this.props.onToggleMenu}>
-                    <CloseIcon />
-                </IconButton>
-                <Divider />
-                <List>
-                    {this.renderList.bind(this)()}                    
-                </List>
+            <Drawer anchor="left" 
+                open={this.props.open}
+                onClose={this.props.onToggleMenu}
+            >
+                <div
+                    tabIndex={0}
+                    role="button"
+                    onClick={this.props.onToggleMenu}
+                    onKeyDown={this.props.onToggleMenu}
+                >
+                    <IconButton color="inherit" aria-label="Menu" onClick={this.props.onToggleMenu}>
+                        <CloseIcon />
+                    </IconButton>
+                    <Divider />
+                    <List>
+                        {this.renderContent.bind(this)()}                    
+                    </List>
+
+                </div>
             </Drawer>
         );
     }

@@ -2,8 +2,8 @@
 import React from 'react';
 
 import CategoryListComponent from './categoryListComponent';
-import SearchComponent from '../components/searchComponent';
-import DialogComponent from '../components/dialogComponent';
+import SearchComponent from '../searchComponent';
+import DialogComponent from '../dialogComponent';
 
 
 // Material UI
@@ -20,8 +20,17 @@ import Button from '@material-ui/core/Button';
 export default class CategoryComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
-        
+        this.state = {
+            open : false,
+            searchValue: "",
+        }
     }
+
+    searchCategoryOnChange(value){
+        this.setState({
+          searchValue : value
+        })
+      }
 
     remove() {
         this.props.remove(this.props.category)
@@ -39,19 +48,19 @@ export default class CategoryComponent extends React.PureComponent {
         return (
             <div>
                 <DialogComponent 
-                    type={this.state.dialogType} 
-                    onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
-                    categorySubmit = {this.categorySubmitClick.bind(this)}
-                    open = {this.state.dialogOpen} 
+                    type="CATEGORY" 
+                    onClose={() => this.setState({ open: false })}
+                    categorySubmit = {this.props.categorySubmitClick}
+                    open = {this.state.open} 
                 />
 
                 <Typography variant="display3" gutterBottom>
                     Categories
                 </Typography>
 
-                <SearchComponent value={this.state.categorySearchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
+                <SearchComponent value={this.state.searchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
                 <Button 
-                    onClick={() => this.setState({ dialogType: "CATEGORY" , dialogOpen: true})}
+                    onClick={() => this.setState({ open: true})}
                     color="primary">
                     add Category
                 </Button>
@@ -71,14 +80,14 @@ export default class CategoryComponent extends React.PureComponent {
                         <TableBody>
                         {this.props.categories.map(category => {
                             if (category.title.toUpperCase()
-                                .includes(this.state.categorySearchValue.toUpperCase()
+                                .includes(this.state.searchValue.toUpperCase()
                                 )) {
-                            return <CategoryComponent 
+                            return <CategoryListComponent 
                                 category={category} 
                                 key={category.id} 
                                 remove={this.props.deleteCategory} 
                                 visible={category.visible} 
-                                toggleVisible={this.props.toggleCategoryVisible} />;
+                                toggleVisible={this.props.toggleVisible} />;
                             }
                         })}
                         </TableBody>

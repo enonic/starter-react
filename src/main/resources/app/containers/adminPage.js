@@ -11,10 +11,12 @@ import PropTypes from 'prop-types';
 // Components 
 import Item from '../interfaces/item';
 import Category from '../interfaces/category';
-import AdminItemComponent from '../components/admin/itemListComponent';
-import CategoryComponent from '../components/admin/categoryListComponent';
+import ItemComponent from '../components/admin/itemComponent';
+import CategoryComponent from '../components/admin/categoryComponent';
 import SearchComponent from '../components/searchComponent';
 import DialogComponent from '../components/dialogComponent';
+
+import { Route } from 'react-router-dom'
 
 // Styles 
 import '../styles/adminPage.less'
@@ -46,25 +48,11 @@ class AdminPage extends React.PureComponent {
   
   constructor(props){
     super(props)
-    this.state = {
-      itemSearchValue: "",
-      categorySearchValue: "",
-      dialogType: "",
-      dialogOpen: false
-    }
   }
 
-  searchItemOnChange(value){
-    this.setState({
-      itemSearchValue : value
-    })
-  }
+  
 
-  searchCategoryOnChange(value){
-    this.setState({
-      categorySearchValue : value
-    })
-  }
+  
 
   itemSubmitClick(data){
     this.setState({ dialogOpen: false }); 
@@ -88,7 +76,26 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
-        Not so much on admin page anymore :-/  
+        <div className='admin-page-title'>Admin</div>    
+        <div className='admin-page-access'>ALL ACCESS GRANTED</div>        
+        <Route exact path={`/app/com.enonic.starter.react/admin`} render={() => 
+          <ItemComponent 
+            submit={this.itemSubmitClick}
+            deleteItem={this.props.deleteItem}
+            items={this.props.items}
+            categories={this.props.categories}
+            toggleVisible={this.props.toggleItemVisible}
+
+          />}  
+        />
+        <Route path={`/app/com.enonic.starter.react/admin/categories`} render={() => 
+          <CategoryComponent 
+            submit={this.categorySubmitClick}
+            deleteCategory={this.props.deleteCategory} 
+            categories={this.props.categories}
+            toggleVisible={this.props.toggleCategoryVisible}  
+          />}
+        />
         
       </div>
   }

@@ -2,8 +2,8 @@
 import React from 'react';
 
 import ItemListComponent from './itemListComponent';
-import SearchComponent from '../components/searchComponent';
-import DialogComponent from '../components/dialogComponent';
+import SearchComponent from '../searchComponent';
+import DialogComponent from '../dialogComponent';
 
 
 // Material UI
@@ -20,39 +20,38 @@ import Button from '@material-ui/core/Button';
 export default class ItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
+        this.state = {
+            open: false,
+            searchValue: ""
+        }
         
     }
 
-    remove() {
-        this.props.remove(this.props.category)
-    }
+    
 
-    toggleVisible() {
-        this.props.toggleVisible(this.props.category)
-    }
-
-    edit() {
-        console.error("edit category not implemented"); 
+    searchItemOnChange(value){
+        this.setState({
+            searchValue : value
+        })
     }
 
     render(){ 
         return (
             <div>
                 <DialogComponent 
-                    type={this.state.dialogType} 
-                    onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
-                    itemSubmit = {this.itemSubmitClick.bind(this)}
-                    categorySubmit = {this.categorySubmitClick.bind(this)}
-                    open = {this.state.dialogOpen} 
+                    type= "ITEM" 
+                    onClose={() => this.setState({ dialogType: "", open: false })}
+                    submit = {this.props.submit}
+                    open = {this.state.open} 
                     categories={this.props.categories}
                 />
 
                 <Typography variant="display3" gutterBottom>
                     Items
                 </Typography>
-                <SearchComponent value={this.state.itemSearchValue} onChange={this.searchItemOnChange.bind(this)}/>
+                <SearchComponent value={this.state.searchValue} onChange={this.searchItemOnChange.bind(this)}/>
                 <Button 
-                    onClick={() => this.setState({ dialogType: "ITEM" , dialogOpen: true})}
+                    onClick={() => this.setState({ open: true})}
                     color="primary">
                     Add new item
                 </Button>
@@ -75,18 +74,18 @@ export default class ItemComponent extends React.PureComponent {
                     <TableBody>
                     {this.props.items.map(item => {
                         if (item.name.toUpperCase()
-                            .includes(this.state.itemSearchValue.toUpperCase()
+                            .includes(this.state.searchValue.toUpperCase()
                             ) || item.category
                             .toUpperCase()
                             .includes(
-                            this.state.categorySearchValue.toUpperCase()
+                            this.state.searchValue.toUpperCase()
                             )) {
                         return <ItemListComponent 
                             item={item} key={item.id} 
                             remove={this.props.deleteItem} 
                             edit={this.editItem}
                             visible={item.visible} 
-                            toggleVisible={this.props.toggleItemVisible} />;
+                            toggleVisible={this.props.toggleVisible} />;
                         }
                     })}
                     </TableBody>

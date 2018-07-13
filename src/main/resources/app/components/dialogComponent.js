@@ -6,6 +6,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
 import StorefrontItemComponent from './storefront/storefrontItemComponent';
 
+import CreateItemComponent from './admin/createItemComponent';
+import CreateCategoryComponent from './admin/createCategoryComponent';
+
+
 const styles = theme => ({
   container: {
     display: 'flex',
@@ -88,9 +92,9 @@ export default class DialogComponent extends React.PureComponent {
 	getFormType(){
 		switch (this.props.type) {
 			case "ITEM":
-        return <CreateItemComponent submit={this.props.itemSubmit} onClose={this.props.onClose} categories={this.props.categories}/>
+        return <CreateItemComponent submit={this.props.submit} onClose={this.props.onClose} categories={this.props.categories}/> 
       case "CATEGORY":
-				return <CreateCategoryComponent submit={this.props.categorySubmit} onClose={this.props.onClose}/>
+				return <CreateCategoryComponent submit={this.props.submit} onClose={this.props.onClose}/>
 			default:
 				return null;
 		}

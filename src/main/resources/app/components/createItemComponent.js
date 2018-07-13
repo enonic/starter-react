@@ -47,17 +47,12 @@ export default class CreateItemComponent extends React.PureComponent {
 
     handleImageChange = event => {
         const file = event.target.files[0]; 
-        console.log("file: ", file); 
+        const url = URL.createObjectURL(file); 
 
-        var reader = new FileReader();
-
-        reader.onload = function (e) {
-            this.setState({ image: e.target.result});
-            this.props.addImage(new Image({source : e.target.result})); // adds url only for now. In future, should add new Image(name, source) 
-        }.bind(this);
-
-        reader.readAsDataURL(file);
-
+        this.setState({
+            image : url
+        }); 
+        this.props.addImage(new Image({ source: url }))// adds url only for now. In future, should add new Image(name, source) 
         
     }
 

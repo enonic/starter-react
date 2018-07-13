@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from "prop-types";
 
+// Components 
+import UploadImageDialog from './uploadImageDialog'; 
 // Material UI 
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -11,6 +13,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl'; 
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+// Interfaces
+import Image from '../interfaces/Image'; 
 
 
 // Stylesheets 
@@ -21,6 +25,7 @@ export default class CreateItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         this.state = {
+            uploadImageDialogVisible : false, 
             name: "",
             info: "",
             image: "none",
@@ -29,9 +34,9 @@ export default class CreateItemComponent extends React.PureComponent {
     }
     
     getImageItems() {
-        return this.props.images.map((image, index) =>
-            <MenuItem key={index} value={image}>{image.name}</MenuItem>
-        )
+        return this.props.images.map((image, index) => {
+            return <MenuItem key={index} value={image}>{image.name}</MenuItem>
+        }); 
     }
 
     getCategoryItems() {
@@ -45,14 +50,19 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     handleImageChange = event => {
-        const file = event.target.files[0]; 
-        const url = URL.createObjectURL(file); 
-
+        console.log(event.target.value); 
+        const source = event.target.value.source; 
+    
         this.setState({
-            image : url
+            image : source
         }); 
-        this.props.addImage(new Image({ source: url }))// adds url only for now. In future, should add new Image(name, source) 
-        
+    }
+
+    handleImageUpload(image) {
+        this.setState({
+            image : image.source
+        }); 
+        this.props.addImage(image); 
     }
 
     handleCategoryChange = event => {
@@ -66,8 +76,13 @@ export default class CreateItemComponent extends React.PureComponent {
         }
     }
 
+    toggleUploadImageDialog() {
+        this.setState({
+            uploadImageDialogVisible : !this.state.uploadImageDialogVisible
+        })
+    }
+
     render(){
-        console.log(this.state); 
         return (
         <div className="CreateItemComponent">
             <form>
@@ -102,23 +117,6 @@ export default class CreateItemComponent extends React.PureComponent {
                         required
                         error={this.state.info === ""}
                     />
-                
-                    <FormControl>
-                        <input
-                            accept="image/*"
-                            id="raised-button-file"
-                            multiple
-                            type="file"
-                            className="CreateItemComponent-FileInput"
-                            onChange={this.handleImageChange.bind(this)}
-                        />
-                        <label htmlFor="raised-button-file">
-                            <Button 
-                                component="span">
-                                Upload Image
-                            </Button>
-                        </label>
-                    </FormControl>       
                     <FormControl>
                         {/*<InputLabel>Category</InputLabel>*/}
                         <InputLabel>{this.state.category}</InputLabel>
@@ -133,6 +131,21 @@ export default class CreateItemComponent extends React.PureComponent {
                             {this.getCategoryItems()}
                         </Select>
                     </FormControl>
+                    <FormControl>
+                        {/*<InputLabel>Category</InputLabel>*/}
+                        <InputLabel>{this.state.image}</InputLabel>
+                        <Select
+                            value={this.state.image}
+                            name="category"
+                            onChange={this.handleImageChange}
+                            autoWidth>
+                            <MenuItem value="" disabled>
+                                <em>None</em>
+                            </MenuItem>
+                            {this.getImageItems()}
+                        </Select>
+                    </FormControl>  
+                    <Button onClick={this.toggleUploadImageDialog.bind(this)}>Custom Image</Button>
                 </FormControl>
                     
             </form>
@@ -145,6 +158,11 @@ export default class CreateItemComponent extends React.PureComponent {
                     Cancel
                 </Button>
             </DialogActions>
+            {/*Displayed when user wants to upload image*/}
+            <UploadImageDialog
+                open={this.state.uploadImageDialogVisible}
+                onClose={this.toggleUploadImageDialog.bind(this)}
+                onUpload={this.handleImageUpload.bind(this)}/>
         </div>
         )
     }

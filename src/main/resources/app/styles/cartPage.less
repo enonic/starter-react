@@ -1,5 +1,4 @@
 @import 'main';
-
 .CartPage {
     .avoidBar;
     width: 50vw;
@@ -8,14 +7,17 @@
 }
 
 .CartPage-Headline {
-    text-decoration: underline; 
+    text-decoration: underline;
 }
-
 
 .CartPage-Card-Media {
     margin: 20px;
     padding: 20px;
     height: 250px;
-    width: 400px; 
+    width: 400px;
+    transition-duration: 0.25s
+}
 
+.CartPage-Card-Media:hover{
+    transform: scale(1.05); 
 }

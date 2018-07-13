@@ -101,13 +101,13 @@ export default class CreateItemComponent extends React.PureComponent {
                     />
                 
                     <FormControl>
-                        <InputLabel>Image</InputLabel>
+                        {/*<InputLabel>Image</InputLabel>*/}
+                        <InputLabel>{this.state.image}</InputLabel>
                         <Select
                             value={this.state.image}
                             name="image"
                             onChange={this.handleImageChange}
-                            autoWidth
-                            SelectDisplayProps={{text : "hei"}}>
+                            autoWidth>
                             <MenuItem value="" disabled>
                                 <em>None</em>
                             </MenuItem>
@@ -115,7 +115,8 @@ export default class CreateItemComponent extends React.PureComponent {
                         </Select>
                     </FormControl>       
                     <FormControl>
-                        <InputLabel>Category</InputLabel> 
+                        {/*<InputLabel>Category</InputLabel>*/}
+                        <InputLabel>{this.state.category}</InputLabel>
                         <Select
                             value={this.state.category}
                             name="category"
@@ -128,7 +129,7 @@ export default class CreateItemComponent extends React.PureComponent {
                         </Select>
                     </FormControl>
                 </FormControl>
-
+                    
             </form>
             <DialogActions>
                 

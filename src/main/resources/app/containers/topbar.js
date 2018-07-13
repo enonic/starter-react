@@ -42,15 +42,20 @@ class TopBar extends React.PureComponent {
         return (
             <div>
                 <AppBar 
+                    className="TopBar"                  
                     color={page === "store" ? 
                         "primary" : 
                         "secondary"}>
                     <Toolbar>
-                    <IconButton color={page === "store" ? "secondary" : "primary"} aria-label="Menu" onClick={this.props.onToggleMenu}>
+                    <IconButton 
+                        className="TopBar-Col"
+                        color={page === "store" ? "secondary" : "primary"} 
+                        aria-label="Menu" 
+                        onClick={this.props.onToggleMenu}>
                         <MenuIcon />
                     </IconButton>
                     {page === "store" 
-                        ? <div>
+                        ? <div className="TopBar-Col">
                             <Link to="/app/com.enonic.starter.react/storefront">
                                 <IconButton>
                                     <StoreIcon />
@@ -63,8 +68,9 @@ class TopBar extends React.PureComponent {
                                     </Badge>
                                 </IconButton>
                             </Link>
-                        </div> : <div></div>}
-                        <Link to="/app/com.enonic.starter.react/storefront">
+                        </div> : 
+                        <div className="TopBar-Col"></div>}
+                        <Link className="TopBar-Col" to="/app/com.enonic.starter.react/storefront">
                             <Button>
                                 <Typography
                                     className="TopBar-PageTitle"
@@ -76,10 +82,10 @@ class TopBar extends React.PureComponent {
                             </Button>
                         </Link>
                         {page !== "admin" ? 
-                            <Link to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
+                            <Link className="TopBar-Col" to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
                                 <Typography variant="button">Admin</Typography>
                             </Link> : 
-                            null }
+                            <div className="TopBar-Col"></div> }
                     </Toolbar>
                 </AppBar>
                 <ToasterComponent 

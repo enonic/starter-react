@@ -11,6 +11,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import StoreIcon from '@material-ui/icons/Store'; 
 import CartIcon from "@material-ui/icons/ShoppingCart"; 
 import Badge from '@material-ui/core/Badge'; 
+import Button from '@material-ui/core/Button'; 
 // Stylesheets  
 import '../styles/topbar.less'; 
 
@@ -30,36 +31,55 @@ class TopBar extends React.PureComponent {
         }
     }
 
-    render() {
+    onPage = {
+        admin: this.props.location.pathname.includes("admin"), 
+        storefront : this.props.location.pathname.includes("storefront")
+    }
+
+    render() { 
+        const path = this.props.location.pathname; 
+        let page = (path.includes("store") || path.includes("cart")) ? "store" : "admin"
         return (
             <div>
-                <AppBar color="primary">
+                <AppBar 
+                    color={page === "store" ? 
+                        "primary" : 
+                        "secondary"}>
                     <Toolbar>
-                    <IconButton color="secondary" aria-label="Menu" onClick={this.props.onToggleMenu}>
+                    <IconButton color={page === "store" ? "secondary" : "primary"} aria-label="Menu" onClick={this.props.onToggleMenu}>
                         <MenuIcon />
-                    </IconButton>;
+                    </IconButton>
+                    {page === "store" 
+                        ? <div>
+                            <Link to="/app/com.enonic.starter.react/storefront">
+                                <IconButton>
+                                    <StoreIcon />
+                                </IconButton>
+                            </Link>
+                            <Link to="/app/com.enonic.starter.react/cart">
+                                <IconButton>
+                                    <Badge badgeContent={this.props.cartItems.size} color="secondary">
+                                        <CartIcon />
+                                    </Badge>
+                                </IconButton>
+                            </Link>
+                        </div> : <div></div>}
                         <Link to="/app/com.enonic.starter.react/storefront">
-                            <IconButton>
-                                <StoreIcon />
-                            </IconButton>
+                            <Button>
+                                <Typography
+                                    className="TopBar-PageTitle"
+                                    align="center"
+                                    variant="title"
+                                    color="textSecondary" >
+                                    {page === "admin" ? "Back to store" : "Enonic Webstore"}
+                            </Typography>
+                            </Button>
                         </Link>
-                        <Link to="/app/com.enonic.starter.react/cart">
-                            <IconButton>
-                                <Badge badgeContent={this.props.cartItems.size} color="secondary">
-                                    <CartIcon />
-                                </Badge>
-                            </IconButton>
-                        </Link>
-                        <Typography 
-                            className="TopBar-PageTitle"
-                            align="center" 
-                            variant="title" 
-                            color="textSecondary" >
-                            Enonic Webstore
-                        </Typography>
-                        <Link to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
-                            <Typography variant="button">Admin</Typography>
-                        </Link>
+                        {page !== "admin" ? 
+                            <Link to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
+                                <Typography variant="button">Admin</Typography>
+                            </Link> : 
+                            null }
                     </Toolbar>
                 </AppBar>
                 <ToasterComponent 

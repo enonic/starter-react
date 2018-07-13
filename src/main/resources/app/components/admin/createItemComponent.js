@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 
 // Components 
-import UploadImageDialog from './uploadImageDialog'; 
+import UploadImageDialog from '../uploadImageDialog'; 
 // Material UI 
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
@@ -14,7 +14,7 @@ import FormControl from '@material-ui/core/FormControl';
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 // Interfaces
-import Image from '../interfaces/Image'; 
+import Image from '../../interfaces/Image'; 
 
 
 // Stylesheets 
@@ -135,6 +135,7 @@ export default class CreateItemComponent extends React.PureComponent {
                         {/*<InputLabel>Category</InputLabel>*/}
                         <InputLabel>{this.state.image}</InputLabel>
                         <Select
+                            native
                             value={this.state.image}
                             name="category"
                             onChange={this.handleImageChange}
@@ -145,7 +146,7 @@ export default class CreateItemComponent extends React.PureComponent {
                             {this.getImageItems()}
                         </Select>
                     </FormControl>  
-                    <Button onClick={this.toggleUploadImageDialog.bind(this)}>Custom Image</Button>
+                    <Button variant="outlined" onClick={this.toggleUploadImageDialog.bind(this)}>Custom Image</Button>
                 </FormControl>
                     
             </form>

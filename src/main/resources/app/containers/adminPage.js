@@ -90,7 +90,9 @@ class AdminPage extends React.PureComponent {
             categories={this.props.categories}
             toggleVisible={this.props.toggleItemVisible}
             openToaster={this.props.openToaster}
-          
+            images={this.props.images}
+            addImage={this.props.addImage}
+  
           />}  
         />
         <Route path={`/app/com.enonic.starter.react/admin/categories`} render={() => 

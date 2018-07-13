@@ -59,6 +59,8 @@ export default class ItemComponent extends React.PureComponent {
                     remove={this.props.deleteItem}
                     openToaster={this.props.openToaster} 
                     toBeRemoved={this.state.itemToBeRemoved}
+                    images={this.props.images}
+                    addImage={this.props.addImage}
                 />
 
                 <Typography variant="display3" gutterBottom>

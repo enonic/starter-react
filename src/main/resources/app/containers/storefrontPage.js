@@ -45,6 +45,10 @@ class StorefrontPage extends React.PureComponent {
     this.setState({displayedItem: item, dialogOpen: true, dialogType: "ITEM_VIEW"})
   }
 
+  componentWillUnmount() {
+    this.props.searchCategory("")
+  }
+
   renderItems() {
     return this.props.items.map((item, index) => {
       if(item.name.toUpperCase().includes(this.state.searchValue.toUpperCase()) ||
@@ -108,7 +112,8 @@ function mapDispatchToProps(dispatch) {
   return {
     createItem: (arg) => { mainActions.createItem(dispatch, arg)}, 
     addItemToCart: (arg) => {mainActions.addItemToCart(dispatch,arg)},
-  };
+    searchCategory: (arg) => {mainActions.searchCategory(dispatch, arg)}
+    };
 }
 
 

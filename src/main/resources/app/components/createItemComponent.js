@@ -13,11 +13,12 @@ import Button from "@material-ui/core/Button";
 
 // Stylesheets 
 import '../styles/createItemComponent.less'
-
+// Actions 
+import imageActions from '../actions/imageActions'; 
 // Sample data 
 import SampleData from '../sampleData.json'; 
 
-export default class CreateItemComponent extends React.PureComponent {
+class CreateItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
         this.state = {
@@ -140,11 +141,34 @@ export default class CreateItemComponent extends React.PureComponent {
                     Cancel
                 </Button>
             </DialogActions>
-            
-
         </div>
-        
-        
         )
     }
 }
+
+CreateItemComponent.propTypes = {
+    items: PropTypes.object,
+    categories: PropTypes.object, 
+    images : PropTypes.object
+};
+
+CreateItemComponent.defaultProps = {
+    items: [],
+    categories: [],
+    images: [] 
+}
+
+function mapStateToProps(state) {
+    return {
+        images: state.get('images')
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return { 
+        addImage: (arg) => { imageActions.addImage(dispatch, arg) },
+        deleteImage: (arg) => { imageActions.deleteImage(dispatch, arg) },
+    };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateItemComponent)

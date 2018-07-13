@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types";
 
 // Material UI 
 import Card from "@material-ui/core/Card";
@@ -7,14 +8,19 @@ import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
+import FormControl from '@material-ui/core/FormControl'; 
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+// Interfaces 
+import Image from '../interfaces/image'; // ADDED FOR TESTING ONLY 
+// Actions 
+import * as imageActions from "../actions/imageActions"; 
+
+import { connect } from "react-redux";
+
 
 // Stylesheets 
 import '../styles/createItemComponent.less'
-// Actions 
-import imageActions from '../actions/imageActions'; 
 // Sample data 
 import SampleData from '../sampleData.json'; 
 
@@ -30,13 +36,25 @@ class CreateItemComponent extends React.PureComponent {
         };
     }
 
+    /*
     componentDidMount() {
         this.setState({ images: SampleData.images })
+    }
+    */
+    componentDidMount() {
+        this.props.addImage(new Image({ name: "testimage 1", source: "https://www.w3schools.com/w3css/img_lights.jpg" }));
+        this.props.addImage(new Image({ name: "testimage 2", source: "https://www.w3schools.com/w3css/img_lights.jpg" }));
+        this.props.addImage(new Image({ name: "testimage 3", source: "https://www.w3schools.com/w3css/img_lights.jpg" })); 
     }
 
     
     getImageItems() {
+        /*
         return this.state.images.map( (image, index) => 
+            <MenuItem key={index} value={image}>{image.name}</MenuItem>
+        )
+        */
+        return this.props.images.map((image, index) =>
             <MenuItem key={index} value={image}>{image.name}</MenuItem>
         )
     }
@@ -66,6 +84,7 @@ class CreateItemComponent extends React.PureComponent {
     }
 
     render(){
+        console.log(this.state); 
         return (
         <div className="CreateItemComponent">
             <form>
@@ -147,7 +166,7 @@ class CreateItemComponent extends React.PureComponent {
 }
 
 CreateItemComponent.propTypes = {
-    items: PropTypes.object,
+    items: PropTypes.array,
     categories: PropTypes.object, 
     images : PropTypes.object
 };
@@ -166,7 +185,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return { 
-        addImage: (arg) => { imageActions.addImage(dispatch, arg) },
+        addImage: (arg) => { imageActions.addImage(dispatch, arg); },
         deleteImage: (arg) => { imageActions.deleteImage(dispatch, arg) },
     };
 }

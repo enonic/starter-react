@@ -1,30 +1,29 @@
-// fetch api
 export const actions = {
     addImage: 'ADD_IMAGE',
-    deleteImage: 'DELETE_CATEGORY'
+    deleteImage: 'DELETE_IMAGE'
 }
 
-function createCategoryAction(arg) {
+function addImageAction(arg) {
     return {
-        type: actions.addimage,
-        category: arg
+        type: actions.addImage,
+        image: arg
     }
 }
 
-function deleteCategoryAction(arg) {
+function deleteImageAction(arg) {
     return {
         type: actions.deleteImage,
-        category: arg
+        image: arg
     }
 }
 
 
 
 
-export function deleteCategory(dispatch, arg) {
-    dispatch(deleteCategoryAction(arg))
+export function addImage(dispatch, arg) {
+    dispatch(addImageAction(arg))
 }
 
-export function createCategory(dispatch, arg) {
-    dispatch(createCategoryAction(arg))
+export function deleteImage(dispatch, arg) {
+    dispatch(deleteImageAction(arg));
 }

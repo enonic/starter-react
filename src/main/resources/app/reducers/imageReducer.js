@@ -1,12 +1,12 @@
 import { fromJS } from 'immutable';
 import * as imageActions from '../actions/imageActions'
 
-const initialState = fromJS({
-    images : []
-}); 
+const initialState = fromJS(
+    []
+); 
 
 
-function addImage(oldState, action) {
+function addImage(oldState, action) { 
     let state = oldState
     state = state.push(action.image); 
     return state
@@ -19,14 +19,12 @@ function deleteImage(oldState, action) {
 }
 
 
-
-export function categoryReducer(state = initialState, action) {
+export function imageReducer(state = initialState, action) {
     switch (action.type) {
-        case imaegActions.actions.deleteImage:
-            return deleteCategory(state, action)
-        case imaegActions.actions.addImage:
-            return createCategory(state, action)
-
+        case imageActions.actions.addImage:
+            return addImage(state, action)
+        case imageActions.actions.deleteImage:
+            return deleteImage(state, action)
         default:
             return state;
     }

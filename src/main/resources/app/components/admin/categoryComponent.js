@@ -23,6 +23,9 @@ export default class CategoryComponent extends React.PureComponent {
         this.state = {
             open : false,
             searchValue: "",
+            dialogType: "",
+            message: "",
+            categoryToBeRemoved: ""
         }
     }
 
@@ -32,26 +35,26 @@ export default class CategoryComponent extends React.PureComponent {
         })
       }
 
-    remove() {
-        this.props.remove(this.props.category)
-    }
-
-    toggleVisible() {
-        this.props.toggleVisible(this.props.category)
-    }
-
-    edit() {
-        console.error("edit category not implemented"); 
+    toggleDialog(type, message, category){
+        if(type){
+            this.setState({ dialogType: type, open: true, message: message, categoryToBeRemoved: category })
+        } else {
+            this.setState({ dialogType: "", open: false, message: "" })
+        }
     }
 
     render(){ 
         return (
             <div>
                 <DialogComponent 
-                    type="CATEGORY" 
-                    onClose={() => this.setState({ open: false })}
-                    categorySubmit = {this.props.categorySubmitClick}
                     open = {this.state.open} 
+                    type= {this.state.dialogType} 
+                    onClose={this.toggleDialog.bind(this)}
+                    submit = {this.props.submit}
+                    message={this.state.message}
+                    remove={this.props.deleteCategory}
+                    openToaster={this.props.openToaster} 
+                    toBeRemoved={this.state.categoryToBeRemoved}
                 />
 
                 <Typography variant="display3" gutterBottom>
@@ -83,15 +86,22 @@ export default class CategoryComponent extends React.PureComponent {
                                 .includes(this.state.searchValue.toUpperCase()
                                 )) {
                             return <CategoryListComponent 
+                                toggleDialog={this.toggleDialog.bind(this)}
                                 category={category} 
                                 key={category.id} 
-                                remove={this.props.deleteCategory} 
                                 visible={category.visible} 
                                 toggleVisible={this.props.toggleVisible} />;
+
                             }
                         })}
                         </TableBody>
                     </Table>
+                    <Button 
+                        color="primary"
+                        onClick={() => this.props.openToaster("Changes were saved, NOT! This button does nothing....")} 
+                    >
+                        Save changes
+                    </Button>
                 </Paper>
             </div>
         )

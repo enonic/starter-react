@@ -44,7 +44,7 @@ export default class ItemListComponent extends React.PureComponent {
                 />
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.props.remove(this.props.item)}>
+                <IconButton onClick={() => this.props.toggleDialog("DELETE", this.props.item.name, this.props.item)}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>

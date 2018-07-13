@@ -22,7 +22,7 @@ import { Route } from 'react-router-dom'
 import '../styles/adminPage.less'
 
 import * as repo from '../services/repoService';
-
+import * as toasterActions from '../actions/toasterActions'; 
 
 // Material UI
 import Paper from '@material-ui/core/Paper'; 
@@ -76,8 +76,8 @@ class AdminPage extends React.PureComponent {
 
   render() {
     return <div className="AdminPage">
-        <div className='admin-page-title'>Admin</div>    
-        <div className='admin-page-access'>ALL ACCESS GRANTED</div>        
+        <Typography varian="display4">ADMIN</Typography>    
+        <Typography varian="display2">ALL ACCESS GRANTED</Typography>   
         <Route exact path={`/app/com.enonic.starter.react/admin`} render={() => 
           <ItemComponent 
             submit={this.itemSubmitClick}
@@ -85,7 +85,8 @@ class AdminPage extends React.PureComponent {
             items={this.props.items}
             categories={this.props.categories}
             toggleVisible={this.props.toggleItemVisible}
-
+            openToaster={this.props.openToaster}
+          
           />}  
         />
         <Route path={`/app/com.enonic.starter.react/admin/categories`} render={() => 
@@ -94,6 +95,7 @@ class AdminPage extends React.PureComponent {
             deleteCategory={this.props.deleteCategory} 
             categories={this.props.categories}
             toggleVisible={this.props.toggleCategoryVisible}  
+            openToaster={this.props.openToaster}
           />}
         />
         
@@ -128,7 +130,8 @@ function mapDispatchToProps(dispatch) {
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
     changeCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
     toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
-    
+
+    openToaster: (message) => { toasterActions.showToaster(dispatch, message)}
   };
 }
 

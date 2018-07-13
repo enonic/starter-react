@@ -22,7 +22,10 @@ export default class ItemComponent extends React.PureComponent {
         super(arg)
         this.state = {
             open: false,
-            searchValue: ""
+            searchValue: "",
+            dialogType: "",
+            message: "",
+            itemToBeRemoved: null
         }
         
     }
@@ -35,15 +38,27 @@ export default class ItemComponent extends React.PureComponent {
         })
     }
 
+    toggleDialog(type, message, item){
+        if(type){
+            this.setState({ dialogType: type, open: true, message: message , itemToBeRemoved: item})
+        } else {
+            this.setState({ dialogType: "", open: false, message: "" })
+        }
+    }
+
     render(){ 
         return (
             <div>
                 <DialogComponent 
-                    type= "ITEM" 
-                    onClose={() => this.setState({ dialogType: "", open: false })}
+                    type= {this.state.dialogType} 
+                    onClose={this.toggleDialog.bind(this)}
                     submit = {this.props.submit}
                     open = {this.state.open} 
                     categories={this.props.categories}
+                    message={this.state.message}
+                    remove={this.props.deleteItem}
+                    openToaster={this.props.openToaster} 
+                    toBeRemoved={this.state.itemToBeRemoved}
                 />
 
                 <Typography variant="display3" gutterBottom>
@@ -51,7 +66,7 @@ export default class ItemComponent extends React.PureComponent {
                 </Typography>
                 <SearchComponent value={this.state.searchValue} onChange={this.searchItemOnChange.bind(this)}/>
                 <Button 
-                    onClick={() => this.setState({ open: true})}
+                    onClick={()=> this.toggleDialog("ITEM")}
                     color="primary">
                     Add new item
                 </Button>
@@ -81,8 +96,8 @@ export default class ItemComponent extends React.PureComponent {
                             this.state.searchValue.toUpperCase()
                             )) {
                         return <ItemListComponent 
+                            toggleDialog={this.toggleDialog.bind(this)}
                             item={item} key={item.id} 
-                            remove={this.props.deleteItem} 
                             edit={this.editItem}
                             visible={item.visible} 
                             toggleVisible={this.props.toggleVisible} />;
@@ -90,6 +105,12 @@ export default class ItemComponent extends React.PureComponent {
                     })}
                     </TableBody>
                 </Table>
+                <Button 
+                    color="primary"
+                    onClick={() => this.props.openToaster("Changes were saved, NOT! This button does nothing....")} 
+                >
+                    Save changes
+                </Button>
                 </Paper>
             </div>
         )

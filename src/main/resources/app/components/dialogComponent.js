@@ -4,7 +4,10 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography'; 
+
 import StorefrontItemComponent from './storefront/storefrontItemComponent';
+
 
 import CreateItemComponent from './admin/createItemComponent';
 import CreateCategoryComponent from './admin/createCategoryComponent';
@@ -79,6 +82,27 @@ export default class DialogComponent extends React.PureComponent {
           <DialogTitle>Choose your payment method</DialogTitle>
             <DialogContent>
               <CheckoutComponent onItemsBought={this.props.onItemsBought}/>
+            </DialogContent>
+          </Dialog>
+        )
+      case "DELETE":
+        return (
+          <Dialog
+            open={this.state.open}
+            onClose={this.props.onClose}
+          >
+          <DialogTitle>Do you want to delete this item?</DialogTitle>
+            <DialogContent>
+              <Typography>{this.props.message}</Typography>
+              <Button onClick={this.props.onClose} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={() => {
+                  this.props.remove(this.props.toBeRemoved)
+                  this.props.onClose()
+                }} >
+                Delete
+              </Button>
             </DialogContent>
           </Dialog>
         )

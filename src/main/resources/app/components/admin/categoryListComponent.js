@@ -40,12 +40,12 @@ export default class CategoryListComponent extends React.PureComponent {
                     onChange={this.toggleVisible.bind(this)} />
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.remove(this.props.category.id)}>
+                <IconButton onClick={() => this.props.toggleDialog("DELETE", this.props.category.title, this.props.category)}>
                     <DeleteIcon />
                 </IconButton>
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.edit(this.props.category.id)}>
+                <IconButton onClick={() => this.props.edit(this.category.id)}>
                     <EditIcon />
                 </IconButton>
             </TableCell>

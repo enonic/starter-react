@@ -46,7 +46,8 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     handleImageChange = event => {
-        this.setState({ image: event.target.value.source})
+        console.log(event.target.value); 
+        this.setState({ image: event.target.value})
     }
 
     handleCategoryChange = event => {
@@ -97,18 +98,20 @@ export default class CreateItemComponent extends React.PureComponent {
                     />
                 
                     <FormControl>
-                        {/*<InputLabel>Image</InputLabel>*/}
-                        <InputLabel>{this.state.image}</InputLabel>
-                        <Select
-                            value={this.state.image}
-                            name="image"
+                        <input
+                            accept="image/*"
+                            id="raised-button-file"
+                            multiple
+                            type="file"
+                            className="CreateItemComponent-FileInput"
                             onChange={this.handleImageChange}
-                            autoWidth>
-                            <MenuItem value="" disabled>
-                                <em>None</em>
-                            </MenuItem>
-                            {this.getImageItems()}
-                        </Select>
+                        />
+                        <label htmlFor="raised-button-file">
+                            <Button 
+                                component="span">
+                                Upload Image
+                            </Button>
+                        </label>
                     </FormControl>       
                     <FormControl>
                         {/*<InputLabel>Category</InputLabel>*/}
@@ -140,4 +143,3 @@ export default class CreateItemComponent extends React.PureComponent {
         )
     }
 }
-

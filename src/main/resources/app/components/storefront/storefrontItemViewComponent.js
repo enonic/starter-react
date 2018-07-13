@@ -10,9 +10,9 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 
 // Stylesheets
-import '../styles/userItemComponent.less'
+import "../../styles/storefront/storefrontItemViewComponent.less";
 
-export default class UserItemViewComponent extends Component {
+export default class StorefrontItemViewComponent extends Component {
     
 
     addClick(){

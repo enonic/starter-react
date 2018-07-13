@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import * as mainActions from '../actions/mainActions' 
 
 // Components 
-import UserItemComponent from "../components/userItemComponent"
+import StorefrontItemComponent from "../components/storefront/storefrontItemComponent"
 import SearchComponent from "../components/searchComponent"; 
 import DialogComponent from '../components/dialogComponent';
 
@@ -16,9 +16,9 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper'
 
 // Stylesheets
-import '../styles/userPage.less'
+import '../styles/storefront/StorefrontPage.less'
 
-class UserPage extends React.PureComponent { 
+class StorefrontPage extends React.PureComponent { 
   constructor(props) {
     super(props); 
     this.state = {
@@ -52,7 +52,7 @@ class UserPage extends React.PureComponent {
         ){ 
         if(item.visible){
           return <Grid key={index}>
-              <UserItemComponent
+              <StorefrontItemComponent
                 item={item}
                 add={this.props.addItemToCart}
                 onClick={this.itemOnClick}
@@ -69,7 +69,7 @@ class UserPage extends React.PureComponent {
 
   render() {
     return (
-      <div className="UserPage">
+      <div className="StorefrontPage">
         <DialogComponent 
           type={this.state.dialogType} 
           onClose={() => this.setState({ dialogType: "", dialogOpen: false })}
@@ -88,12 +88,12 @@ class UserPage extends React.PureComponent {
   }
 }
 
-UserPage.propTypes = {
+StorefrontPage.propTypes = {
   items: PropTypes.object,
   searchValue: PropTypes.string
 };
 
-UserPage.defaultProps = {
+StorefrontPage.defaultProps = {
 }
 
 
@@ -112,4 +112,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage)
+export default connect(mapStateToProps, mapDispatchToProps)(StorefrontPage)

@@ -3,7 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import { connect } from "react-redux";
 
 // Containers
-import UserPage from './containers/userPage';
+import StorefrontPage from './containers/storefrontPage';
 import AdminPage from './containers/adminPage';
 import NotFound from './containers/notFoundPage';
 import TopBar from './containers/TopBar'; 
@@ -72,10 +72,11 @@ class App extends Component {
                     <Switch>    
                         {/*
                         <Route path={/.+admin/} component={AdminPage} />
-                        <Route path={/.+user/} component={UserPage} />
+                        <Route path={/.+storefront/} component={StorefrontPage} />
+                        <Route path={/.+cart/} component={CartPage} />
                         */}
                         <Route path="/app/com.enonic.starter.react/admin" component={AdminPage} />
-                        <Route path="/app/com.enonic.starter.react/user" component={UserPage} />
+                        <Route path="/app/com.enonic.starter.react/storefront" component={StorefrontPage} />
                         <Route path="/app/com.enonic.starter.react/cart" component={CartPage} />
 
                         <Route component={NotFound} />

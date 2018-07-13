@@ -70,7 +70,6 @@ export default class CreateItemComponent extends React.PureComponent {
                     <Card className="Item-Card">
                         <CardMedia
                             image={this.state.image}
-                            className="Item-Card-Media"
                         /> 
                     </Card> : null}
                     

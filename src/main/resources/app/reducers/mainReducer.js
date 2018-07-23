@@ -86,9 +86,8 @@ function save(oldState, action){
   state = state.updateIn(["allItems"], function(items) {
     items.forEach(item => {
       if(item.edited){
-        Repo.edit(item).then(
-          item.edited = false
-        )
+        item.edited = false
+        Repo.edit(item)
       }
     })
     

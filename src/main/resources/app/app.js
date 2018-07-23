@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Route, Switch } from 'react-router-dom'
 import { connect } from "react-redux";
+import * as repoService from './services/repoService';
 
 // Containers
 import StorefrontPage from './containers/storefrontPage';
@@ -40,11 +41,13 @@ class App extends Component {
 
     // STATE HOLDS TEST ITEMS 
     componentDidMount() {
+        /*
         SampleData.items.map(data => 
             this.props.createItem(
                 new Item(data)
             )
         );
+        */
         SampleData.categories.map(data =>
             this.props.createCategory(
                 new Category(data)
@@ -53,6 +56,13 @@ class App extends Component {
         SampleData.images.map(image => 
             this.props.addImage(new Image(image))
         ); 
+        repoService.get().then(items => {
+            items.forEach(item =>
+                this.props.createItem(
+                    new Item(item)
+                )
+            )
+        })
     }
 
     toggleMenu() {
@@ -102,7 +112,7 @@ function mapDispatchToProps(dispatch) {
     return {
         createItem: (arg) => { mainActions.createItem(dispatch, arg) },
         createCategory: (arg) => { categoryActions.createCategory(dispatch, arg) },
-        addImage: (arg) => { imageActions.addImage(dispatch, arg) }
+        addImage: (arg) => { imageActions.addImage(dispatch, arg) },
     };
 }
 

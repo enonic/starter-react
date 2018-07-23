@@ -1,6 +1,5 @@
 export default class Item {
     constructor(data){
-        console.log(data.edited)
         this.name = data.name; 
         this.info = data.info;  
         this.image = data.image; 
@@ -11,7 +10,6 @@ export default class Item {
     }
 
     update(data){
-        console.log("update")
         if(data.name){
             this.name = data.name
             this.edited = true

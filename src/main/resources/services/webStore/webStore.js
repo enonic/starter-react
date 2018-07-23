@@ -15,7 +15,6 @@ exports.get = function(req) {
     log.info("GET")
     var result = getItems(); 
 
-    log.info(result.length)
     if(result === "NOT_FOUND") {
         return {
             status : 400, 
@@ -23,8 +22,11 @@ exports.get = function(req) {
         }
     }else{
         return {
-            status : 200, 
-            message : "Nodes deleted"
+            body: {items : result},
+            headers: {
+                "Content-Type": "application/json"
+            }
+            
         }
     }
 }

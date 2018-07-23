@@ -106,6 +106,7 @@ export function toggleItemVisible(dispatch, arg){
 
 export function createItem(dispatch, arg){ 
     //promise 
+    //repo.add(arg)
     dispatch(createItemAction(arg))
 }
 

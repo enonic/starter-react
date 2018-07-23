@@ -24,7 +24,6 @@ export function remove(item){
 }
 
 export function edit(item){
-    console.log("editing item")
     return fetch(repoUrl, {
         method: "PUT",
         headers: {
@@ -36,4 +35,8 @@ export function edit(item){
 
 export function get(){
     return fetch(repoUrl)
+        .then(response => response.json()
+            .then(data =>  data.items.filter(node => node.item ? node : null))
+            .then(nodes => nodes.map(node => node.item))
+        )
 }

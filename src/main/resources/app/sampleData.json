@@ -39,7 +39,8 @@
             "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dining_chair_1939.jpg/1024px-Dining_chair_1939.jpg",
             "visible": true,
             "category": "Furniture",
-            "id" : 1
+            "id" : 1,
+            "edited" : false
         },
         {
             "name": "Pilot Suit!",
@@ -47,7 +48,8 @@
             "image": "https://upload.wikimedia.org/wikipedia/commons/b/b5/John_Glenn_in_his_Mercury_pressure_suit.jpg", 
             "visible": true,
             "category": "Clothes",
-            "id" : 2
+            "id" : 2,
+            "edited" : false
         },
         {
             "name": "Mug 0.3l",
@@ -55,7 +57,8 @@
             "image": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Hot_Cold_mug.jpg",
             "visible": true,
             "category": "others",
-            "id" : 3
+            "id" : 3,
+            "edited" : false
         },
         {
             "name": "Fish",
@@ -63,24 +66,28 @@
             "image": "https://upload.wikimedia.org/wikipedia/commons/6/68/UrolophusPaucimaculatus.jpg",
             "visible": true,
             "category": "Food",
-            "id" : 4
+            "id" : 4,
+            "edited" : false
         }
     ], 
     "categories": [
         {
             "title": "Clothes", 
             "filter": "clothes", 
-            "id": 1
+            "id": 1,
+            "edited" : false
         },
         {
             "title": "Food",
             "filter": "food",
-            "id": 2
+            "id": 2,
+            "edited" : false
         },
         {
             "title": "Furniture",
             "filter": "furniture",
-            "id": 3
+            "id": 3,
+            "edited" : false
         }
     ],
     "cardImages": [

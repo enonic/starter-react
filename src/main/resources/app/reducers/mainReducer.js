@@ -83,12 +83,9 @@ function checkout(oldState, action){
 
 function save(oldState, action){
   let state = oldState
-  console.log("editing...")
   state = state.updateIn(["allItems"], function(items) {
     items.forEach(item => {
-      console.log(item.edited)
       if(item.edited){
-        console.log("item to edit:", item)
         Repo.edit(item).then(
           item.edited = false
         )

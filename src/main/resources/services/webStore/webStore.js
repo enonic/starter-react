@@ -87,10 +87,56 @@ exports.delete = function (req){
  * Replace item
  */
 exports.put = function(req) {
-    log.info("PUT" + JSON.stringify(req, null, 2) )
-    return {
-        body: {
-            notice: "PUT not implemented"
+    var item = JSON.parse(req.body);
+    var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
+    var hits = repoConn.query({
+        query: "item.id = " + item.id
+    }).hits;
+    if (!hits || hits.length < 1) {
+        log.info("Node was not found. Creating a new one")
+        var wasSuccessful = createNode(item).success; 
+    
+        if(wasSuccessful) {
+            log.info("Added Item:" + JSON.stringify(item, null, 4)); 
+            return { 
+                status: 200, 
+                message: "" 
+            }
+        }
+    }
+
+    var ids = hits.map(function (hit) {
+        return hit.id;
+    });
+
+    var editor = function(node) {
+        node.item.name = node.item.name
+        node.item.info = node.item.info
+        node.item.image = node.item.image
+        node.item.visble = node.item.visible
+        node.item.category = node.item.category
+        return node; 
+    }
+
+    var result = repoConn.modify({
+        key: ids[0], 
+        editor : editor
+    });
+    repoConn.refresh();
+
+    if(result){
+        return {
+            body: {
+                status: 200
+            }
+        }
+
+    } else {
+        return {
+            body: {
+                status: 500,
+                message: "Something went wrong when editing and item"
+            }
         }
     }
 }

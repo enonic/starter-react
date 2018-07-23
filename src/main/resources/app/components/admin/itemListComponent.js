@@ -23,6 +23,7 @@ export default class ItemListComponent extends React.PureComponent {
     }
 
     render(){ 
+        console.log(this.props.item.edited)
         let styleClass = this.props.item.edited ? "ItemListComponent-edit" : "ItemListComponent";
         return <TableRow className={styleClass}>
             <TableCell component="th" scope="row">

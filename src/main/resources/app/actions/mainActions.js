@@ -84,6 +84,7 @@ function saveAction(){
 }
 
 export function save(dispatch){
+  toasterActions.showToaster(dispatch, "Saved")
   dispatch(saveAction())
 }
 
@@ -105,7 +106,6 @@ export function toggleItemVisible(dispatch, arg){
 
 export function createItem(dispatch, arg){ 
     //promise 
-    repo.add(arg)
     dispatch(createItemAction(arg))
 }
 

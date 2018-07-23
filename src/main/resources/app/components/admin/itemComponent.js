@@ -122,7 +122,10 @@ export default class ItemComponent extends React.PureComponent {
                 </Table>
                 <Button 
                     color="primary"
-                    onClick={() => this.props.save()} 
+                    onClick={() => {
+                        this.props.save()
+                        this.forceUpdate()
+                    }} 
                 >
                     Save changes
                 </Button>

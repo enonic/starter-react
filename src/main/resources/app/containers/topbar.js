@@ -12,6 +12,8 @@ import StoreIcon from '@material-ui/icons/Store';
 import CartIcon from "@material-ui/icons/ShoppingCart"; 
 import Badge from '@material-ui/core/Badge'; 
 import Button from '@material-ui/core/Button'; 
+import Grid from "@material-ui/core/Grid"; 
+import Paper from "@material-ui/core/Paper"
 // Stylesheets  
 import '../styles/topbar.less'; 
 
@@ -42,15 +44,70 @@ class TopBar extends React.PureComponent {
         return (
             <div>
                 <AppBar 
+                    className="TopBar"                  
                     color={page === "store" ? 
                         "primary" : 
                         "secondary"}>
+                    {/* FORSØK PÅ Å GJØRE BEDRE
+                    <Grid container spacing={24}>
+                        <Grid item xs>
+                            <IconButton
+                                color={page === "store" ? "secondary" : "primary"}
+                                aria-label="Menu"
+                                onClick={this.props.onToggleMenu}>
+                                <MenuIcon />
+                            </IconButton>
+                        </Grid>
+                        <Grid item xs>
+                            {page === "store"
+                                ? <div className="TopBar-Col">
+                                    <Link to="/app/com.enonic.starter.react/storefront">
+                                        <IconButton>
+                                            <StoreIcon />
+                                        </IconButton>
+                                    </Link>
+                                    <Link to="/app/com.enonic.starter.react/cart">
+                                        <IconButton>
+                                            <Badge badgeContent={this.props.cartItems.size} color="secondary">
+                                                <CartIcon />
+                                            </Badge>
+                                        </IconButton>
+                                    </Link>
+                                </div> : null}
+                        </Grid>
+                        <Grid item xs={6}>
+                            <Link to="/app/com.enonic.starter.react/storefront">
+                                <Button>
+                                    <Typography
+                                        className="TopBar-PageTitle"
+                                        align="center"
+                                        variant="title"
+                                        color="textSecondary" >
+                                        {page === "admin" ? "Back to store" : "Enonic Webstore"}
+                                    </Typography>
+                                </Button>
+                            </Link>
+                        </Grid>
+                        <Grid item xs>
+                            {page !== "admin" ? 
+                            <Link className="TopBar-Col" to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
+                                <Typography variant="button">Admin</Typography>
+                            </Link> : 
+                            <div className="TopBar-Col"></div> }
+                        </Grid>
+                    </Grid>
+                    */}
+                    {/*GAMMELT*/} 
                     <Toolbar>
-                    <IconButton color={page === "store" ? "secondary" : "primary"} aria-label="Menu" onClick={this.props.onToggleMenu}>
+                    <IconButton 
+                        className="TopBar-Col"
+                        color={page === "store" ? "secondary" : "primary"} 
+                        aria-label="Menu" 
+                        onClick={this.props.onToggleMenu}>
                         <MenuIcon />
                     </IconButton>
                     {page === "store" 
-                        ? <div>
+                        ? <div className="TopBar-Col">
                             <Link to="/app/com.enonic.starter.react/storefront">
                                 <IconButton>
                                     <StoreIcon />
@@ -63,8 +120,9 @@ class TopBar extends React.PureComponent {
                                     </Badge>
                                 </IconButton>
                             </Link>
-                        </div> : <div></div>}
-                        <Link to="/app/com.enonic.starter.react/storefront">
+                        </div> : 
+                        <div className="TopBar-Col"></div>}
+                        <Link className="TopBar-Col" to="/app/com.enonic.starter.react/storefront">
                             <Button>
                                 <Typography
                                     className="TopBar-PageTitle"
@@ -76,10 +134,10 @@ class TopBar extends React.PureComponent {
                             </Button>
                         </Link>
                         {page !== "admin" ? 
-                            <Link to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
+                            <Link className="TopBar-Col" to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
                                 <Typography variant="button">Admin</Typography>
                             </Link> : 
-                            null }
+                            <div className="TopBar-Col"></div> }
                     </Toolbar>
                 </AppBar>
                 <ToasterComponent 

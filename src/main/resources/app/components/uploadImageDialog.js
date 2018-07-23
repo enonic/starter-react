@@ -81,11 +81,11 @@ export default class UploadImageDialog extends React.PureComponent {
                     <Button
                         color={this.state.validationFailed ? "secondary" : "primary"}
                         component="span">
-                        Select Image
+                        Select Image {this.state.source || ""}
                     </Button>
-                    {this.state.source || "none added"}
                 </label>
             </DialogContent>
+            
             <DialogActions>
                 <Button onClick={this.props.onClose} color="primary">
                     Cancel

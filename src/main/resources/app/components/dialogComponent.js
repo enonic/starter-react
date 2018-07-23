@@ -129,7 +129,9 @@ export default class DialogComponent extends React.PureComponent {
       case "CATEGORY":
         return <CreateCategoryComponent 
           submit={this.props.submit} 
-          onClose={this.props.onClose}/>
+          onClose={this.props.onClose}
+          categoryToBeEdited={this.props.toBeEdited}
+        />
 			default:
 				return null;
 		}

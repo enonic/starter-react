@@ -25,10 +25,17 @@ function hideCategory(oldState, action){
   return state
 }
 
+function changeCategory(oldState, action){
+  let state = oldState
+  state = state.splice(state.indexOf(state.find(category=> category.id == action.category.id)), 1, action.category)
+  return state
+}
 
 
 export function categoryReducer(state = initialState, action) {
   switch (action.type) {
+    case categoryActions.actions.changeCategory:
+      return changeCategory(state,action)
     case categoryActions.actions.toggleCategoryVisible:
       return hideCategory(state, action)
     case categoryActions.actions.deleteCategory:

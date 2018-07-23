@@ -59,7 +59,12 @@ export default class ItemComponent extends React.PureComponent {
                 <DialogComponent 
                     type= {this.state.dialogType} 
                     onClose={this.toggleDialog.bind(this)}
-                    submit = {this.state.itemToBeEdited ? this.props.editItem : this.props.submit}
+                    
+                    toBeEdited={this.state.itemToBeEdited}
+                    submit = {this.state.itemToBeEdited ? ((item)=>{
+                        this.props.editItem(item) 
+                        this.setState({itemToBeEdited: null})
+                    }): this.props.submit}
                     open = {this.state.open} 
                     categories={this.props.categories}
                     
@@ -71,8 +76,6 @@ export default class ItemComponent extends React.PureComponent {
                     
                     images={this.props.images}
                     addImage={this.props.addImage}
-                    
-                    toBeEdited={this.state.itemToBeEdited}
                 />
 
                 <Typography variant="display3" gutterBottom>

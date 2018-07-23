@@ -14,10 +14,12 @@ import '../../styles/createCategoryComponent.less'
 export default class CreateItemComponent extends React.PureComponent {
     constructor(arg) {
         super(arg)
+        const {categoryToBeEdited} = this.props;
         this.state = {
-            title: "",
+            title: categoryToBeEdited ? categoryToBeEdited.title : "",
             visible: false,
-            filter: ""
+            filter: categoryToBeEdited ? categoryToBeEdited.filter : "",
+            id: categoryToBeEdited ? categoryToBeEdited.id : null
         };
     }
 

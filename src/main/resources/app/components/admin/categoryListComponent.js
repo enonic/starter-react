@@ -22,10 +22,6 @@ export default class CategoryListComponent extends React.PureComponent {
         this.props.toggleVisible(this.props.category)
     }
 
-    edit() {
-        console.error("edit category not implemented"); 
-    }
-
     render(){ 
         return <TableRow className="AdminCategoryComponent">
             <TableCell component="th" scope="row">
@@ -45,7 +41,7 @@ export default class CategoryListComponent extends React.PureComponent {
                 </IconButton>
             </TableCell>
             <TableCell>
-                <IconButton onClick={() => this.props.edit(this.category.id)}>
+                <IconButton onClick={() => this.props.edit(this.props.category)}>
                     <EditIcon />
                 </IconButton>
             </TableCell>

@@ -25,7 +25,8 @@ export default class CategoryComponent extends React.PureComponent {
             searchValue: "",
             dialogType: "",
             message: "",
-            categoryToBeRemoved: ""
+            categoryToBeRemoved: "",
+            categoryToBeEdited: null
         }
     }
 
@@ -43,6 +44,11 @@ export default class CategoryComponent extends React.PureComponent {
         }
     }
 
+    editCategory(category){
+        this.setState({categoryToBeEdited: category})
+        this.toggleDialog("CATEGORY")
+    }
+
     render(){ 
         return (
             <div>
@@ -50,11 +56,16 @@ export default class CategoryComponent extends React.PureComponent {
                     open = {this.state.open} 
                     type= {this.state.dialogType} 
                     onClose={this.toggleDialog.bind(this)}
-                    submit = {this.props.submit}
+                    submit = {this.state.categoryToBeEdited ? ((category)=> {
+                        this.props.editCategory(category)
+                        this.setState({categoryToBeEdited: null})
+                    }) : this.props.submit}
                     message={this.state.message}
                     remove={this.props.deleteCategory}
                     openToaster={this.props.openToaster} 
                     toBeRemoved={this.state.categoryToBeRemoved}
+                    toBeEdited={this.state.categoryToBeEdited}
+                    
                 />
 
                 <Typography variant="display3" gutterBottom>
@@ -90,7 +101,9 @@ export default class CategoryComponent extends React.PureComponent {
                                 category={category} 
                                 key={category.id} 
                                 visible={category.visible} 
-                                toggleVisible={this.props.toggleVisible} />;
+                                toggleVisible={this.props.toggleVisible} 
+                                edit={this.editCategory.bind(this)}
+                            />;
 
                             }
                         })}

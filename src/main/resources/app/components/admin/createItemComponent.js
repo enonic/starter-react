@@ -24,13 +24,14 @@ import '../../styles/createItemComponent.less'
 export default class CreateItemComponent extends React.PureComponent {
     constructor(arg){
         super(arg)
+        const {itemToBeEdited} = this.props
         this.state = {
             uploadImageDialogVisible : false, 
-            name: this.props.itemToBeEdited ? this.props.itemToBeEdited.name : "",
-            info: this.props.itemToBeEdited ? this.props.itemToBeEdited.info : "",
-            image: this.props.itemToBeEdited ? this.props.itemToBeEdited.image : "none",
-            category: this.props.itemToBeEdited ? this.props.itemToBeEdited.category : "none",
-            id: this.props.itemToBeEdited.id
+            name: itemToBeEdited ? itemToBeEdited.name : "",
+            info: itemToBeEdited ? itemToBeEdited.info : "",
+            image: itemToBeEdited ? itemToBeEdited.image : "none",
+            category: itemToBeEdited ? itemToBeEdited.category : "none",
+            id: itemToBeEdited ? itemToBeEdited.id : null
         };
     }
     

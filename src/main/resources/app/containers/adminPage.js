@@ -92,6 +92,7 @@ class AdminPage extends React.PureComponent {
         <Route path={`/app/com.enonic.starter.react/admin/categories`} render={() => 
           <CategoryComponent 
             submit={this.categorySubmitClick}
+            editCategory={this.props.editCategory}
             deleteCategory={this.props.deleteCategory} 
             categories={this.props.categories}
             toggleVisible={this.props.toggleCategoryVisible}  
@@ -129,7 +130,7 @@ function mapDispatchToProps(dispatch) {
 
     createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
-    changeCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
+    editCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
     toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
 
     addImage : (arg) => {imageActions.addImage(dispatch, arg)},

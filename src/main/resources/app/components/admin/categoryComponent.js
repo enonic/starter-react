@@ -93,7 +93,6 @@ export default class CategoryComponent extends React.PureComponent {
                         </TableHead>
                         <TableBody>
                         {this.props.categories.map(category => {
-                            console.log(category)
                             if (category.title.toUpperCase()
                                 .includes(this.state.searchValue.toUpperCase()
                                 )) {

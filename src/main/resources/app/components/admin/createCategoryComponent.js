@@ -17,7 +17,6 @@ export default class CreateItemComponent extends React.PureComponent {
         const {categoryToBeEdited} = this.props;
         this.state = {
             title: categoryToBeEdited ? categoryToBeEdited.title : "",
-            visible: false,
             filter: categoryToBeEdited ? categoryToBeEdited.filter : "",
             id: categoryToBeEdited ? categoryToBeEdited.id : null
         };
@@ -64,16 +63,6 @@ export default class CreateItemComponent extends React.PureComponent {
                             error={this.state.filter === ""}
                         />
                     </FormControl>
-                    <FormControlLabel
-                        control={
-                            <Checkbox
-                                id="visible"
-                                checked={this.state.visible}
-                                onChange={this.handleVisibleChange}
-                            />
-                        }
-                        label="Visible"
-                    />
 
                 </form>
                 <DialogActions>

@@ -47,7 +47,7 @@ class App extends Component {
         );
         SampleData.categories.map(data =>
             this.props.createCategory(
-                new Category({title: data.title, filter: data.filter, id: data.id})
+                new Category({title: data.title, filter: data.filter, id: data.id, visible: data.visible})
             )
         );
         SampleData.images.map(image => 

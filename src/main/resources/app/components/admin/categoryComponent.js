@@ -74,7 +74,7 @@ export default class CategoryComponent extends React.PureComponent {
 
                 <SearchComponent value={this.state.searchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
                 <Button 
-                    onClick={() => this.setState({ open: true})}
+                    onClick={() => this.toggleDialog("CATEGORY")}
                     color="primary">
                     add Category
                 </Button>

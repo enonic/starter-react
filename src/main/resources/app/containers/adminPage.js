@@ -65,7 +65,7 @@ class AdminPage extends React.PureComponent {
 
   categorySubmitClick = (data) => {
     this.setState({ dialogOpen: false }) 
-    this.props.createCategory(new Category({title: data.title, filter: data.filter, visible : data.visible})); 
+    this.props.createCategory(new Category({title: data.title, filter: data.filter, visible: data.visible})); 
   }
 
   

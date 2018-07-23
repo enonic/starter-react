@@ -87,6 +87,7 @@ exports.delete = function (req){
  * Replace item
  */
 exports.put = function(req) {
+    log.info("PUT" + JSON.stringify(req, null, 2) )
     return {
         body: {
             notice: "PUT not implemented"

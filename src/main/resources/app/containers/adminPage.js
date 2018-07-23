@@ -11,8 +11,6 @@ import PropTypes from 'prop-types';
 // Components 
 import ItemComponent from '../components/admin/itemComponent';
 import CategoryComponent from '../components/admin/categoryComponent';
-import SearchComponent from '../components/searchComponent';
-import DialogComponent from '../components/dialogComponent';
 
 // Interfaces 
 import Item from "../interfaces/item";
@@ -23,18 +21,11 @@ import { Route } from 'react-router-dom'
 // Styles 
 import '../styles/adminPage.less'
 
-import * as repo from '../services/repoService';
 import * as toasterActions from '../actions/toasterActions'; 
 
 // Material UI
-import Paper from '@material-ui/core/Paper'; 
-import Table from '@material-ui/core/Table'; 
-import TableBody from '@material-ui/core/TableBody'; 
-import TableHead from '@material-ui/core/TableHead'; 
-import TableRow from '@material-ui/core/TableRow'; 
-import TableCell from '@material-ui/core/TableCell'; 
 import Typography from '@material-ui/core/Typography'; 
-import Button from '@material-ui/core/Button'; 
+
 
 // Stylesheet 
 import '../styles/adminPage.less'
@@ -85,6 +76,7 @@ class AdminPage extends React.PureComponent {
             openToaster={this.props.openToaster}
             images={this.props.images}
             addImage={this.props.addImage}
+            save={this.props.saveItems}
             
   
           />}  
@@ -97,6 +89,7 @@ class AdminPage extends React.PureComponent {
             categories={this.props.categories}
             toggleVisible={this.props.toggleCategoryVisible}  
             openToaster={this.props.openToaster}
+            save={this.props.saveCategories}
           />}
         />
         
@@ -127,14 +120,17 @@ function mapDispatchToProps(dispatch) {
     deleteItem : (arg) => {mainActions.deleteItem(dispatch,arg)},
     editItem : (item) => {mainActions.changeItem(dispatch,item)},
     toggleItemVisible: (arg) => {mainActions.toggleItemVisible(dispatch,arg)},  
+    saveItems: () => {mainActions.save(dispatch)},
 
     createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
-    editCategory : (category, arg) => {categoryActions.changeCategory(dispatch,category,arg)},
+    editCategory : (category) => {categoryActions.changeCategory(dispatch,category)},
     toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
+    saveCategories: () => {categoryActions.save(dispatch, arg)},
 
     addImage : (arg) => {imageActions.addImage(dispatch, arg)},
     openToaster: (message) => { toasterActions.showToaster(dispatch, message)}
+
   };
 }
 

@@ -7,6 +7,7 @@ export const actions = {
   createItem: 'CREATE_ITEM',
   deleteItem: 'DELETE_ITEM',
   changeItem: 'CHANGE_ITEM',
+  save: 'SAVE_ITEM',
   toggleItemVisible: 'TOGGLE_VISIBLE',
 
   addItemToCart: 'ADD_ITEM_TO_CART',
@@ -68,12 +69,24 @@ function checkoutAction(){
 }
 
 
+
 function searchCategoryAction(arg){
   return {
     type: actions.searchCategory,
     data: arg
   }
 }
+
+function saveAction(){
+  return {
+    type: actions.save,
+  }
+}
+
+export function save(dispatch){
+  dispatch(saveAction())
+}
+
 
 export function searchCategory(dispatch, arg){
   dispatch(searchCategoryAction(arg))

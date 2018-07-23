@@ -24,6 +24,7 @@ export function remove(item){
 }
 
 export function edit(item){
+    console.log("editing item")
     return fetch(repoUrl, {
         method: "PUT",
         headers: {

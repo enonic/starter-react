@@ -122,7 +122,7 @@ export default class ItemComponent extends React.PureComponent {
                 </Table>
                 <Button 
                     color="primary"
-                    onClick={() => this.props.openToaster("Changes were saved, NOT! This button does nothing....")} 
+                    onClick={() => this.props.save()} 
                 >
                     Save changes
                 </Button>

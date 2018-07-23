@@ -7,10 +7,9 @@ export const actions = {
     
   }
   
-  function changeCategoryAction(category, arg) {
+  function changeCategoryAction(arg) {
     return {
       type: actions.changeCategory,
-      category: category,
       data: arg
     }
   }
@@ -39,8 +38,8 @@ export const actions = {
   
 
 
-  export function changeCategory(dispatch, category, arg){
-    dispatch(changeCategoryAction(category, arg))
+  export function changeCategory(dispatch, arg){
+    dispatch(changeCategoryAction(arg))
   }
   
   export function deleteCategory(dispatch, arg){

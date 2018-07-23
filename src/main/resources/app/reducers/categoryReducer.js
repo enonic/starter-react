@@ -1,5 +1,6 @@
 import { fromJS } from 'immutable';
 import * as categoryActions from '../actions/categoryActions'
+import Category from '../../../../../build/resources/main/app/interfaces/category';
 
 const initialState = fromJS(
   []
@@ -27,7 +28,10 @@ function hideCategory(oldState, action){
 
 function changeCategory(oldState, action){
   let state = oldState
-  state = state.splice(state.indexOf(state.find(category=> category.id == action.category.id)), 1, action.category)
+  let category = state.find(category => category.id == action.data.id)
+  let oldCategory = category
+  category.update(action.data)
+  state = state.splice(state.indexOf(oldCategory), 1, category) 
   return state
 }
 

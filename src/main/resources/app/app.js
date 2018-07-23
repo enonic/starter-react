@@ -41,13 +41,11 @@ class App extends Component {
 
     // STATE HOLDS TEST ITEMS 
     componentDidMount() {
-        /*
         SampleData.items.map(data => 
-            this.props.createItem(
+            repoService.edit(
                 new Item(data)
             )
         );
-        */
         SampleData.categories.map(data =>
             this.props.createCategory(
                 new Category(data)

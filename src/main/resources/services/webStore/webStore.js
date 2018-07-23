@@ -26,7 +26,7 @@ exports.get = function(req) {
             headers: {
                 "Content-Type": "application/json"
             }
-            
+
         }
     }
 }
@@ -112,11 +112,11 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        node.item.name = node.item.name
-        node.item.info = node.item.info
-        node.item.image = node.item.image
-        node.item.visble = node.item.visible
-        node.item.category = node.item.category
+        node.item.name = item.name
+        node.item.info = item.info
+        node.item.image = item.image
+        node.item.visble = item.visible
+        node.item.category = item.category
         return node; 
     }
 
@@ -127,6 +127,7 @@ exports.put = function(req) {
     repoConn.refresh();
 
     if(result){
+        log.info("PUT")
         return {
             body: {
                 status: 200
@@ -134,6 +135,7 @@ exports.put = function(req) {
         }
 
     } else {
+        log.info("PUT ERROR")
         return {
             body: {
                 status: 500,

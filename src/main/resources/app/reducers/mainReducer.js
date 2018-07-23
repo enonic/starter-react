@@ -27,6 +27,10 @@ function deleteItem(oldState, action){
 
 function changeItem(oldState, action){
   let state = oldState
+  state = state.updateIn(['allItems'], function (items) {
+    items = items.splice(items.indexOf(items.find(item => item.id == action.item.id)), 1, action.item)
+    return items
+  });
   return state
 }
 

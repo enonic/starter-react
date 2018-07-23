@@ -25,7 +25,8 @@ export default class ItemComponent extends React.PureComponent {
             searchValue: "",
             dialogType: "",
             message: "",
-            itemToBeRemoved: null
+            itemToBeRemoved: null,
+            itemToBeEdited: null
         }
         
     }
@@ -46,21 +47,32 @@ export default class ItemComponent extends React.PureComponent {
         }
     }
 
+    editItem(item){
+        this.setState({itemToBeEdited: item})
+        this.toggleDialog("ITEM")
+    }
+
+
     render(){ 
         return (
             <div>
                 <DialogComponent 
                     type= {this.state.dialogType} 
                     onClose={this.toggleDialog.bind(this)}
-                    submit = {this.props.submit}
+                    submit = {this.state.itemToBeEdited ? this.props.editItem : this.props.submit}
                     open = {this.state.open} 
                     categories={this.props.categories}
-                    message={this.state.message}
+                    
                     remove={this.props.deleteItem}
-                    openToaster={this.props.openToaster} 
                     toBeRemoved={this.state.itemToBeRemoved}
+                    
+                    openToaster={this.props.openToaster} 
+                    message={this.state.message}
+                    
                     images={this.props.images}
                     addImage={this.props.addImage}
+                    
+                    toBeEdited={this.state.itemToBeEdited}
                 />
 
                 <Typography variant="display3" gutterBottom>
@@ -92,15 +104,13 @@ export default class ItemComponent extends React.PureComponent {
                     {this.props.items.map(item => {
                         if (item.name.toUpperCase()
                             .includes(this.state.searchValue.toUpperCase()
-                            ) || item.category
-                            .toUpperCase()
-                            .includes(
-                            this.state.searchValue.toUpperCase()
+                            ) || item.category.toUpperCase()
+                            .includes(this.state.searchValue.toUpperCase()
                             )) {
                         return <ItemListComponent 
                             toggleDialog={this.toggleDialog.bind(this)}
                             item={item} key={item.id} 
-                            edit={this.editItem}
+                            edit={this.editItem.bind(this)}
                             visible={item.visible} 
                             toggleVisible={this.props.toggleVisible} />;
                         }

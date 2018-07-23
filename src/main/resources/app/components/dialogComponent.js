@@ -123,7 +123,9 @@ export default class DialogComponent extends React.PureComponent {
           onClose={this.props.onClose} 
           categories={this.props.categories}
           addImage={this.props.addImage} 
-          images={this.props.images}/>
+          images={this.props.images}
+          itemToBeEdited={this.props.toBeEdited}
+        />
       case "CATEGORY":
         return <CreateCategoryComponent 
           submit={this.props.submit} 

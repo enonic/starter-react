@@ -26,16 +26,17 @@ export default class CreateItemComponent extends React.PureComponent {
         super(arg)
         this.state = {
             uploadImageDialogVisible : false, 
-            name: "",
-            info: "",
-            imageName: "none",
-            category: "none",
+            name: this.props.itemToBeEdited ? this.props.itemToBeEdited.name : "",
+            info: this.props.itemToBeEdited ? this.props.itemToBeEdited.info : "",
+            image: this.props.itemToBeEdited ? this.props.itemToBeEdited.image : "none",
+            category: this.props.itemToBeEdited ? this.props.itemToBeEdited.category : "none",
+            id: this.props.itemToBeEdited.id
         };
     }
     
     getImageItems() {
         return this.props.images.map((image, index) => {
-            return <MenuItem key={index} value={image.name}>{image.name}</MenuItem>
+            return <MenuItem key={index} value={image.source}>{image.name}</MenuItem>
         }); 
     }
 
@@ -51,7 +52,7 @@ export default class CreateItemComponent extends React.PureComponent {
 
     handleImageChange = event => {
         this.setState({
-            imageName : event.target.value
+            image : event.target.value
         }); 
     }
 
@@ -83,10 +84,10 @@ export default class CreateItemComponent extends React.PureComponent {
         return (
         <div className="CreateItemComponent">
             <form>
-                {this.state.imageName !="none"? 
+                {this.state.image !="none"? 
                     <Card className="Item-Card">
                         <CardMedia
-                            image={this.props.images.find(image => image.name === this.state.imageName).source}
+                            image={this.state.image}
                             className="Item-Card-Media"
                         /> 
                     </Card> : null}
@@ -115,7 +116,7 @@ export default class CreateItemComponent extends React.PureComponent {
                     />
                     <FormControl>
                         {/*<InputLabel>Category</InputLabel>*/}
-                        <InputLabel>{this.state.category}</InputLabel>
+                        <InputLabel>Category</InputLabel>
                         <Select
                             value={this.state.category}
                             name="category"
@@ -131,8 +132,8 @@ export default class CreateItemComponent extends React.PureComponent {
                         {/*<InputLabel>Category</InputLabel>*/}
                         <InputLabel>Image</InputLabel>
                         <Select
-                            value={this.state.imageName}
-                            name="category"
+                            value={this.state.image}
+                            name="image"
                             onChange={this.handleImageChange}
                             autoWidth>
                             <MenuItem value="" disabled>

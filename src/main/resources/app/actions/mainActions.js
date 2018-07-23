@@ -32,11 +32,10 @@ function deleteItemAction(arg){
   }
 }
 
-function changeItemAction(item, arg){
+function changeItemAction(item){
   return {
     type: actions.changeItem,	
-    item: item,
-    data: arg
+    item: item
   }
 }
 
@@ -102,9 +101,9 @@ export function deleteItem(dispatch, arg){
     dispatch(deleteItemAction(arg))
 }
 
-export function changeItem(dispatch, item, arg){ 
+export function changeItem(dispatch, item){ 
   //promise 
-  dispatch(changeItemAction(item, arg))
+  dispatch(changeItemAction(item))
 }
 
 export function addItemToCart(dispatch, arg){ 

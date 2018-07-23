@@ -67,15 +67,7 @@ class AdminPage extends React.PureComponent {
     this.setState({ dialogOpen: false }) 
     this.props.createCategory(new Category({title: data.title, filter: data.filter, visible : data.visible})); 
   }
-  
-  editItem(item) {
-    console.log("edit me please! it's not implemented!!", item); 
 
-  }
-
-  editTestMethod(newValues) {
-    console.log(newValues); 
-  }
   
 
   render() {
@@ -86,12 +78,14 @@ class AdminPage extends React.PureComponent {
           <ItemComponent 
             submit={this.itemSubmitClick}
             deleteItem={this.props.deleteItem}
+            editItem={this.props.editItem}
+            toggleVisible={this.props.toggleItemVisible}
             items={this.props.items}
             categories={this.props.categories}
-            toggleVisible={this.props.toggleItemVisible}
             openToaster={this.props.openToaster}
             images={this.props.images}
             addImage={this.props.addImage}
+            
   
           />}  
         />
@@ -130,7 +124,7 @@ function mapDispatchToProps(dispatch) {
   return {
     createItem : (arg) => {mainActions.createItem(dispatch,arg)},
     deleteItem : (arg) => {mainActions.deleteItem(dispatch,arg)},
-    changeItem : (item, arg) => {mainActions.changeItem(dispatch,item, arg)},
+    editItem : (item) => {mainActions.changeItem(dispatch,item)},
     toggleItemVisible: (arg) => {mainActions.toggleItemVisible(dispatch,arg)},  
 
     createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},

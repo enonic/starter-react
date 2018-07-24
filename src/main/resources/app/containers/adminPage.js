@@ -56,7 +56,7 @@ class AdminPage extends React.PureComponent {
 
   categorySubmitClick = (data) => {
     this.setState({ dialogOpen: false }) 
-    this.props.createCategory(new Category({title: data.title, filter: data.filter, visible: data.visible})); 
+    this.props.createCategory(new Category({title: data.title, filter: data.filter, visible: data.visible}), true); 
   }
 
   
@@ -77,8 +77,8 @@ class AdminPage extends React.PureComponent {
             images={this.props.images}
             addImage={this.props.addImage}
             save={this.props.saveItems}
-            cancelSave={this.props.cancelSave}
-            edited={this.props.edited}
+            cancelSave={this.props.cancelItemSave}
+            edited={this.props.itemEdited}
             
   
           />}  
@@ -92,6 +92,8 @@ class AdminPage extends React.PureComponent {
             toggleVisible={this.props.toggleCategoryVisible}  
             openToaster={this.props.openToaster}
             save={this.props.saveCategories}
+            cancelSave={this.props.cancelCategorySave}
+            edited={this.props.categoriesEdit}
           />}
         />
         
@@ -102,7 +104,7 @@ class AdminPage extends React.PureComponent {
 AdminPage.propTypes = {
   items: PropTypes.object,
   categories: PropTypes.object,
-  edited: PropTypes.bool
+  itemEdited: PropTypes.bool
 };
 
 AdminPage.defaultProps = {
@@ -112,9 +114,12 @@ AdminPage.defaultProps = {
 function mapStateToProps(state){
 	return {
     items: state.get('app').get('allItems'),
-    categories: state.get('categories'), 
+    itemEdited: state.get('app').get('edited'),
+    
+    categories: state.get('categories').get('categories'), 
+    categoriesEdit: state.get('categories').get('edited'),
     images: state.get('images'),
-    edited: state.get('app').get('edited')
+
 	};
 }
 
@@ -125,13 +130,14 @@ function mapDispatchToProps(dispatch) {
     editItem : (item) => {mainActions.changeItem(dispatch,item)},
     toggleItemVisible: (arg) => {mainActions.toggleItemVisible(dispatch,arg)},  
     saveItems: () => {mainActions.save(dispatch)},
-    cancelSave: () => {mainActions.cancelSave(dispatch)},
+    cancelItemSave: () => {mainActions.cancelSave(dispatch)},
 
-    createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},
+    createCategory : (arg, edit) => {categoryActions.createCategory(dispatch,arg, edit)},
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},
     editCategory : (category) => {categoryActions.changeCategory(dispatch,category)},
     toggleCategoryVisible : (arg) => {categoryActions.toggleCategoryVisible(dispatch,arg)},
-    saveCategories: () => {categoryActions.save(dispatch, arg)},
+    saveCategories: () => {categoryActions.save(dispatch)},
+    cancelCategorySave: () => {categoryActions.cancelSave(dispatch)},
 
     addImage : (arg) => {imageActions.addImage(dispatch, arg)},
     openToaster: (message) => { toasterActions.showToaster(dispatch, message)}

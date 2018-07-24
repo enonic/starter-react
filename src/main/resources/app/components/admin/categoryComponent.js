@@ -49,6 +49,48 @@ export default class CategoryComponent extends React.PureComponent {
         this.toggleDialog("CATEGORY")
     }
 
+    getButtons(){
+        return this.props.edited ? [
+        
+            <Button 
+                color="primary"
+                variant="outlined"
+                onClick={() => {
+                    this.props.save()
+                    this.forceUpdate()
+                }} 
+            >
+                Save changes
+            </Button>,
+            <Button 
+                
+                color="secondary"
+                variant="outlined"
+                onClick={() => {
+                    this.props.cancelSave()
+                    this.forceUpdate()
+                }} 
+            >
+                cancel changes
+            </Button> ]
+        : [
+            <Button 
+                disabled
+                color="primary"
+                variant="outlined"
+            >
+                Save changes
+            </Button>,
+            <Button 
+                disabled
+                color="secondary"
+                variant="outlined"
+            >
+                cancel changes
+            </Button> ]
+
+    }
+
     render(){ 
         return (
             <div>
@@ -75,9 +117,11 @@ export default class CategoryComponent extends React.PureComponent {
                 <SearchComponent value={this.state.searchValue} onChange={this.searchCategoryOnChange.bind(this)}/>
                 <Button 
                     onClick={() => this.toggleDialog("CATEGORY")}
-                    color="primary">
+                    color="primary"
+                    variant="outlined">
                     add Category
                 </Button>
+                {this.getButtons()}
                 
 
                 <Paper>
@@ -109,12 +153,6 @@ export default class CategoryComponent extends React.PureComponent {
                         })}
                         </TableBody>
                     </Table>
-                    <Button 
-                        color="primary"
-                        onClick={() => this.props.openToaster("Changes were saved, NOT! This button does nothing....")} 
-                    >
-                        Save changes
-                    </Button>
                 </Paper>
             </div>
         )

@@ -8,5 +8,6 @@ export default class Image {
         if(!data.source) throw "Image must have a source. Got undefined or null"
         this.name = data.name || "unnamed";
         this.source = data.source; 
+        this.type = "image";
     }
 } 

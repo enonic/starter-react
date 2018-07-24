@@ -107,7 +107,7 @@ SideBar.defaultProps = {
 
 function mapStateToProps(state) {
     return {
-        categories: state.get('categories')
+        categories: state.get('categories').get('categories'), 
     }
 }
 

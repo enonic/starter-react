@@ -8,19 +8,10 @@ exports.get = function(req) {
 
     log.info("GET")
     var result = getItems(); 
-
-    if(result === "NOT_FOUND") {
-        return {
-            status : 400, 
-            message : "Not found"
-        }
-    }else{
-        return {
-            body: {items : result},
-            headers: {
-                "Content-Type": "application/json"
-            }
-
+    return {
+        body: {nodes : result},
+        headers: {
+            "Content-Type": "application/json"
         }
     }
 }
@@ -30,6 +21,7 @@ exports.get = function(req) {
  * Add to repo 
  */
 exports.post = function(req) {
+    log.info("ITEM POST")
     var item = JSON.parse(req.body); 
     if(!item) {
         var message = "Missing/invalid item";
@@ -106,11 +98,11 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        node.item.name = item.name
-        node.item.info = item.info
-        node.item.image = item.image
-        node.item.visible = item.visible
-        node.item.category = item.category
+        node.data.name = data.name
+        node.data.info = data.info
+        node.data.image = data.image
+        node.data.visible = data.visible
+        node.data.category = data.category
         return node; 
     }
 
@@ -148,10 +140,11 @@ function getItems() {
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
         count: 1000,
-        query: "_nodeType = 'default'"
+        query: "data.type = 'item'"
     }).hits;
+
     if (!hits || hits.length < 1) {
-        return "NOT_FOUND";
+        return hits;
     }
 
     var items = hits.map(function (hit) {

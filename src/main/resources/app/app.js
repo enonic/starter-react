@@ -42,29 +42,42 @@ class App extends Component {
     // STATE HOLDS TEST ITEMS 
     componentDidMount() {
         repoService.getItems().then(items => {
-            if(items.size == 0){
-                SampleData.items.map(data => 
-                    repoService.editItem(
-                        new Item(data)
+            if(items.length == 0){
+                SampleData.items.map(data => {
+                    let item = new Item(data)
+                    repoService.addItem(item)
+                    this.props.createItem(item)
+                });
+            } else {
+                items.forEach(item =>
+                    this.props.createItem(
+                        new Item(item)
                     )
-                );
+                )
             }
-        })
-        SampleData.categories.map(data =>
-            this.props.createCategory(
-                new Category(data)
-            )
-        );
+        }).then(
+            repoService.getCategories().then(categories => {
+                if(categories.length == 0){
+                    SampleData.categories.map(data => {
+                        
+                        let category = new Category(data)
+                        repoService.addCategory(category)
+                        this.props.createCategory(category)
+    
+                    })
+                } else {
+                    categories.forEach(category =>{
+                        console.log(category)
+                        this.props.createCategory(
+                            new Category(category)
+                        )
+                    })
+                }
+            })
+        )
         SampleData.images.map(image => 
             this.props.addImage(new Image(image))
         ); 
-        repoService.getItems().then(items => {
-            items.forEach(item =>
-                this.props.createItem(
-                    new Item(item)
-                )
-            )
-        })
     }
 
     toggleMenu() {

@@ -121,12 +121,36 @@ exports.sudo = function (func, user, principal) {
  * @param name of repository 
  * @param branch in repository 
  */
-exports.storeItemAndCreateNode = function(item, config) {
+exports.storeItemAndCreateNode = function(data, config) {
     var repoConn = getRepoConnection(config.name, config.branch);
     var node = repoConn.create({
         _parentPath: config.path,
         _permissions: config.permissions,
-        item: item
+        data: data
+    })
+
+    repoConn.refresh();
+    return node;
+}
+
+exports.storeCategoryAndCreateNode = function(data, config) {
+    var repoConn = getRepoConnection(config.name, config.branch);
+    var node = repoConn.create({
+        _parentPath: config.path,
+        _permissions: config.permissions,
+        data: data
+    })
+
+    repoConn.refresh();
+    return node;
+}
+
+exports.storeImageAndCreateNode = function(data, config) {
+    var repoConn = getRepoConnection(config.name, config.branch);
+    var node = repoConn.create({
+        _parentPath: config.path,
+        _permissions: config.permissions,
+        data: data
     })
 
     repoConn.refresh();

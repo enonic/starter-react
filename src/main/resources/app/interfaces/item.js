@@ -7,6 +7,7 @@ export default class Item {
         this.visible = data.visible == undefined ? true: data.visible;
         this.category = data.category || "others"; 
         this.edited = data.edited == undefined ? true: data.edited;
+        this.type = "item"
     }
 
     update(data){

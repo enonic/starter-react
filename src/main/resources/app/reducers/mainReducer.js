@@ -6,8 +6,18 @@ import * as Repo from '../services/repoService';
 const initialState = fromJS({
   allItems: [],
   cartItems: [],
-  searchValue: ""
+  deletedItems: [],
+  searchValue: "",
+  edited: false,
 });
+
+function sortItems(state){
+  state = state.updateIn(['allItems'], function (items) {
+    return items.sort()
+  })
+  return state
+}
+
 
 function createItem(oldState, action){
   let state = oldState
@@ -15,6 +25,10 @@ function createItem(oldState, action){
     items = items.push(action.item)
     return items
   });
+  if(action.edit){
+    state = state.set('edited', true)
+  }
+  state = sortItems(state)
   return state
 }
 
@@ -24,6 +38,11 @@ function deleteItem(oldState, action){
     items = items.splice(items.indexOf(action.item), 1)
     return items
   });
+  state = state.updateIn(['deletedItems'], function (items) {
+    items = items.push(action.item)
+    return items
+  });
+  state = state.set('edited', true)
   return state
 }
 
@@ -36,6 +55,7 @@ function changeItem(oldState, action){
     items = items.splice(items.indexOf(oldItem), 1, item)
     return items
   });
+  state = state.set('edited', true)
   return state
 }
 
@@ -61,9 +81,11 @@ function toggleItemVisible(oldState, action){
   let state = oldState
   state = state.updateIn(["allItems"], function(items) {
     action.item.visible = action.item.visible ? false : true;
+    action.item.edited = true
     items = items.splice(items.indexOf(action.item), 1, action.item)
     return items;
   });
+  state = state.set('edited', true)
   return state
 }
 
@@ -90,9 +112,29 @@ function save(oldState, action){
         Repo.edit(item)
       }
     })
-    
     return items;
   });
+  state = state.updateIn(["deletedItems"], function(items) {
+    items.forEach(item => {
+      Repo.remove(item)
+    })
+    return items;
+  });
+
+  state = state.set('edited', false)
+  return state
+}
+
+function cancelSave(oldState, action){
+  let state = oldState
+  state = state.updateIn(["allItems"], function(items) {
+    return fromJS(action.items)
+  })
+  state = state.updateIn(["deletedItems"], function() {
+    return fromJS([])
+  })
+  state = state.set('edited', false)  
+  state = sortItems(state)
   return state
 }
 
@@ -113,6 +155,8 @@ export function mainReducer(state = initialState, action) {
       return checkout(state, action)
     case mainActions.actions.save:
       return save(state, action)
+    case mainActions.actions.cancelSave:
+      return cancelSave(state, action)
 
     case mainActions.actions.removeItemFromCart:
       return removeItemFromCart(state, action)

@@ -52,6 +52,48 @@ export default class ItemComponent extends React.PureComponent {
         this.toggleDialog("ITEM")
     }
 
+    getButtons(){
+        return this.props.edited ? [
+        
+            <Button 
+                color="primary"
+                variant="outlined"
+                onClick={() => {
+                    this.props.save()
+                    this.forceUpdate()
+                }} 
+            >
+                Save changes
+            </Button>,
+            <Button 
+                
+                color="secondary"
+                variant="outlined"
+                onClick={() => {
+                    this.props.cancelSave()
+                    this.forceUpdate()
+                }} 
+            >
+                cancel changes
+            </Button> ]
+        : [
+            <Button 
+                disabled
+                color="primary"
+                variant="outlined"
+            >
+                Save changes
+            </Button>,
+            <Button 
+                disabled
+                color="secondary"
+                variant="outlined"
+            >
+                cancel changes
+            </Button> ]
+
+    }
+
 
     render(){ 
         return (
@@ -84,9 +126,12 @@ export default class ItemComponent extends React.PureComponent {
                 <SearchComponent value={this.state.searchValue} onChange={this.searchItemOnChange.bind(this)}/>
                 <Button 
                     onClick={()=> this.toggleDialog("ITEM")}
-                    color="primary">
+                    color="primary"
+                    variant="outlined">
+                    
                     Add new item
                 </Button>
+                {this.getButtons()}
                 
                 <Paper>
                 <Table>
@@ -120,15 +165,7 @@ export default class ItemComponent extends React.PureComponent {
                     })}
                     </TableBody>
                 </Table>
-                <Button 
-                    color="primary"
-                    onClick={() => {
-                        this.props.save()
-                        this.forceUpdate()
-                    }} 
-                >
-                    Save changes
-                </Button>
+                
                 </Paper>
             </div>
         )

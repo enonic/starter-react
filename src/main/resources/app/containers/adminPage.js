@@ -51,7 +51,7 @@ class AdminPage extends React.PureComponent {
 
   itemSubmitClick = (data) => {
     this.setState({ dialogOpen: false }); 
-    this.props.createItem(new Item({name: data.name, info: data.info, image: data.image, category: data.category})); 
+    this.props.createItem(new Item({name: data.name, info: data.info, image: data.image, category: data.category}), true); 
   }
 
   categorySubmitClick = (data) => {
@@ -77,6 +77,8 @@ class AdminPage extends React.PureComponent {
             images={this.props.images}
             addImage={this.props.addImage}
             save={this.props.saveItems}
+            cancelSave={this.props.cancelSave}
+            edited={this.props.edited}
             
   
           />}  
@@ -99,7 +101,8 @@ class AdminPage extends React.PureComponent {
 
 AdminPage.propTypes = {
   items: PropTypes.object,
-  categories: PropTypes.object
+  categories: PropTypes.object,
+  edited: PropTypes.bool
 };
 
 AdminPage.defaultProps = {
@@ -110,17 +113,19 @@ function mapStateToProps(state){
 	return {
     items: state.get('app').get('allItems'),
     categories: state.get('categories'), 
-    images: state.get('images')
+    images: state.get('images'),
+    edited: state.get('app').get('edited')
 	};
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    createItem : (arg) => {mainActions.createItem(dispatch,arg)},
+    createItem : (arg, edit) => {mainActions.createItem(dispatch,arg, edit)},
     deleteItem : (arg) => {mainActions.deleteItem(dispatch,arg)},
     editItem : (item) => {mainActions.changeItem(dispatch,item)},
     toggleItemVisible: (arg) => {mainActions.toggleItemVisible(dispatch,arg)},  
     saveItems: () => {mainActions.save(dispatch)},
+    cancelSave: () => {mainActions.cancelSave(dispatch)},
 
     createCategory : (arg) => {categoryActions.createCategory(dispatch,arg)},
     deleteCategory : (arg) => {categoryActions.deleteCategory(dispatch,arg)},

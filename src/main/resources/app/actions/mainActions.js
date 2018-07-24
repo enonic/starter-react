@@ -1,6 +1,8 @@
 import * as toasterActions from './toasterActions';
 
-import * as repo from '../services/repoService';
+import * as Repo from '../services/repoService';
+
+import Item from '../interfaces/item';
 
 // fetch api
 export const actions = {
@@ -8,6 +10,7 @@ export const actions = {
   deleteItem: 'DELETE_ITEM',
   changeItem: 'CHANGE_ITEM',
   save: 'SAVE_ITEM',
+  cancelSave: 'CANCEL_SAVE',
   toggleItemVisible: 'TOGGLE_VISIBLE',
 
   addItemToCart: 'ADD_ITEM_TO_CART',
@@ -19,10 +22,11 @@ export const actions = {
 }
 
 
-function createItemAction(arg){
+function createItemAction(arg, edit){
   return {
     type: actions.createItem,	
-    item: arg
+    item: arg,
+    edit: edit
   }
 }
 
@@ -83,6 +87,21 @@ function saveAction(){
   }
 }
 
+function cancelSaveAction(items){
+  return {
+    type: actions.cancelSave,
+    items: items
+  }
+}
+
+export function cancelSave(dispatch){
+  Repo.get().then(response =>
+    response = response.map(data => new Item(data))
+  ).then(items =>
+    dispatch(cancelSaveAction(items))
+  )
+}
+
 export function save(dispatch){
   toasterActions.showToaster(dispatch, "Saved")
   dispatch(saveAction())
@@ -104,10 +123,10 @@ export function toggleItemVisible(dispatch, arg){
   dispatch(toggleItemVisibleAction(arg))
 }
 
-export function createItem(dispatch, arg){ 
+export function createItem(dispatch, arg, edit){ 
     //promise 
     //repo.add(arg)
-    dispatch(createItemAction(arg))
+    dispatch(createItemAction(arg, edit))
 }
 
 export function deleteItem(dispatch, arg){ 

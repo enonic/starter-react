@@ -1,6 +1,6 @@
 import * as toasterActions from './toasterActions';
 
-import * as Repo from '../services/repoService';
+import * as repoService from '../services/repoService';
 
 import Item from '../interfaces/item';
 
@@ -95,7 +95,7 @@ function cancelSaveAction(items){
 }
 
 export function cancelSave(dispatch){
-  Repo.get().then(response =>
+  repoService.getItems().then(response =>
     response = response.map(data => new Item(data))
   ).then(items =>
     dispatch(cancelSaveAction(items))

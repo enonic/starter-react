@@ -1,6 +1,6 @@
 import { fromJS } from 'immutable';
 import * as mainActions from '../actions/mainActions';
-import * as Repo from '../services/repoService';
+import * as repoService from '../services/repoService';
 
 
 const initialState = fromJS({
@@ -13,7 +13,7 @@ const initialState = fromJS({
 
 function sortItems(state){
   state = state.updateIn(['allItems'], function (items) {
-    return items.sort()
+    return items.sort((a,b) => b.id - a.id)
   })
   return state
 }
@@ -109,16 +109,16 @@ function save(oldState, action){
     items.forEach(item => {
       if(item.edited){
         item.edited = false
-        Repo.edit(item)
+        repoService.editItem(item)
       }
     })
     return items;
   });
   state = state.updateIn(["deletedItems"], function(items) {
     items.forEach(item => {
-      Repo.remove(item)
+      repoService.removeItem(item)
     })
-    return items;
+    return fromJS([]);
   });
 
   state = state.set('edited', false)

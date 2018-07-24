@@ -5,13 +5,7 @@ var repoConfig = require("../../lib/config/repoConfig");
  * Get get items from Repo 
  */
 exports.get = function(req) {
-    /**
-     * Search in repo for item. 
-     * If found, get it and continue 
-     * 
-     * Convert repo-node to item that client expects 
-     * Return the item
-     */
+
     log.info("GET")
     var result = getItems(); 
 
@@ -115,7 +109,7 @@ exports.put = function(req) {
         node.item.name = item.name
         node.item.info = item.info
         node.item.image = item.image
-        node.item.visble = item.visible
+        node.item.visible = item.visible
         node.item.category = item.category
         return node; 
     }

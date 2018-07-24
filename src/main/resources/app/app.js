@@ -41,10 +41,10 @@ class App extends Component {
 
     // STATE HOLDS TEST ITEMS 
     componentDidMount() {
-        repoService.get().then(items => {
-            if(items){
+        repoService.getItems().then(items => {
+            if(items.size == 0){
                 SampleData.items.map(data => 
-                    repoService.edit(
+                    repoService.editItem(
                         new Item(data)
                     )
                 );
@@ -58,7 +58,7 @@ class App extends Component {
         SampleData.images.map(image => 
             this.props.addImage(new Image(image))
         ); 
-        repoService.get().then(items => {
+        repoService.getItems().then(items => {
             items.forEach(item =>
                 this.props.createItem(
                     new Item(item)

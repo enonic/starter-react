@@ -26,7 +26,6 @@ export default class CategoryListComponent extends React.PureComponent {
 
     render(){ 
         let styleClass = this.props.category.edited ? "AdminCategoryComponent-edited" : "AdminCategoryComponent"
-        console.log(this.props.category.edited)
         return <TableRow className={styleClass}>
             <TableCell component="th" scope="row">
                 {this.props.category.title}

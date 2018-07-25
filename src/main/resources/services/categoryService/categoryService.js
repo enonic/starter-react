@@ -2,7 +2,7 @@ var repoLib = require("../../lib/repo/repo");
 var repoConfig = require("../../lib/config/repoConfig"); 
 
 /**
- * Get get items from Repo 
+ * Get get categories from Repo 
  */
 exports.get = function(req) {
     log.info("GET CATEGORY")
@@ -45,9 +45,10 @@ exports.post = function(req) {
 
 exports.delete = function (req){
     
-    var item = JSON.parse(req.body);
-    if (!item) {
-        var message = "Missing/invalid item data in request";
+    log.info(JSON.stringify(req, null, 2))
+    var body = JSON.parse(req.body);
+    if (!body) {
+        var message = "Missing/invalid node data in request";
         log.warning(message);
         return { 
             status: 400,
@@ -55,7 +56,7 @@ exports.delete = function (req){
         };
     }
 
-    var result = deleteNode(item);
+    var result = deleteNode(body);
 
     if(result === "NOT_FOUND") {
         return {
@@ -83,14 +84,6 @@ exports.put = function(req) {
         query: "data.type = 'category' AND data.id = '" + body.id + "'"
     }).hits;
 
-    log.info(repoConn.query({
-        query: "data.type = 'category'"
-    }).hits)
-
-    log.info("id = " + body.id)
-
-
-    log.info("hits: " + hits)
     if (!hits || hits.length < 1) {
         log.info("Node was not found. Creating a new one")
         var wasSuccessful = createNode(body).success; 
@@ -109,9 +102,9 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        node.data.title = data.title
-        node.data.filter = data.filter
-        node.data.visble = data.visible
+        node.data.title = body.title
+        node.data.filter = body.filter
+        node.data.visble = body.visible
         return node; 
     }
 
@@ -133,7 +126,7 @@ exports.put = function(req) {
         return {
             body: {
                 status: 500,
-                message: "Something went wrong when editing and item"
+                message: "Something went wrong when editing node"
             }
         }
     }
@@ -141,7 +134,7 @@ exports.put = function(req) {
 
 /**
  * NOT DONE 
- * Returns all items in repo
+ * Returns all categories in repo
  */
 function getCategories() {
     
@@ -154,12 +147,12 @@ function getCategories() {
         return hits;
     }
 
-    var items = hits.map(function (hit) {
+    var categories = hits.map(function (hit) {
         return repoConn.get(hit.id);
     });
 
-    if (items) {
-        return items;
+    if (categories) {
+        return categories;
     } else {
         return "NOT_FOUND";
     } 
@@ -171,7 +164,7 @@ function getCategories() {
  */
 var createNode = function(category) {
     try {
-        var node =  repoLib.storeItemAndCreateNode(
+        var node =  repoLib.storeCategoryAndCreateNode(
             category, 
             repoConfig
         ); 
@@ -205,13 +198,13 @@ var createNode = function(category) {
 
 
 
-var deleteNode = function (item) {
+var deleteNode = function (body) {
 
-    log.info("DELETE:" + new Date() + JSON.stringify(item, null, 4))
+    log.info("DELETE:" + new Date() + JSON.stringify(body, null, 4))
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     
     var hits = repoConn.query({
-        query: "item.id = " + item.id 
+        query: "data.type = 'category' AND data.id = '" + body.id + "'"
     }).hits;
 
     if (!hits || hits.length < 1) {

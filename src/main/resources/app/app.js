@@ -67,7 +67,6 @@ class App extends Component {
                     })
                 } else {
                     categories.forEach(category =>{
-                        console.log(category)
                         this.props.createCategory(
                             new Category(category)
                         )

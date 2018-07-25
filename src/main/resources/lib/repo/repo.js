@@ -128,7 +128,6 @@ exports.storeItemAndCreateNode = function(data, config) {
         _permissions: config.permissions,
         data: data
     })
-
     repoConn.refresh();
     return node;
 }

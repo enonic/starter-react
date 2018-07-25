@@ -22,7 +22,6 @@ function createCategory(oldState, action){
     categories = categories.push(action.category)
     return categories
   });
-  console.log(action.edit)
   if(action.edit){
     state = state.set('edited', true)
   }
@@ -33,11 +32,11 @@ function createCategory(oldState, action){
 function deleteCategory(oldState, action){
   let state = oldState
   state = state.updateIn(['categories'], function (categories) {
-    categories = categories.splice(categories.indexOf(action.categorie), 1)
+    categories = categories.splice(categories.indexOf(action.category), 1)
     return categories
   });
   state = state.updateIn(['deletedCategories'], function (categories) {
-    categories = categories.push(action.categorie)
+    categories = categories.push(action.category)
     return categories
   });
   state = state.set('edited', true)

@@ -31,7 +31,7 @@ exports.post = function(req) {
     var wasSuccessful = createNode(item).success; 
     
     if(wasSuccessful) {
-        log.info("Added Item:" + JSON.stringify(item, null, 4)); 
+        log.info("Added Item " + JSON.stringify(item, null, 4)); 
         return { 
             status: 200, 
             message: "" 
@@ -78,7 +78,7 @@ exports.put = function(req) {
     var item = JSON.parse(req.body);
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
-        query: "item.id = " + item.id
+        query: "data.type = 'item' AND data.id = '" + item.id + "'"
     }).hits;
     if (!hits || hits.length < 1) {
         log.info("Node was not found. Creating a new one")
@@ -98,11 +98,11 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        node.data.name = data.name
-        node.data.info = data.info
-        node.data.image = data.image
-        node.data.visible = data.visible
-        node.data.category = data.category
+        node.data.name = item.name
+        node.data.info = item.info
+        node.data.image = item.image
+        node.data.visible = item.visible
+        node.data.category = item.category
         return node; 
     }
 
@@ -200,11 +200,11 @@ var createNode = function(item) {
 
 var deleteNode = function (item) {
 
-    log.info("DELETE:" + new Date() + JSON.stringify(item, null, 4))
+    log.info("DELETE ITEM " + new Date() + JSON.stringify(item, null, 4))
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     
     var hits = repoConn.query({
-        query: "item.id = " + item.id 
+        query: "data.type = 'item' AND data.id = '" + item.id + "'"
     }).hits;
 
     if (!hits || hits.length < 1) {

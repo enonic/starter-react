@@ -1,12 +1,16 @@
 export const actions = {
     addImage: 'ADD_IMAGE',
-    deleteImage: 'DELETE_IMAGE'
+    deleteImage: 'DELETE_IMAGE',
+    changeImage: 'CHANGE_IMAGE',
+    save: 'SAVE_IMAGES',
+    cancelSave: 'CANCEL_SAVE_IMAGES'
 }
 
-function addImageAction(arg) {
+function addImageAction(arg, edit) {
     return {
         type: actions.addImage,
-        image: arg
+        image: arg,
+        edit: edit
     }
 }
 
@@ -17,11 +21,45 @@ function deleteImageAction(arg) {
     }
 }
 
+function changeImageAction(arg) {
+    return {
+        type: actions.changeImage,
+        image: arg
+    }
+}
+
+function saveAction() {
+    return {
+        type: actions.save
+    }
+}
+
+function cancelSaveAction() {
+    return {
+        type: actions.cancelSave
+    }
+}
 
 
 
-export function addImage(dispatch, arg) {
-    dispatch(addImageAction(arg))
+
+export function cancelSave(dispatch) {
+    dispatch(cancelSaveAction())
+}
+
+
+export function save(dispatch) {
+    dispatch(saveAction())
+}
+
+
+export function changeImage(dispatch, arg) {
+    dispatch(changeImageAction(arg))
+}
+
+
+export function addImage(dispatch, arg, edit) {
+    dispatch(addImageAction(arg, edit))
 }
 
 export function deleteImage(dispatch, arg) {

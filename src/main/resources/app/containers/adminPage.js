@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 // Components 
 import ItemComponent from '../components/admin/itemComponent';
 import CategoryComponent from '../components/admin/categoryComponent';
+import ImageComponent from '../components/admin/imageComponent';
 
 // Interfaces 
 import Item from "../interfaces/item";
@@ -96,16 +97,25 @@ class AdminPage extends React.PureComponent {
             edited={this.props.categoriesEdit}
           />}
         />
+
+        <Route path={`/app/com.enonic.starter.react/admin/images`} render={() => 
+          <ImageComponent 
+            editImage={this.props.editImage}
+            deleteImage={this.props.deleteImage} 
+            images={this.props.images}
+            openToaster={this.props.openToaster}
+            save={this.props.saveImages}
+            cancelSave={this.props.cancelImage}
+            edited={this.props.imagesEdit}
+            addImage={this.props.addImage}
+          />}
+        />
         
       </div>
   }
 }
 
-AdminPage.propTypes = {
-  items: PropTypes.object,
-  categories: PropTypes.object,
-  itemEdited: PropTypes.bool
-};
+
 
 AdminPage.defaultProps = {
 }
@@ -118,7 +128,9 @@ function mapStateToProps(state){
     
     categories: state.get('categories').get('categories'), 
     categoriesEdit: state.get('categories').get('edited'),
-    images: state.get('images'),
+    
+    images: state.get('images').get('images'),
+    imagesEdit: state.get('images').get('edited')
 
 	};
 }
@@ -139,7 +151,12 @@ function mapDispatchToProps(dispatch) {
     saveCategories: () => {categoryActions.save(dispatch)},
     cancelCategorySave: () => {categoryActions.cancelSave(dispatch)},
 
-    addImage : (arg) => {imageActions.addImage(dispatch, arg)},
+    addImage: (arg, edit) => {imageActions.addImage(dispatch, arg, edit)},
+    deleteImage: (arg) => {imageActions.deleteImage(dispatch, arg)},
+    saveImages: () => {imageActions.save(dispatch)},
+    cancelSaveImages: () => {imageActions.cancelSave(dispatch)},
+
+
     openToaster: (message) => { toasterActions.showToaster(dispatch, message)}
 
   };

@@ -4,31 +4,46 @@
     "images": [ 
         {
             "name": "camera",
-            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Agfa_Click_BW_1.JPG/1920px-Agfa_Click_BW_1.JPG"
+            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/Agfa_Click_BW_1.JPG/1920px-Agfa_Click_BW_1.JPG",
+            "id": 1,
+            "edited" : false
         },
         {
             "name": "chair",
-            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dining_chair_1939.jpg/1024px-Dining_chair_1939.jpg"
+            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Dining_chair_1939.jpg/1024px-Dining_chair_1939.jpg",
+            "id": 2,
+            "edited" : false
         },
         {
             "name": "bed",
-            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg/1920px-Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg"
+            "source": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg/1920px-Homewood_Suites_Hilton_San_Diego_Downtown_Bayside_03.jpg",
+            "id": 3,
+            "edited" : false
         },
         {
             "name": "fish",
-            "source": "https://upload.wikimedia.org/wikipedia/commons/6/68/UrolophusPaucimaculatus.jpg"
+            "source": "https://upload.wikimedia.org/wikipedia/commons/6/68/UrolophusPaucimaculatus.jpg",
+            "id": 4,
+            "edited" : false
+            
         },
         {
             "name": "teapot",
-            "source": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cup_of_green_tea_and_tea_pot_on_table.jpg"
+            "source": "https://upload.wikimedia.org/wikipedia/commons/a/ae/Cup_of_green_tea_and_tea_pot_on_table.jpg",
+            "id": 5,
+            "edited" : false
         },
         {
             "name": "mug",
-            "source": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Hot_Cold_mug.jpg"
+            "source": "https://upload.wikimedia.org/wikipedia/commons/2/2f/Hot_Cold_mug.jpg",
+            "id": 6,
+            "edited" : false
         },
         {
             "name": "suit",
-            "source": "https://upload.wikimedia.org/wikipedia/commons/b/b5/John_Glenn_in_his_Mercury_pressure_suit.jpg"
+            "source": "https://upload.wikimedia.org/wikipedia/commons/b/b5/John_Glenn_in_his_Mercury_pressure_suit.jpg",
+            "id": 7,
+            "edited" : false
         }
     ], 
 

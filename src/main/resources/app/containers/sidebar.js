@@ -59,6 +59,15 @@ class SideBar extends React.PureComponent {
                     </ListItemIcon>
                     <ListItemText>Categories</ListItemText>
                 </ListItem>
+            </Link>,
+
+            <Link to="/app/com.enonic.starter.react/admin/images">
+                <ListItem className="SideBar-ListItem" key="images">
+                    <ListItemIcon>
+                        <CategoryIcon />
+                    </ListItemIcon>
+                    <ListItemText>Images</ListItemText>
+                </ListItem>
             </Link>
 
         ]

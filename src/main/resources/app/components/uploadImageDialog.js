@@ -8,10 +8,12 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import Typography from '@material-ui/core/Typography'; 
 // Interfaces 
 import Image from '../interfaces/image'; 
 // Stylesheets
 import "../styles/uploadImageDialog.less";
+import { typography } from 'material-ui/styles';
 
 export default class UploadImageDialog extends React.PureComponent {
     constructor(arg) {
@@ -58,9 +60,10 @@ export default class UploadImageDialog extends React.PureComponent {
             open={this.props.open}
             onClose={this.props.handleClose}
             aria-labelledby="form-dialog-title">
-            <DialogTitle id="form-dialog-title">Subscribe</DialogTitle>
+            <DialogTitle id="form-dialog-title">Upload image</DialogTitle>
             <DialogContent>
                 <TextField
+                    required
                     autoFocus
                     margin="dense"
                     id="name"
@@ -80,19 +83,27 @@ export default class UploadImageDialog extends React.PureComponent {
                 <label htmlFor="raised-button-file">
                     <Button
                         color={this.state.validationFailed ? "secondary" : "primary"}
-                        component="span">
-                        Select Image {this.state.source || ""}
+                        component="span"
+                        variant="outlined" >
+                        Select Image 
                     </Button>
                 </label>
             </DialogContent>
-            
+            <Typography>{this.state.source}</Typography>
             <DialogActions>
-                <Button onClick={this.props.onClose} color="primary">
+                <Button 
+                    onClick={this.props.onClose} 
+                    variant="outlined"
+                    color="primary">
                     Cancel
-            </Button>
-                <Button onClick={this.handleUpload.bind(this)} color="primary">
+                </Button>
+                <Button 
+                    disabled={this.state.source == "" || this.state.name == "" ? true : false}
+                    onClick={this.handleUpload.bind(this)} 
+                    variant="outlined"
+                    color="primary">
                     Upload
-            </Button>
+                </Button>
             </DialogActions>
         </Dialog>
     }

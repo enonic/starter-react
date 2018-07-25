@@ -73,10 +73,23 @@ class App extends Component {
                     })
                 }
             })
+        ).then(
+            repoService.getImages().then(images => {
+                if(images.length == 0){
+                    SampleData.images.map(data => {
+                        
+                        let image = new Image(data)
+                        repoService.addImage(image)
+                        this.props.addImage(image)
+    
+                    })
+                } else {
+                    images.forEach(image =>{
+                        this.props.addImage(new Image(image))
+                    })
+                }
+            })
         )
-        SampleData.images.map(image => 
-            this.props.addImage(new Image(image))
-        ); 
     }
 
     toggleMenu() {

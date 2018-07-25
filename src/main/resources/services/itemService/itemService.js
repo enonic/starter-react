@@ -22,16 +22,16 @@ exports.get = function(req) {
  */
 exports.post = function(req) {
     log.info("ITEM POST")
-    var item = JSON.parse(req.body); 
-    if(!item) {
+    var body = JSON.parse(req.body); 
+    if(!body) {
         var message = "Missing/invalid item";
         return { status: 400, message: message };
     }
 
-    var wasSuccessful = createNode(item).success; 
+    var wasSuccessful = createNode(body).success; 
     
     if(wasSuccessful) {
-        log.info("Added Item " + JSON.stringify(item, null, 4)); 
+        log.info("Added Item " + JSON.stringify(body, null, 4)); 
         return { 
             status: 200, 
             message: "" 
@@ -44,8 +44,8 @@ exports.post = function(req) {
 
 exports.delete = function (req){
     
-    var item = JSON.parse(req.body);
-    if (!item) {
+    var body = JSON.parse(req.body);
+    if (!body) {
         var message = "Missing/invalid item data in request";
         log.warning(message);
         return { 
@@ -54,7 +54,7 @@ exports.delete = function (req){
         };
     }
 
-    var result = deleteNode(item);
+    var result = deleteNode(body);
 
     if(result === "NOT_FOUND") {
         return {
@@ -75,17 +75,17 @@ exports.delete = function (req){
  * Replace item
  */
 exports.put = function(req) {
-    var item = JSON.parse(req.body);
+    var body = JSON.parse(req.body);
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
-        query: "data.type = 'item' AND data.id = '" + item.id + "'"
+        query: "data.type = 'item' AND data.id = '" + body.id + "'"
     }).hits;
     if (!hits || hits.length < 1) {
         log.info("Node was not found. Creating a new one")
-        var wasSuccessful = createNode(item).success; 
+        var wasSuccessful = createNode(body).success; 
     
         if(wasSuccessful) {
-            log.info("Added Item:" + JSON.stringify(item, null, 4)); 
+            log.info("Added Item:" + JSON.stringify(body, null, 4)); 
             return { 
                 status: 200, 
                 message: "" 
@@ -98,11 +98,11 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        node.data.name = item.name
-        node.data.info = item.info
-        node.data.image = item.image
-        node.data.visible = item.visible
-        node.data.category = item.category
+        node.data.name = body.name
+        node.data.info = body.info
+        node.data.image = body.image
+        node.data.visible = body.visible
+        node.data.category = body.category
         return node; 
     }
 

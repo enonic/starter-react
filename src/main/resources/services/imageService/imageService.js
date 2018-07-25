@@ -2,27 +2,20 @@ var repoLib = require("../../lib/repo/repo");
 var repoConfig = require("../../lib/config/repoConfig"); 
 
 /**
- * Get get items from Repo 
+ * Get get images from Repo 
  */
 exports.get = function(req) {
 
-    log.info("GET")
-    var result = getItems(); 
-
-    if(result === "NOT_FOUND") {
-        return {
-            status : 400, 
-            message : "Not found"
+    log.info("GET_IMAGE")
+    var result = getImages(); 
+    return {
+        body: {nodes: result},
+        headers: {
+            "Content-Type": "application/json"
         }
-    }else{
-        return {
-            body: {items : result},
-            headers: {
-                "Content-Type": "application/json"
-            }
 
-        }
     }
+    
 }
 
 
@@ -30,16 +23,17 @@ exports.get = function(req) {
  * Add to repo 
  */
 exports.post = function(req) {
-    var item = JSON.parse(req.body); 
-    if(!item) {
-        var message = "Missing/invalid item";
+    log.info("post")
+    var body = JSON.parse(req.body); 
+    if(!body) {
+        var message = "Missing/invalid image";
         return { status: 400, message: message };
     }
 
-    var wasSuccessful = createNode(item).success; 
+    var wasSuccessful = createNode(body).success; 
     
     if(wasSuccessful) {
-        log.info("Added Item:" + JSON.stringify(item, null, 4)); 
+        log.info("Added image:" + JSON.stringify(body, null, 4)); 
         return { 
             status: 200, 
             message: "" 
@@ -52,9 +46,9 @@ exports.post = function(req) {
 
 exports.delete = function (req){
     
-    var item = JSON.parse(req.body);
-    if (!item) {
-        var message = "Missing/invalid item data in request";
+    var body = JSON.parse(req.body);
+    if (!body) {
+        var message = "Missing/invalid image data in request";
         log.warning(message);
         return { 
             status: 400,
@@ -62,7 +56,7 @@ exports.delete = function (req){
         };
     }
 
-    var result = deleteNode(item);
+    var result = deleteNode(body);
 
     if(result === "NOT_FOUND") {
         return {
@@ -80,20 +74,20 @@ exports.delete = function (req){
 }
 
 /**
- * Replace item
+ * Replace image
  */
 exports.put = function(req) {
-    var item = JSON.parse(req.body);
+    var body = JSON.parse(req.body);
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
-        query: "item.id = " + item.id
+        query: "data.type = 'image' AND data.id = '" + body.id + "'"
     }).hits;
     if (!hits || hits.length < 1) {
         log.info("Node was not found. Creating a new one")
-        var wasSuccessful = createNode(item).success; 
+        var wasSuccessful = createNode(body).success; 
     
         if(wasSuccessful) {
-            log.info("Added Item:" + JSON.stringify(item, null, 4)); 
+            log.info("Added image:" + JSON.stringify(body, null, 4)); 
             return { 
                 status: 200, 
                 message: "" 
@@ -106,11 +100,8 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        node.item.name = item.name
-        node.item.info = item.info
-        node.item.image = item.image
-        node.item.visble = item.visible
-        node.item.category = item.category
+        node.body.name = body.name
+        node.body.image = body.image
         return node; 
     }
 
@@ -133,7 +124,7 @@ exports.put = function(req) {
         return {
             body: {
                 status: 500,
-                message: "Something went wrong when editing and item"
+                message: "Something went wrong when editing and image"
             }
         }
     }
@@ -141,38 +132,35 @@ exports.put = function(req) {
 
 /**
  * NOT DONE 
- * Returns all items in repo
+ * Returns all images in repo
  */
-function getItems() {
+function getImages() {
     
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
         count: 1000,
-        query: "_nodeType = 'default'"
+        query: "data.type = 'image'"
     }).hits;
     if (!hits || hits.length < 1) {
-        return "NOT_FOUND";
+        return hits;
     }
 
-    var items = hits.map(function (hit) {
+    var images = hits.map(function (hit) {
         return repoConn.get(hit.id);
     });
 
-    if (items) {
-        return items;
-    } else {
-        return "NOT_FOUND";
-    } 
+    return images;
+    
 }
 
 /**
- * Adds an item to repo 
- * @param item 
+ * Adds an image to repo 
+ * @param image 
  */
-var createNode = function(item) {
+var createNode = function(image) {
     try {
-        var node = repoLib.storeItemAndCreateNode(
-            item, 
+        var node = repoLib.storeImageAndCreateNode(
+            image, 
             repoConfig
         ); 
         if (!node) {
@@ -180,7 +168,7 @@ var createNode = function(item) {
                 "Tried creating node, but something seems wrong: " +
                 JSON.stringify(
                     {
-                        incoming_item: item,
+                        incoming: image,
                         resulting_node: node
                     },
                     null,
@@ -205,13 +193,13 @@ var createNode = function(item) {
 
 
 
-var deleteNode = function (item) {
+var deleteNode = function (image) {
 
-    log.info("DELETE:" + new Date() + JSON.stringify(item, null, 4))
+    log.info("DELETE:" + new Date() + JSON.stringify(image, null, 4))
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     
     var hits = repoConn.query({
-        query: "item.id = " + item.id 
+        query: "data.type = 'image' AND data.id = '" + image.id + "'"
     }).hits;
 
     if (!hits || hits.length < 1) {

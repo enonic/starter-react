@@ -103,42 +103,42 @@ export function getCategories(){
  * IMAGES
  */
 
-export function addImage(item){
+export function addImage(image){
 
     return fetch(imageRepoUrl, {
         method: "POST",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
-        body: JSON.stringify(item)
+        body: JSON.stringify(image)
     })
     
 }
 
-export function removeImage(item){
+export function removeImage(image){
     return fetch(imageRepoUrl, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
-        body: JSON.stringify(item)
+        body: JSON.stringify(image)
     })
 }
 
-export function editImage(item){
+export function editImage(image){
     return fetch(imageRepoUrl, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json; charset=utf-8"
         },
-        body: JSON.stringify(item)
+        body: JSON.stringify(image)
     })
 }
 
-export function getImage(){
+export function getImages(){
     return fetch(imageRepoUrl)
-        .then(response => response.json()
-            .then(data =>  data.items.filter(node => node.item ? node : null))
-            .then(nodes => nodes.map(node => node.item))
+        .then(response => response.length == 0 ? response : response.json()
+            .then(data =>  data.nodes.filter(node => node.data ? node : null))
+            .then(nodes => nodes.map(node => node.data))
         )
 }

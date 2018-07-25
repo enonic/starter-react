@@ -153,6 +153,7 @@ function mapDispatchToProps(dispatch) {
 
     addImage: (arg, edit) => {imageActions.addImage(dispatch, arg, edit)},
     deleteImage: (arg) => {imageActions.deleteImage(dispatch, arg)},
+    editImage: (arg) => {imageActions.editImage(dispatch, arg)},
     saveImages: () => {imageActions.save(dispatch)},
     cancelSaveImages: () => {imageActions.cancelSave(dispatch)},
 

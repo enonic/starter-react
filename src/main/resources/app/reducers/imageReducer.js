@@ -36,7 +36,7 @@ function deleteImage(oldState, action) {
 }
 
 
-function changeImage(oldState, action){
+function editImage(oldState, action){
     let state = oldState
     state = state.updateIn(['images'], function (images) {
       let image = images.find(image => image.id == action.data.id)
@@ -93,7 +93,7 @@ export function imageReducer(state = initialState, action) {
         case imageActions.actions.save:
             return save(state, action)
         case imageActions.actions.changeImage:
-            return changeImage(state, action)
+            return editImage(state, action)
         case imageActions.actions.addImage:
             return addImage(state, action)
         case imageActions.actions.deleteImage:

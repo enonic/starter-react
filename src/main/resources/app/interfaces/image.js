@@ -11,7 +11,6 @@ export default class Image {
         this.id = data.id || new Date().valueOf(); 
         this.type = "image";
         this.edited = data.edited == undefined ? true: data.edited;
-        console.log(data.edited)
     }
 
     update(data){
@@ -20,7 +19,7 @@ export default class Image {
             this.edited = true
         }
         if(data.name){
-            this.title = data.title
+            this.name = data.name
             this.edited = true
         }
         if(data.source){

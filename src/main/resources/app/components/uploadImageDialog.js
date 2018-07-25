@@ -19,9 +19,17 @@ export default class UploadImageDialog extends React.PureComponent {
     constructor(arg) {
         super(arg)
         this.state = {
-            name: "", 
-            source: "", 
+            name: this.props.image ? this.props.image.name : "", 
+            source: this.props.image ? this.props.image.source : "", 
             validationFailed: false 
+        }
+    }
+
+    componentWillReceiveProps(props){
+        if(props.image) {
+            this.setState({name: props.image.name, source: props.image.source});
+        } else {
+            this.setState({name: "", source: ""});
         }
     }
 
@@ -41,10 +49,17 @@ export default class UploadImageDialog extends React.PureComponent {
         this.props.onClose();
     }
 
+    handleEdit(){
+        this.props.edit({
+            name : this.state.name, 
+            source : this.state.source,
+            id: this.props.image.id
+        } )
+        this.props.onClose();
+    }
     handleNameChange(event) {
-        let newName = event.target.value; 
         this.setState({
-            name : newName
+            name : event.target.value
         })
     }
 
@@ -55,7 +70,26 @@ export default class UploadImageDialog extends React.PureComponent {
         })
     }
 
+    renderButton(){
+
+        return this.props.image ? 
+            <Button 
+                onClick={this.handleEdit.bind(this)} 
+                variant="outlined"
+                color="primary">
+                Save
+            </Button>
+            :
+            <Button 
+                disabled={this.state.source == "" || this.state.name == "" ? true : false}
+                onClick={this.handleUpload.bind(this)} 
+                variant="outlined"
+                color="primary">
+                Upload
+            </Button>
+    }
     render() {
+        
         return <Dialog
             open={this.props.open}
             onClose={this.props.handleClose}
@@ -69,7 +103,8 @@ export default class UploadImageDialog extends React.PureComponent {
                     id="name"
                     label="Image Name"
                     type="text"
-                    onInput={this.handleNameChange.bind(this)}
+                    value={this.state.name}
+                    onChange={this.handleNameChange.bind(this)}
                     fullWidth
                 />
                 <input
@@ -97,13 +132,7 @@ export default class UploadImageDialog extends React.PureComponent {
                     color="primary">
                     Cancel
                 </Button>
-                <Button 
-                    disabled={this.state.source == "" || this.state.name == "" ? true : false}
-                    onClick={this.handleUpload.bind(this)} 
-                    variant="outlined"
-                    color="primary">
-                    Upload
-                </Button>
+                {this.renderButton()}
             </DialogActions>
         </Dialog>
     }

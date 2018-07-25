@@ -78,6 +78,7 @@ exports.delete = function (req){
  */
 exports.put = function(req) {
     var body = JSON.parse(req.body);
+    log.info(body.image)
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
         query: "data.type = 'image' AND data.id = '" + body.id + "'"
@@ -100,8 +101,9 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        node.body.name = body.name
-        node.body.image = body.image
+        
+        node.data.name = body.name
+        node.data.image = body.image
         return node; 
     }
 
@@ -201,6 +203,8 @@ var deleteNode = function (image) {
     var hits = repoConn.query({
         query: "data.type = 'image' AND data.id = '" + image.id + "'"
     }).hits;
+    log.info(image.id)
+    log.info(hits.length)
 
     if (!hits || hits.length < 1) {
         return "NOT_FOUND";

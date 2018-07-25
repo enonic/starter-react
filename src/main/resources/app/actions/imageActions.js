@@ -21,10 +21,10 @@ function deleteImageAction(arg) {
     }
 }
 
-function changeImageAction(arg) {
+function editImageAction(arg) {
     return {
         type: actions.changeImage,
-        image: arg
+        data: arg
     }
 }
 
@@ -53,8 +53,8 @@ export function save(dispatch) {
 }
 
 
-export function changeImage(dispatch, arg) {
-    dispatch(changeImageAction(arg))
+export function editImage(dispatch, arg) {
+    dispatch(editImageAction(arg))
 }
 
 

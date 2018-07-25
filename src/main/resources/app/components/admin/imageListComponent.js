@@ -23,7 +23,6 @@ export default class ImageListComponent extends React.PureComponent {
     }
 
     render(){ 
-        console.log(this.props.image.edited)
         let styleClass = this.props.image.edited ? "adminListComponent-edit" : "adminListComponent";
         return <TableRow className={styleClass}>
             <TableCell component="th" scope="row">

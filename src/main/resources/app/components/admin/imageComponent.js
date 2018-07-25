@@ -27,6 +27,7 @@ export default class ImageComponent extends React.PureComponent {
             image: null,
             searchValue: "",
             imageToBeRemoved: null,
+            imageToBeEdited: null,
             open: false
         }
     }
@@ -37,9 +38,13 @@ export default class ImageComponent extends React.PureComponent {
         })
       }
 
-    toggleUploadImageDialog() {
+    toggleUploadImageDialog() { 
         this.setState({
             uploadImageDialogVisible : !this.state.uploadImageDialogVisible
+        }, () => {
+            if(!this.state.uploadImageDialogVisible){
+                this.setState({imageToBeEdited: null})
+            }
         })
     }
 
@@ -47,13 +52,15 @@ export default class ImageComponent extends React.PureComponent {
         if(type){
             this.setState({ dialogType: type, open: true, imageToBeRemoved: image})
         } else {
+
             this.setState({ dialogType: "", open: false})
         }
     }
 
     editimage(image){
-        this.setState({imageToBeEdited: image})
-        this.toggleUploadImageDialog()
+        this.setState({imageToBeEdited: image}, () =>
+            this.toggleUploadImageDialog()
+        )
     }
 
     handleImageUpload(image) {
@@ -114,6 +121,8 @@ export default class ImageComponent extends React.PureComponent {
                     open={this.state.uploadImageDialogVisible}
                     onClose={this.toggleUploadImageDialog.bind(this)}
                     onUpload={this.handleImageUpload.bind(this)}
+                    image={this.state.imageToBeEdited}
+                    edit={this.props.editImage}
                 />
                 <DialogComponent 
                     type= {this.state.dialogType} 

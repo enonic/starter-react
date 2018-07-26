@@ -9,6 +9,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Typography from '@material-ui/core/Typography'; 
+import CardMedia from "@material-ui/core/CardMedia";
 // Interfaces 
 import Image from '../interfaces/image'; 
 // Stylesheets
@@ -20,6 +21,7 @@ export default class UploadImageDialog extends React.PureComponent {
         this.state = {
             name: this.props.image ? this.props.image.name : "", 
             source: this.props.image ? this.props.image.source : "", 
+            file: null,
             validationFailed: false 
         }
     }
@@ -43,7 +45,8 @@ export default class UploadImageDialog extends React.PureComponent {
 
         this.props.onUpload(new Image({
             name : this.state.name, 
-            source : this.state.source
+            source : this.state.source,
+            file : this.state.file
         })); 
         this.props.onClose();
     }
@@ -63,9 +66,11 @@ export default class UploadImageDialog extends React.PureComponent {
     }
 
     handleFileChange(event) {
-        let source = URL.createObjectURL(event.target.files[0]); 
+        const file = event.target.files[0];
         this.setState({
-            source : source
+            file: file,
+            name: file.name,
+            source: URL.createObjectURL(file)
         })
     }
 
@@ -88,7 +93,6 @@ export default class UploadImageDialog extends React.PureComponent {
             </Button>
     }
     render() {
-        
         return <Dialog
             open={this.props.open}
             onClose={this.props.handleClose}
@@ -114,6 +118,10 @@ export default class UploadImageDialog extends React.PureComponent {
                     className="UploadImageDialog-FileInput"
                     required
                 />
+                <CardMedia
+                    image={this.state.source}
+                    className="Item-Card-Media"
+                /> 
                 <label htmlFor="raised-button-file">
                     <Button
                         color={this.state.validationFailed ? "secondary" : "primary"}

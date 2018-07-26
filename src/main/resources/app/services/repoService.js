@@ -104,7 +104,6 @@ export function getCategories(){
  */
 
 export function addImage(image){
-
     return fetch(imageRepoUrl, {
         method: "POST",
         headers: {
@@ -126,14 +125,27 @@ export function removeImage(image){
 }
 
 export function editImage(image){
-    return fetch(imageRepoUrl, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify(image)
+    var reader = new FileReader()
+    return new Promise((resolve, reject) =>{
+        reader.onloadend = () => {
+            resolve(reader.result)
+        }
+        reader.readAsDataURL(image.file)
+    }).then(data => {
+        image.file = data
+        return fetch(imageRepoUrl, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json; charset=utf-8"
+            },
+            body: JSON.stringify(image)
+        })
+
     })
+    
 }
+
+
 
 export function getImages(){
     return fetch(imageRepoUrl)

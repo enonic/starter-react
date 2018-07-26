@@ -76,7 +76,15 @@ class App extends Component {
                     })
                 }
             })
-        ).then(
+        ).then(() => {
+            var convertFileFromBase64 = data =>{
+                return fetch(data)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        const file = new File([blob], "image")
+                        return file
+                    })
+            }
             repoService.getImages().then(images => {
                 if(images.length == 0){
                     SampleData.images.map(data => {
@@ -88,12 +96,21 @@ class App extends Component {
                     })
                 } else {
                     images.forEach(image =>{
-                        this.props.addImage(new Image(image))
+                        if(image.file){
+                            convertFileFromBase64(image.file).then(file =>{
+                                image.file = file 
+                                this.props.addImage(new Image(image))
+                            })
+                        } else {
+                            this.props.addImage(new Image(image))
+                        }
                     })
                 }
             })
-        )
+        })
     }
+
+    
 
     toggleMenu() {
         this.setState({

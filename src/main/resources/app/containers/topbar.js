@@ -70,7 +70,6 @@ class TopBar extends React.PureComponent {
          * The icon also makes its job redundant. Therefore, 
          * it is not shown on mobile, on the material-design mobile breakpoint
          */
-        console.log(screen.width, screen.wdith <= 960); 
         if(screen.width <= 960) {
             // To fill the same amount of relative space 
             return <Typography className="TopBar-FlexGrow"/>

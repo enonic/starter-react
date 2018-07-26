@@ -63,7 +63,7 @@ export default class ImageComponent extends React.PureComponent {
         )
     }
 
-    handleImageUpload(image) {
+    handleImageUpload(image, file) {
         this.setState({
             image : image.source
         }); 

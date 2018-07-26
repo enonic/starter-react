@@ -82,6 +82,8 @@ export default class CreateItemComponent extends React.PureComponent {
     }
 
     render(){
+        console.log("create item component is rendering"); 
+
         return (
         <div className="CreateItemComponent">
             <form>

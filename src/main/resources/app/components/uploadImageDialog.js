@@ -13,7 +13,6 @@ import Typography from '@material-ui/core/Typography';
 import Image from '../interfaces/image'; 
 // Stylesheets
 import "../styles/uploadImageDialog.less";
-import { typography } from 'material-ui/styles';
 
 export default class UploadImageDialog extends React.PureComponent {
     constructor(arg) {

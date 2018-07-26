@@ -13,7 +13,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 // Stylesheets
-import "../../styles/storefront/storefrontItemComponent.less";
+import "../../styles/storefront/storefrontItemComponent.less"; 
 
 export default class StorefrontItemComponent extends Component {
     

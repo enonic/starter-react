@@ -55,7 +55,7 @@ class CartPage extends React.PureComponent {
     }
 
     this.props.openToaster("Empty cart.")
-    return <Typography variant="headline" align="center">:-/</Typography>;
+    return <Typography variant="caption" align="center">Add some from store :-D</Typography>;
   }
 
   render() {

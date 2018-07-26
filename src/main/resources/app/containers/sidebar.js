@@ -27,10 +27,13 @@ class SideBar extends React.PureComponent {
     }
 
     renderCategories() {
+        if(this.props.categories.length <= 0) {
+            return "No categories added."; 
+        }
         return this.props.categories.map((category, index) => {
             if(category.visible){
-                return <Link to="/app/com.enonic.starter.react/storefront">
-                    <ListItem className="SideBar-ListItem" onClick={() =>  this.categoryOnClick(category)} key={index}>
+                return <Link to="/app/com.enonic.starter.react/storefront" key={index}>
+                    <ListItem className="SideBar-ListItem" onClick={() =>  this.categoryOnClick(category)}>
                         <ListItemIcon>
                             <CategoryIcon />
                         </ListItemIcon>

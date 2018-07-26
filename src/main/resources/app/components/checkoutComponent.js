@@ -23,9 +23,8 @@ export default class CheckoutComponent extends Component {
     
     renderMedia(){
         return SampleData.cardImages.map((image,index) => 
-            <ButtonBase onClick={this.props.onItemsBought}>
+            <ButtonBase onClick={this.props.onItemsBought} key={index}>
                 <CardMedia
-                    key={index}
                     image={image}
                     className="CartPage-Card-Media"
                 />

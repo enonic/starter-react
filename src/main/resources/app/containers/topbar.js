@@ -14,8 +14,8 @@ import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button'; 
 import Grid from "@material-ui/core/Grid"; 
 import Paper from "@material-ui/core/Paper"
-// Stylesheets  
-// import '../styles/topbar.less'; 
+
+import '../styles/topbar.less'; 
 
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
@@ -39,16 +39,19 @@ class TopBar extends React.PureComponent {
     }
 
     getCorrectIcons = (page) => {
+        // needed to differentiate between storefront and cart 
+        const cart = this.props.location.pathname.includes("cart"); 
+
         const icons = (page === "store" ? <div>
             <Link to="/app/com.enonic.starter.react/storefront">
                 <IconButton>
-                    <StoreIcon />
+                    <StoreIcon color={!cart ? "disabled" : "inherit"}/>
                 </IconButton>
             </Link>
             <Link to="/app/com.enonic.starter.react/cart">
                 <IconButton>
                     <Badge badgeContent={this.props.cartItems.size} color="secondary">
-                        <CartIcon />
+                        <CartIcon color={cart ? "disabled" : "inherit"}/>
                     </Badge>
                 </IconButton>
             </Link> 
@@ -66,7 +69,7 @@ class TopBar extends React.PureComponent {
         const page = (path.includes("store") || path.includes("cart")) ? "store" : "admin"
         
         return (
-            <div style={StyleSheet.root}> 
+            <div className="TopBar-FlexGrow"> 
                 <AppBar 
                     className="TopBar"                  
                     color={page === "store" ? 
@@ -84,8 +87,8 @@ class TopBar extends React.PureComponent {
                             {this.getCorrectIcons(page)}
 
                             <Typography 
-                                variant="title" 
-                                style={styles.flex}
+                                variant="headline" 
+                                className="TopBar-FlexGrow"
                                 align="center"
                                 color={page === 'admin' ? 'textSecondary' : 'inherit'}
                             >
@@ -116,21 +119,6 @@ const urls = {
     cart: "/app/com.enonic.starter.react/cart",
     admin: "/app/com.enonic.starter.react/admin"
 }
-
-
-const styles = {
-    root: {
-        flexGrow: 1,
-    },
-    flex: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
-    },
-};
-
 
 
 TopBar.propTypes = {

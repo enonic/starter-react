@@ -55,7 +55,7 @@ class StorefrontPage extends React.PureComponent {
         item.category.toUpperCase().includes(this.state.searchValue.toUpperCase())
         ){ 
         if(item.visible){
-          return <Grid key={index}>
+          return <Grid key={index} item xs={12} sm={6} md={4} lg={3}>
               <StorefrontItemComponent
                 item={item}
                 add={this.props.addItemToCart}
@@ -88,7 +88,7 @@ class StorefrontPage extends React.PureComponent {
         <Grid 
           container 
           item 
-          spacing={0} 
+          spacing={24} 
           alignContent="center" 
           className="Storefront-Item-Grid-Container" 
         >

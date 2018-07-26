@@ -87,7 +87,7 @@ class TopBar extends React.PureComponent {
                                 variant="title" 
                                 style={styles.flex}
                                 align="center"
-                                color={page === 'admin' ? 'textSecondary' : 'textPrimary'}
+                                color={page === 'admin' ? 'textSecondary' : 'inherit'}
                             >
                                 <Link to={urls.storefront}> 
                                     {page === 'admin' ? 'Back to store' : 'Enonic Webstore'}

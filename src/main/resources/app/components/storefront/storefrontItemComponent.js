@@ -36,7 +36,7 @@ export default class StorefrontItemComponent extends Component {
                         image={image}
                         className="Item-Card-Media"
                     />
-                    <CardContent>
+                    <CardContent className="Item-Cart-Content">
                         <Typography gutterBottom variant="headline" component="h2">
                             {name}
                         </Typography>

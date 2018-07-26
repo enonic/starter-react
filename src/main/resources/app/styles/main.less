@@ -5,6 +5,7 @@
 */
 
 @color-forms : rgba(71, 90, 120, 0.708);
+@mobile: ~"screen and (max-width: 44.9375rem)"; // < 720
 /*Does not crash with top bar*/
 
 .avoidBar {
@@ -18,11 +19,15 @@
 }
 
 .Standard-Item-Card {
-    width: 345px;
+    // width: 345px;
     margin: 10px;
 }
 
 .Standard-Item-Card-Media {
     height: 100px;
     padding-top: 56.25%; // 16 / 9
+}
+
+.Standard-Imte-Card-Content {
+    height: 5vw; 
 }

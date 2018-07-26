@@ -7,10 +7,11 @@ export default class Image {
     constructor(data) {
         if(!data.source) throw "Image must have a source. Got undefined or null"
         this.name = data.name || "unnamed";
-        this.source = data.source; 
         this.id = data.id || new Date().valueOf(); 
         this.type = "image";
         this.edited = data.edited == undefined ? true: data.edited;
+        this.file = data.file || null
+        this.source = this.file ? URL.createObjectURL(this.file) : data.source;
     }
 
     update(data){
@@ -24,6 +25,11 @@ export default class Image {
         }
         if(data.source){
             this.source = data.source
+            this.file = null
+            this.edited = true
+        }
+        if(data.file){
+            this.file = data.file
             this.edited = true
         }
     }

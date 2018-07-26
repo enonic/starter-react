@@ -78,7 +78,6 @@ exports.delete = function (req){
  */
 exports.put = function(req) {
     var body = JSON.parse(req.body);
-    log.info(body.image)
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
         query: "data.type = 'image' AND data.id = '" + body.id + "'"
@@ -101,9 +100,8 @@ exports.put = function(req) {
     });
 
     var editor = function(node) {
-        
         node.data.name = body.name
-        node.data.image = body.image
+        node.data.source = body.source
         return node; 
     }
 
@@ -114,7 +112,11 @@ exports.put = function(req) {
     repoConn.refresh();
 
     if(result){
-        log.info("PUT")
+        if(body.file){
+            log.info("PUT_IMAGE ")
+        } else {
+            log.info("PUT_IMAGE "+ JSON.stringify(body, null, 4))
+        }
         return {
             body: {
                 status: 200

@@ -85,11 +85,13 @@ class TopBar extends React.PureComponent {
 
                             <Typography 
                                 variant="title" 
-                                color={page === 'store' ? 'secondary' : 'primary'} 
                                 style={styles.flex}
                                 align="center"
+                                color={page === 'admin' ? 'textSecondary' : 'textPrimary'}
                             >
-                                {page === 'admin' ? 'Admin Mode' : 'Enonic Webstore'}
+                                <Link to={urls.storefront}> 
+                                    {page === 'admin' ? 'Back to store' : 'Enonic Webstore'}
+                                </Link>
                             </Typography>
 
                             {page !== "admin" ?
@@ -107,6 +109,12 @@ class TopBar extends React.PureComponent {
             </div>
         );
     }
+}
+
+const urls = {
+    storefront: "/app/com.enonic.starter.react/storefront",
+    cart: "/app/com.enonic.starter.react/cart",
+    admin: "/app/com.enonic.starter.react/admin"
 }
 
 

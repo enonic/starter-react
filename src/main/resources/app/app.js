@@ -110,12 +110,18 @@ class App extends Component {
                 <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />
             */}
                 <MuiThemeProvider theme={Theme}>
-                    <Route path="/" render={(props) =>
-                        <TopBar {...props} onToggleMenu={this.toggleMenu.bind(this)} />}                    /> 
+                    <Route path="/" 
+                        render={(props) =>
+                            <TopBar 
+                            {...props} 
+                            onToggleMenu={this.toggleMenu.bind(this)} 
+                            style={{position: 'fixed', top: 0}} 
+                        />}                    
+                    /> 
                     <Route path="/" render={(props) => 
                         <SideBar {...props} open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />}
                     /> 
-                    <Switch>    
+                    <Switch className="App-Content">    
                         {/*
                         <Route path={/.+admin/} component={AdminPage} />
                         <Route path={/.+storefront/} component={StorefrontPage} />

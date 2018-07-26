@@ -17,5 +17,5 @@ export default createMuiTheme({
         secondary: {
             main: red[500],
         },
-    },
+    }
 }); 

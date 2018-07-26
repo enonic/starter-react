@@ -64,6 +64,28 @@ class TopBar extends React.PureComponent {
         return icons; 
     }
 
+    getTitle = (page) => {
+        /**
+         * The title takes a lot of space on mobile. 
+         * The icon also makes its job redundant. Therefore, 
+         * it is not shown on mobile, on the material-design mobile breakpoint
+         */
+        console.log(screen.width, screen.wdith <= 960); 
+        if(screen.width <= 960) {
+            // To fill the same amount of relative space 
+            return <Typography className="TopBar-FlexGrow"/>
+        }
+        return <Typography
+            variant="headline"
+            className="TopBar-FlexGrow"
+            align="center"
+            color={page === 'admin' ? 'textSecondary' : 'inherit'}>
+            <Link to={urls.storefront}>
+                {page === 'admin' ? 'Back to store' : 'Enonic Webstore'}
+            </Link>
+        </Typography>
+    }
+
     render() { 
         const path = this.props.location.pathname; 
         const page = (path.includes("store") || path.includes("cart")) ? "store" : "admin"
@@ -74,7 +96,7 @@ class TopBar extends React.PureComponent {
                     className="TopBar"                  
                     color={page === "store" ? 
                         "primary" : 
-                        "secondary"}>
+                        "secondary"}> 
                     
                     <AppBar 
                         position="static"
@@ -86,16 +108,7 @@ class TopBar extends React.PureComponent {
 
                             {this.getCorrectIcons(page)}
 
-                            <Typography 
-                                variant="headline" 
-                                className="TopBar-FlexGrow"
-                                align="center"
-                                color={page === 'admin' ? 'textSecondary' : 'inherit'}
-                            >
-                                <Link to={urls.storefront}> 
-                                    {page === 'admin' ? 'Back to store' : 'Enonic Webstore'}
-                                </Link>
-                            </Typography>
+                            {this.getTitle(page)}
 
                             {page !== "admin" ?
                                 <Link className="TopBar-Col" to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
@@ -103,7 +116,7 @@ class TopBar extends React.PureComponent {
                                 </Link> :
                                 <div className="TopBar-Col"></div>}
                         </Toolbar>                        
-                    </AppBar>  
+                    </AppBar>
                 </AppBar>
                 <ToasterComponent 
                     visible={this.props.toasterVisible} 

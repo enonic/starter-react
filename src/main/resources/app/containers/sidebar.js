@@ -45,35 +45,22 @@ class SideBar extends React.PureComponent {
     }
 
     renderAdminRoutes(){
-        return [ 
-            <Link  to={"/app/com.enonic.starter.react/admin"}>
+        const adminOptions = [
+            { name: "Items", url: "/app/com.enonic.starter.react/admin" },
+            { name: "Categories", url: "/app/com.enonic.starter.react/admin/categories" },
+            { name: "Images", url: "/app/com.enonic.starter.react/admin/images" }
+        ]; 
+
+        return adminOptions.map((option, index) => 
+            <Link to={option.url} key={index}>
                 <ListItem className="SideBar-ListItem" key="items">
                     <ListItemIcon>
                         <CategoryIcon />
                     </ListItemIcon>
-                    <ListItemText>Items</ListItemText>
-                </ListItem>
-            </Link>,
-
-            <Link to="/app/com.enonic.starter.react/admin/categories">
-                <ListItem className="SideBar-ListItem" key="categories">
-                    <ListItemIcon>
-                        <CategoryIcon />
-                    </ListItemIcon>
-                    <ListItemText>Categories</ListItemText>
-                </ListItem>
-            </Link>,
-
-            <Link to="/app/com.enonic.starter.react/admin/images">
-                <ListItem className="SideBar-ListItem" key="images">
-                    <ListItemIcon>
-                        <CategoryIcon />
-                    </ListItemIcon>
-                    <ListItemText>Images</ListItemText>
+                    <ListItemText>{option.name}</ListItemText>
                 </ListItem>
             </Link>
-
-        ]
+        ); 
     }
 
     renderContent(){

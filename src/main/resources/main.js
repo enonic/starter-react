@@ -1,6 +1,9 @@
 var portal = require('/lib/xp/portal');
 var mustache = require('/lib/xp/mustache');
+var repoLib = require('./lib/repo/repo');
+var repoConfig = require('./lib/config/repoConfig'); 
 
+repoLib.initialize(repoConfig); 
 
 var view = resolve('./index.html');
 

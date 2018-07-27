@@ -1,0 +1,35 @@
+@import 'main';
+.CartPage {
+    .avoidBar;
+    width: 50vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.CartPage-Headline {
+    text-decoration: underline;
+}
+
+.CartPage-Card-Media {
+    // margin: 20px;
+    padding: 20px;
+    height: 250px;
+    width: 400px;
+    transition-duration: 0.25s
+}
+
+.CartPage-Card-Media:hover {
+    transform: scale(1.05);
+}
+
+@media @mobile {
+    .CartPage {
+        width: 95vw;
+    }
+    .CartPage-Card-Media {
+        width: 20vw; 
+        height: 7.5vh; 
+        display: inline-block; 
+        align-self: center; 
+    }
+}

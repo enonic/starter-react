@@ -1,0 +1,41 @@
+/*
+    http://lesscss.org/features/
+    This file should contain global LESS-variables (properties) and reusable classes. 
+    lesscss for other files separate 
+*/
+
+@color-forms : rgba(71, 90, 120, 0.708);
+// breakpoints 
+@mobile: ~"screen and (max-width: 960px)";
+
+// Spacing, according to the material specs 
+@mobile-spacing: 56px;
+@desktop-spacing: 64px;
+
+/*Does not crash with top bar*/
+.avoidBar {
+    padding-top: @desktop-spacing;
+    @media @mobile {
+        padding-top: @mobile-spacing;
+    }
+}
+
+/*Form-Box*/
+
+.formBox {
+    background-color: @color-forms;
+}
+
+.Standard-Item-Card {
+    // width: 345px;
+    margin: 10px;
+}
+
+.Standard-Item-Card-Media {
+    height: 100px;
+    padding-top: 56.25%; // 16 / 9
+}
+
+.Standard-Imte-Card-Content {
+    height: 5vw;
+}

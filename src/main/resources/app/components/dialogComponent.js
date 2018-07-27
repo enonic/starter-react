@@ -1,5 +1,6 @@
     import React from 'react';
 
+    // Material UI 
     import Dialog from '@material-ui/core/Dialog';
     import DialogTitle from '@material-ui/core/DialogTitle';
     import DialogContent from '@material-ui/core/DialogContent';
@@ -8,12 +9,14 @@
     import Typography from '@material-ui/core/Typography'; 
     import CardMedia from '@material-ui/core/CardMedia'; 
 
+    // Components 
     import StorefrontItemComponent from './storefront/storefrontItemComponent';
-
     import CheckoutComponent from './checkoutComponent';
-
     import CreateItemComponent from './admin/createItemComponent';
     import CreateCategoryComponent from './admin/createCategoryComponent';
+
+    // Styles 
+    import '../styles/storefront/dialogComponent.less'; 
 
 
     const styles = theme => ({
@@ -52,7 +55,11 @@
         switch (this.props.type) {
         case "ITEM": 
         case "CATEGORY":
-            return <Dialog disableBackdropClick open={this.state.open} onClose={this.props.onClose}>
+            return <Dialog 
+                disableBackdropClick 
+                open={this.state.open} 
+                onClose={this.props.onClose}
+            >
                 <DialogContent>{this.getFormType()}</DialogContent>
             </Dialog>;
         case "ITEM_VIEW":
@@ -61,13 +68,18 @@
                 open={this.state.open}
                 onClose={this.props.onClose}
             >
-                <DialogContent>
+                <DialogContent 
+                        className="DialogContent"
+                >
                 {/*<StorefrontItemComponent item={this.props.item}/>*/}
-                    <Typography align="center" variant="display3" style={{textDecoration : "underline"}}> 
+                    <Typography align="center" variant="display2"> 
                         {this.props.item.name}
                     </Typography>
-                    <CardMedia image={this.props.item.image} style={{height : "500px", width: '500px'}}/>
-                    <Typography variant="display1">
+                    <CardMedia 
+                        image={this.props.item.image} 
+                        className="DialogContent-Image"
+                    />
+                    <Typography>
                         {this.props.item.info}
                     </Typography>
                 </DialogContent>
@@ -90,7 +102,9 @@
                 onClose={this.props.onClose}
             >
             <DialogTitle>Choose your payment method</DialogTitle>
-                <DialogContent>
+                <DialogContent
+                    className="DialogContent"
+                >
                 <CheckoutComponent onItemsBought={this.props.onItemsBought}/>
                 </DialogContent>
             </Dialog>

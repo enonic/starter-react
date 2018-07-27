@@ -1,5 +1,18 @@
 @import '../main';
 
-/*
-    Not used. Remove if not ued later 
-*/
+.DialogContent-Image {
+    width: 500px; 
+    height: 500px; 
+} 
+
+@media @mobile {
+    .DialogContent {
+        height: 15vh !important;
+    }
+    .DialogContent-Image {
+        height: 50px; 
+        width: 50px; 
+        vertical-align: middle; 
+        border-radius: 50%; 
+    }
+}

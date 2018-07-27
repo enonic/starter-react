@@ -29,8 +29,23 @@ class TopBar extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            clicked : null
+            clicked : null, 
+            screenWidth : screen.width// decide what to render on desktop/mobile
         }
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.updateScreenWidth)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateScreenWidth); 
+    }
+
+    updateScreenWidth = () => {
+        this.setState({
+            screenWidth: window.innerWidth
+        }); 
     }
 
     onPage = {
@@ -70,7 +85,7 @@ class TopBar extends React.PureComponent {
          * The icon also makes its job redundant. Therefore, 
          * it is not shown on mobile, on the material-design mobile breakpoint
          */
-        if(screen.width <= 960) {
+        if(this.state.screenWidth <= 960) {
             // To fill the same amount of relative space 
             return <Typography className="TopBar-FlexGrow"/>
         }

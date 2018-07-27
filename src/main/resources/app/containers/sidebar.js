@@ -53,7 +53,7 @@ class SideBar extends React.PureComponent {
 
         return adminOptions.map((option, index) => 
             <Link to={option.url} key={index}>
-                <ListItem className="SideBar-ListItem" key="items">
+                <ListItem className="SideBar-ListItem">
                     <ListItemIcon>
                         <CategoryIcon />
                     </ListItemIcon>

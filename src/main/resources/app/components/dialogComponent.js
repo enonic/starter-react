@@ -75,13 +75,15 @@
                     <Typography align="center" variant="display2"> 
                         {this.props.item.name}
                     </Typography>
-                    <CardMedia 
-                        image={this.props.item.image} 
-                        className="DialogContent-Image"
-                    />
-                    <Typography>
-                        {this.props.item.info}
-                    </Typography>
+                    <div className="DialogContent-InfoContainer"> 
+                        <CardMedia
+                            image={this.props.item.image}
+                            className="DialogContent-Image"
+                        />
+                        <Typography>
+                            {this.props.item.info}
+                        </Typography>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.props.onClose} color="primary">

@@ -61,9 +61,6 @@ export function addCategory(item){
 
     return fetch(categoryRepoUrl, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json; charset=utf-8"
-        },
         body: JSON.stringify(item)
     })
     
@@ -125,24 +122,18 @@ export function removeImage(image){
 }
 
 export function editImage(image){
-    var reader = new FileReader()
-    return new Promise((resolve, reject) =>{
-        reader.onloadend = () => {
-            resolve(reader.result)
-        }
-        reader.readAsDataURL(image.file)
-    }).then(data => {
-        image.file = data
-        return fetch(imageRepoUrl, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json; charset=utf-8"
-            },
-            body: JSON.stringify(image)
-        })
+    let formdata = new FormData()
+    formdata.append('name', image.name)
+    formdata.append('id', image.id)
+    formdata.append('type', image.type)
+    image.file ? formdata.append('file', image.file)
+        :   formdata.append('source', image.name)
 
+    return fetch(imageRepoUrl, {
+        method: "PUT",
+        body: formdata
     })
-    
+
 }
 
 

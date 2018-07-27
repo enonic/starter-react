@@ -1,5 +1,7 @@
 var repoLib = require("../../lib/repo/repo"); 
 var repoConfig = require("../../lib/config/repoConfig"); 
+var portalLib = require('/lib/xp/portal');
+var valueLib = require('/lib/xp/value');
 
 /**
  * Get get images from Repo 
@@ -10,13 +12,11 @@ exports.get = function(req) {
     var result = getImages(); 
     return {
         body: {nodes: result},
-        headers: {
-            "Content-Type": "application/json"
-        }
 
     }
     
 }
+
 
 
 /** 
@@ -33,7 +33,13 @@ exports.post = function(req) {
     var wasSuccessful = createNode(body).success; 
     
     if(wasSuccessful) {
-        log.info("Added image:" + JSON.stringify(body, null, 4)); 
+        log.info(body.file ? true : false)
+        if(body.file){
+            log.info("Added image with file")
+
+        } else {
+            log.info("Added image:" + JSON.stringify(body, null, 4)); 
+        }
         return { 
             status: 200, 
             message: "" 
@@ -76,8 +82,83 @@ exports.delete = function (req){
 /**
  * Replace image
  */
+
+
+
+
+function createImage(albumId, publish, fileIndex) {
+    var part = portalLib.getMultipartItem("file", fileIndex);
+    if (part.fileName && part.size > 0) {
+
+        //Retrieves the album
+        var album = imageXpertLib.getContentByKey(albumId);
+        if (!album || album.type != (app.name + ":album" )) {
+            log.error('No album: %s', albumId);
+            return null;
+        }
+
+        //Creates the image
+        var content = contentLib.createMedia({
+            name: part.fileName,
+            parentPath: album._path,
+            mimeType: part.contentType,
+            branch: "draft",
+            focalX: 0.5,
+            focalY: 0.5,
+            data: portalLib.getMultipartStream("file", fileIndex)
+        });
+
+        //Updates the image with meta data
+        var caption = portalLib.getMultipartText("caption");
+        var artist = portalLib.getMultipartText("artist");
+        var tags = portalLib.getMultipartText("tags");
+        contentLib.modify({
+            key: content._id,
+            branch: "draft",
+            editor: function (media) {
+                media.data.caption = caption;
+                media.data.artist = artist;
+                media.data.tags = tags;
+                return media;
+            }
+        });
+
+        if (publish) {
+            contentLib.publish({
+                keys: [content._id],
+                sourceBranch: 'draft',
+                targetBranch: 'master'
+            });
+        }
+
+        return content;
+    }
+    return null;
+}
+
+
 exports.put = function(req) {
-    var body = JSON.parse(req.body);
+    
+    var body = {
+        name: portalLib.getMultipartText('name'),
+        id: portalLib.getMultipartText('id'),
+        type: portalLib.getMultipartText('type')
+    }
+    
+    
+    var source = portalLib.getMultipartText('source')
+
+    var file = portalLib.getMultipartItem('file')
+    
+
+    if (file.fileName && file.size > 0) {
+        body['file'] = valueLib.binary('file' , portalLib.getMultipartStream('file'))
+        log.info(body.file)
+    } else if (source) {
+        body['source'] = source
+    }
+
+
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     var hits = repoConn.query({
         query: "data.type = 'image' AND data.id = '" + body.id + "'"
@@ -87,7 +168,12 @@ exports.put = function(req) {
         var wasSuccessful = createNode(body).success; 
     
         if(wasSuccessful) {
-            log.info("Added image:" + JSON.stringify(body, null, 4)); 
+            if(body.file){
+                log.info("Added image ")
+                
+            } else {
+                log.info("Added image:" + JSON.stringify(body, null, 4)); 
+            }
             return { 
                 status: 200, 
                 message: "" 
@@ -102,6 +188,9 @@ exports.put = function(req) {
     var editor = function(node) {
         node.data.name = body.name
         node.data.source = body.source
+        if(body.file){
+            node.data.file = body.file
+        }
         return node; 
     }
 
@@ -149,11 +238,20 @@ function getImages() {
         return hits;
     }
 
-    var images = hits.map(function (hit) {
-        return repoConn.get(hit.id);
+    var images = hits.filter(function (hit) {
+        var image = repoConn.get(hit.id);
+        if (image.data.file){
+            log.info("getting stream")
+            image.data.file = repoConn.getBinary({
+                key: hit.id,
+                binaryReference: "file"
+            });
+            log.info(image.data.file)
+            return image
+        }
     });
 
-    return images;
+    return images[0];
     
 }
 
@@ -203,10 +301,17 @@ var deleteNode = function (image) {
     var repoConn = repoLib.getRepoConnection(repoConfig.name, repoConfig.branch);
     
     var hits = repoConn.query({
-        query: "data.type = 'image' AND data.id = '" + image.id + "'"
+        query: "data.type = 'image' AND data.id = " + image.id 
     }).hits;
-    log.info(image.id)
     log.info(hits.length)
+    /*
+    hits = hits.filter(function(hit) {
+        var repoImage = repoConn.get(hit.id)
+        if(repoImage.data.id == image.id){
+            return repoImage
+        }
+    })
+    */
 
     if (!hits || hits.length < 1) {
         return "NOT_FOUND";

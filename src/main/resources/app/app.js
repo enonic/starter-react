@@ -74,14 +74,6 @@ class App extends Component {
                 }
             })
         ).then(() => {
-            var convertFileFromBase64 = data =>{
-                return fetch(data)
-                    .then(res => res.blob())
-                    .then(blob => {
-                        const file = new File([blob], "image")
-                        return file
-                    })
-            }
             repoService.getImages().then(images => {
                 if(images.length == 0){
                     SampleData.images.map(data => {
@@ -89,18 +81,10 @@ class App extends Component {
                         let image = new Image(data)
                         repoService.addImage(image)
                         this.props.addImage(image)
-    
                     })
                 } else {
                     images.forEach(image =>{
-                        if(image.file){
-                            convertFileFromBase64(image.file).then(file =>{
-                                image.file = file 
-                                this.props.addImage(new Image(image))
-                            })
-                        } else {
-                            this.props.addImage(new Image(image))
-                        }
+                        this.props.addImage(new Image(image))
                     })
                 }
             })

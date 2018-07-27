@@ -11,13 +11,25 @@
 }
 
 .CartPage-Card-Media {
-    margin: 20px;
+    // margin: 20px;
     padding: 20px;
     height: 250px;
     width: 400px;
     transition-duration: 0.25s
 }
 
-.CartPage-Card-Media:hover{
-    transform: scale(1.05); 
+.CartPage-Card-Media:hover {
+    transform: scale(1.05);
+}
+
+@media @mobile {
+    .CartPage {
+        width: 95vw;
+    }
+    .CartPage-Card-Media {
+        width: 20vw; 
+        height: 7.5vh; 
+        display: inline-block; 
+        align-self: center; 
+    }
 }

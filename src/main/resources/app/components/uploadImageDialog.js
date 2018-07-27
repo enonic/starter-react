@@ -15,7 +15,6 @@ import Image from '../interfaces/image';
 // Stylesheets
 import "../styles/uploadImageDialog.less";
 
-
 export default class UploadImageDialog extends React.PureComponent {
     constructor(arg) {
         super(arg)

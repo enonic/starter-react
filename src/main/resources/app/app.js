@@ -25,6 +25,9 @@ import { MuiThemeProvider } from "@material-ui/core/styles";
 // Stylesheet 
 import Theme from "./theme";
 import './styles/main.less'
+// Fonts
+import "typeface-roboto";
+
 // Sample data 
 import SampleData from './sampleData.json'; 
 
@@ -98,7 +101,8 @@ class App extends Component {
             menuVisible : !this.state.menuVisible
         }); 
     }
-    
+
+
     render () {
         return (
             <div className="App">
@@ -107,12 +111,18 @@ class App extends Component {
                 <SideBar open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />
             */}
                 <MuiThemeProvider theme={Theme}>
-                    <Route path="/" render={(props) =>
-                        <TopBar {...props} onToggleMenu={this.toggleMenu.bind(this)} />}                    /> 
+                    <Route path="/" 
+                        render={(props) =>
+                            <TopBar 
+                            {...props} 
+                            onToggleMenu={this.toggleMenu.bind(this)} 
+                            style={{position: 'fixed', top: 0}} 
+                        />}                    
+                    /> 
                     <Route path="/" render={(props) => 
                         <SideBar {...props} open={this.state.menuVisible} onToggleMenu={this.toggleMenu.bind(this)} />}
                     /> 
-                    <Switch>    
+                    <Switch className="App-Content">    
                         {/*
                         <Route path={/.+admin/} component={AdminPage} />
                         <Route path={/.+storefront/} component={StorefrontPage} />
@@ -130,6 +140,7 @@ class App extends Component {
     }
 }
 
+
 function mapStateToProps(state) {
     return {
         items: state.get('app').get('allItems')
@@ -143,6 +154,5 @@ function mapDispatchToProps(dispatch) {
         addImage: (arg) => { imageActions.addImage(dispatch, arg) },
     };
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(App) 

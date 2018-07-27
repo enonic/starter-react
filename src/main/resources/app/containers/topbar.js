@@ -14,7 +14,7 @@ import Badge from '@material-ui/core/Badge';
 import Button from '@material-ui/core/Button'; 
 import Grid from "@material-ui/core/Grid"; 
 import Paper from "@material-ui/core/Paper"
-// Stylesheets  
+
 import '../styles/topbar.less'; 
 
 import { connect } from 'react-redux';
@@ -29,8 +29,23 @@ class TopBar extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            clicked : null
+            clicked : null, 
+            screenWidth : screen.width// decide what to render on desktop/mobile
         }
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.updateScreenWidth)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.updateScreenWidth); 
+    }
+
+    updateScreenWidth = () => {
+        this.setState({
+            screenWidth: window.innerWidth
+        }); 
     }
 
     onPage = {
@@ -38,107 +53,84 @@ class TopBar extends React.PureComponent {
         storefront : this.props.location.pathname.includes("storefront")
     }
 
+    getCorrectIcons = (page) => {
+        // needed to differentiate between storefront and cart 
+        const cart = this.props.location.pathname.includes("cart"); 
+
+        const icons = (page === "store" ? <div>
+            <Link to="/app/com.enonic.starter.react/storefront">
+                <IconButton>
+                    <StoreIcon color={!cart ? "disabled" : "inherit"}/>
+                </IconButton>
+            </Link>
+            <Link to="/app/com.enonic.starter.react/cart">
+                <IconButton>
+                    <Badge badgeContent={this.props.cartItems.size} color="secondary">
+                        <CartIcon color={cart ? "disabled" : "inherit"}/>
+                    </Badge>
+                </IconButton>
+            </Link> 
+        </div>: <Link to="/app/com.enonic.starter.react/storefront">
+            <IconButton>
+                <StoreIcon title="Back to store"/>
+            </IconButton>
+        </Link>); 
+
+        return icons; 
+    }
+
+    getTitle = (page) => {
+        /**
+         * The title takes a lot of space on mobile. 
+         * The icon also makes its job redundant. Therefore, 
+         * it is not shown on mobile, on the material-design mobile breakpoint
+         */
+        if(this.state.screenWidth <= 960) {
+            // To fill the same amount of relative space 
+            return <Typography className="TopBar-FlexGrow"/>
+        }
+        return <Typography
+            variant="headline"
+            className="TopBar-FlexGrow"
+            align="center"
+            color={page === 'admin' ? 'textSecondary' : 'inherit'}>
+            <Link to={urls.storefront}>
+                {page === 'admin' ? 'Back to store' : 'Enonic Webstore'}
+            </Link>
+        </Typography>
+    }
+
     render() { 
         const path = this.props.location.pathname; 
-        let page = (path.includes("store") || path.includes("cart")) ? "store" : "admin"
+        const page = (path.includes("store") || path.includes("cart")) ? "store" : "admin"
+        
         return (
-            <div>
+            <div className="TopBar-FlexGrow"> 
                 <AppBar 
                     className="TopBar"                  
                     color={page === "store" ? 
                         "primary" : 
-                        "secondary"}>
-                    {/* FORSØK PÅ Å GJØRE BEDRE
-                    <Grid container spacing={24}>
-                        <Grid item xs>
-                            <IconButton
-                                color={page === "store" ? "secondary" : "primary"}
-                                aria-label="Menu"
-                                onClick={this.props.onToggleMenu}>
-                                <MenuIcon />
+                        "secondary"}> 
+                    
+                    <AppBar 
+                        position="static"
+                        color={page === 'store' ? 'primary' : 'secondary'}>
+                        <Toolbar>
+                            <IconButton>
+                                <MenuIcon onClick={this.props.onToggleMenu}/> 
                             </IconButton>
-                        </Grid>
-                        <Grid item xs>
-                            {page === "store"
-                                ? <div className="TopBar-Col">
-                                    <Link to="/app/com.enonic.starter.react/storefront">
-                                        <IconButton>
-                                            <StoreIcon />
-                                        </IconButton>
-                                    </Link>
-                                    <Link to="/app/com.enonic.starter.react/cart">
-                                        <IconButton>
-                                            <Badge badgeContent={this.props.cartItems.size} color="secondary">
-                                                <CartIcon />
-                                            </Badge>
-                                        </IconButton>
-                                    </Link>
-                                </div> : null}
-                        </Grid>
-                        <Grid item xs={6}>
-                            <Link to="/app/com.enonic.starter.react/storefront">
-                                <Button>
-                                    <Typography
-                                        className="TopBar-PageTitle"
-                                        align="center"
-                                        variant="title"
-                                        color="textSecondary" >
-                                        {page === "admin" ? "Back to store" : "Enonic Webstore"}
-                                    </Typography>
-                                </Button>
-                            </Link>
-                        </Grid>
-                        <Grid item xs>
-                            {page !== "admin" ? 
-                            <Link className="TopBar-Col" to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
-                                <Typography variant="button">Admin</Typography>
-                            </Link> : 
-                            <div className="TopBar-Col"></div> }
-                        </Grid>
-                    </Grid>
-                    */}
-                    {/*GAMMELT*/} 
-                    <Toolbar>
-                    <IconButton 
-                        className="TopBar-Col"
-                        color={page === "store" ? "secondary" : "primary"} 
-                        aria-label="Menu" 
-                        onClick={this.props.onToggleMenu}>
-                        <MenuIcon />
-                    </IconButton>
-                    {page === "store" 
-                        ? <div className="TopBar-Col">
-                            <Link to="/app/com.enonic.starter.react/storefront">
-                                <IconButton>
-                                    <StoreIcon />
-                                </IconButton>
-                            </Link>
-                            <Link to="/app/com.enonic.starter.react/cart">
-                                <IconButton>
-                                    <Badge badgeContent={this.props.cartItems.size} color="secondary">
-                                        <CartIcon />
-                                    </Badge>
-                                </IconButton>
-                            </Link>
-                        </div> : 
-                        <div className="TopBar-Col"></div>}
-                        <Link className="TopBar-Col" to="/app/com.enonic.starter.react/storefront">
-                            <Button>
-                                <Typography
-                                    className="TopBar-PageTitle"
-                                    align="center"
-                                    variant="title"
-                                    color="textSecondary" >
-                                    {page === "admin" ? "Back to store" : "Enonic Webstore"}
-                            </Typography>
-                            </Button>
-                        </Link>
-                        {page !== "admin" ? 
-                            <Link className="TopBar-Col" to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
-                                <Typography variant="button">Admin</Typography>
-                            </Link> : 
-                            <div className="TopBar-Col"></div> }
-                    </Toolbar>
+
+                            {this.getCorrectIcons(page)}
+
+                            {this.getTitle(page)}
+
+                            {page !== "admin" ?
+                                <Link className="TopBar-Col" to="/app/com.enonic.starter.react/admin" className="TopBar-AdminLink">
+                                    <Typography variant="button">Admin</Typography>
+                                </Link> :
+                                <div className="TopBar-Col"></div>}
+                        </Toolbar>                        
+                    </AppBar>
                 </AppBar>
                 <ToasterComponent 
                     visible={this.props.toasterVisible} 
@@ -147,6 +139,12 @@ class TopBar extends React.PureComponent {
             </div>
         );
     }
+}
+
+const urls = {
+    storefront: "/app/com.enonic.starter.react/storefront",
+    cart: "/app/com.enonic.starter.react/cart",
+    admin: "/app/com.enonic.starter.react/admin"
 }
 
 

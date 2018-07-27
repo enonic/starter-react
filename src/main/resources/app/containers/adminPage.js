@@ -60,8 +60,8 @@ class AdminPage extends React.PureComponent {
     this.props.createCategory(new Category({title: data.title, filter: data.filter, visible: data.visible}), true); 
   }
 
-  
 
+  
   render() {
     return <div className="AdminPage">
         <Typography varian="display4">ADMIN</Typography>    

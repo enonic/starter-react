@@ -13,7 +13,7 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 // Stylesheets
-import "../../styles/storefront/storefrontItemComponent.less";
+import "../../styles/storefront/storefrontItemComponent.less"; 
 
 export default class StorefrontItemComponent extends Component {
     
@@ -36,7 +36,7 @@ export default class StorefrontItemComponent extends Component {
                         image={image}
                         className="Item-Card-Media"
                     />
-                    <CardContent>
+                    <CardContent className="Item-Cart-Content">
                         <Typography gutterBottom variant="headline" component="h2">
                             {name}
                         </Typography>

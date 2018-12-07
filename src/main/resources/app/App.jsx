@@ -1,20 +1,11 @@
-import React, {Component} from 'react';
-import { Route, Switch } from 'react-router-dom'
+import React from 'react';
 
-import HomePage from './containers/homePage';
-import NotFound from './containers/notFoundPage';
+const App = (props) =>
+    <div>
+        <h1>React stuff is happening.</h1>
+        <p>Stuff is reacting.</p>
+        {props.children}
+    </div>;
 
-export default class App extends Component {
-    
-    render () {
-        return (
-            <div>
-                <Switch>
-                    <Route path="/" component={HomePage} />
-                    <Route component={NotFound} />
-                </Switch>
-                
-            </div>
-        )
-    }
-}
+
+export default App;

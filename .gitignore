@@ -91,3 +91,9 @@ crashlytics-build.properties
 # Node modules
 node_modules/
 bin/
+
+### VS code ###
+_vscode/
+.settings/
+.classpath
+.project

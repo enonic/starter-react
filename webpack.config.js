@@ -1,5 +1,6 @@
 const path = require('path');
 const glob = require('glob');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const SRC_RES = path.join(__dirname, 'src/main/resources');
 
@@ -14,15 +15,15 @@ const BUILD_MAIN = path.join(__dirname, 'build/resources/main');
 
 
 const entries = Object.assign({},
-    getEntries(SRC_JSX4XP_ENTRIES, 'jsx', JSX4XP_SRC + '/'),
-    getEntries(SRC_JSX4XP_ENTRIES, 'js', JSX4XP_SRC + '/'),
-    getEntries(SRC_JSX4XP_ENTRIES, 'es6', JSX4XP_SRC + '/')
+    getEntries(SRC_JSX4XP_ENTRIES, 'jsx', path.join('assets', JSX4XP_SRC) + '/'),
+    getEntries(SRC_JSX4XP_ENTRIES, 'js', path.join('assets', JSX4XP_SRC) + '/'),
+    getEntries(SRC_JSX4XP_ENTRIES, 'es6', path.join('assets', JSX4XP_SRC) + '/')
 );
 
 module.exports = {
     entry: entries,
     output: {
-        path: path.join(BUILD_MAIN, 'assets/'),
+        path: path.join(BUILD_MAIN),
         filename: "[name].[contenthash:9].js"
     },
     resolve: {
@@ -39,20 +40,29 @@ module.exports = {
         }]
     },
 
+    plugins: [
+        new HtmlWebpackPlugin({
+            inject: false,
+            hash: false,
+            template: path.join(SRC_RES, 'index.ejs'),
+            filename: path.join(BUILD_MAIN, 'index.html')
+        })
+    ],
+
     optimization: {
         splitChunks: {
 
             name: false,
             cacheGroups: {
                 vendors: {
-                    name: "vendors",
+                    name: path.join('assets', 'vendors'),
                     enforce: true,
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'all',
                     priority: 2
                 },
                 common: {
-                    name: JSX4XP_COMMON,
+                    name: path.join('assets', JSX4XP_SRC),
                     enforce: true,
                     test: new RegExp(JSX4XP_COMMON),
                     chunks: 'all',

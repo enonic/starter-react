@@ -1,21 +1,26 @@
-const webpack = require('webpack');
 const path = require('path');
+const glob = require('glob');
 
 const SRC_RES = path.join(__dirname, 'src/main/resources');
-const BUILD_RES path.join(__dirname, 'build/resources/main');
+const SRC_JSX4XP = path.join(SRC_RES, 'jsx4xp/entries');
+const BUILD_MAIN = path.join(__dirname, 'build/resources/main');
+
+
+
+const entries = Object.assign({},
+    getEntries(SRC_JSX4XP, 'jsx', 'jsx/'),
+    getEntries(SRC_JSX4XP, 'js', 'jsx/'),
+    getEntries(SRC_JSX4XP, 'es6', 'jsx/'),
+);
 
 module.exports = {
-    entry: {
-        'jsx/App': path.join(SRC_RES, 'app/App.jsx'),
-        'ssr/bundle': path.join(SRC_RES, 'app.es6'),
-        'ssr/client': path.join(SRC_RES, 'ssr.es6'),
-    },
+    entry: entries,
     output: {
-        path: path.join(BUILD_RES, 'assets/'),
+        path: path.join(BUILD_MAIN, 'assets/'),
         filename: "[name].js"
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.less']
+        extensions: ['.es6', '.js', '.jsx', '.less']
     },
     module: {
         loaders: [{
@@ -27,4 +32,11 @@ module.exports = {
             loaders: ["style-loader", "css-loader", "less-loader"]
         }]
     },
+};
+
+function getEntries(fullDirPath, extension, entryPrefix) {
+    return glob.sync(path.join(fullDirPath, '**.' + extension)).reduce(function(obj, el) {
+        obj[entryPrefix + path.parse(el).name] = el;
+        return obj
+    }, {});
 }

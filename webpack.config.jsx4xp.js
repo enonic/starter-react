@@ -26,7 +26,7 @@ module.exports = {
     ),
 
     output: {
-        path: path.join(BUILD_ASSETS),
+        path: path.join(BUILD_ASSETS),  // <-- Must be built to assets, since the use of {{assetUrl}} in index.html (or index.ejs) relates to that as base url
         filename: "[name].[contenthash:9].js"
     },
     
@@ -49,7 +49,7 @@ module.exports = {
             inject: false,
             hash: false,
             template: path.join(SRC_JSX4XP, 'index.ejs'),
-            filename: path.join(BUILD_ASSETS, 'index.html')
+            filename: path.join(BUILD_ASSETS, 'index.html')  // <-- Must be built to assets, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url. If needed somewhere else, move it after this build step.
         })
     ],
 

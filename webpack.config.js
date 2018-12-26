@@ -10,20 +10,21 @@ const JSX4XP_COMMON = path.join(JSX4XP_SRC, 'common');
 
 const SRC_JSX4XP_ENTRIES = path.join(SRC_RES, JSX4XP_ENTRIES);
 const SRC_JSX4XP_COMMON = path.join(SRC_RES, JSX4XP_COMMON);
-const BUILD_MAIN = path.join(__dirname, 'build/resources/main');
+const BUILD_ASSETS = path.join(__dirname, 'build/resources/main/assets');
 
 
 
 const entries = Object.assign({},
-    getEntries(SRC_JSX4XP_ENTRIES, 'jsx', path.join('assets', JSX4XP_SRC) + '/'),
-    getEntries(SRC_JSX4XP_ENTRIES, 'js', path.join('assets', JSX4XP_SRC) + '/'),
-    getEntries(SRC_JSX4XP_ENTRIES, 'es6', path.join('assets', JSX4XP_SRC) + '/')
+    getEntries(SRC_JSX4XP_ENTRIES, 'jsx', JSX4XP_SRC + '/'),
+    getEntries(SRC_JSX4XP_ENTRIES, 'js', JSX4XP_SRC + '/'),
+    getEntries(SRC_JSX4XP_ENTRIES, 'es6', JSX4XP_SRC + '/')
 );
 
 module.exports = {
+    mode: 'production',
     entry: entries,
     output: {
-        path: path.join(BUILD_MAIN),
+        path: path.join(BUILD_ASSETS),
         filename: "[name].[contenthash:9].js"
     },
     resolve: {
@@ -45,7 +46,7 @@ module.exports = {
             inject: false,
             hash: false,
             template: path.join(SRC_RES, 'index.ejs'),
-            filename: path.join(BUILD_MAIN, 'index.html')
+            filename: path.join(BUILD_ASSETS, 'index.html')
         })
     ],
 
@@ -55,14 +56,14 @@ module.exports = {
             name: false,
             cacheGroups: {
                 vendors: {
-                    name: path.join('assets', 'vendors'),
+                    name: 'vendors',
                     enforce: true,
                     test: /[\\/]node_modules[\\/]/,
                     chunks: 'all',
                     priority: 2
                 },
                 common: {
-                    name: path.join('assets', JSX4XP_SRC),
+                    name: JSX4XP_SRC,
                     enforce: true,
                     test: new RegExp(JSX4XP_COMMON),
                     chunks: 'all',

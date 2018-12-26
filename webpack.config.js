@@ -25,7 +25,7 @@ module.exports = {
     entry: entries,
     output: {
         path: path.join(BUILD_ASSETS),
-        filename: "[name].[contenthash:9].js"
+        filename: "[name].[contenthash:8].js"
     },
     resolve: {
         extensions: ['.es6', '.js', '.jsx', '.less']
@@ -69,7 +69,6 @@ module.exports = {
                     chunks: 'all',
                     priority: 1
                 }
-
             }
         }
     }

@@ -6,7 +6,7 @@
         "build": "gradle build",
         "deploy": "gradle deploy",
         "watch": "gradle deploy -t",
-        "wp": "node_modules/webpack/bin/webpack.js"
+        "jsx4xp": "rm -rf build; node_modules/webpack/bin/webpack.js --config webpack.config.jsx4xp.js"
     },
     "repository": {
         "type": "git",

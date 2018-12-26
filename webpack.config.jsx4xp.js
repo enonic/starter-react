@@ -1,0 +1,109 @@
+const path = require('path');
+const glob = require('glob');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const SRC_MAIN = path.join(__dirname, 'src/main');
+
+const HOME = 'jsx4xp';
+const SUB_ENTRIES = '_entries';
+const SUB_COMMON = '_common';
+const ENTRIES = path.join(HOME, SUB_ENTRIES);
+const COMMON = path.join(HOME, SUB_COMMON);
+
+const SRC_JSX4XP = path.join(SRC_MAIN, HOME);
+const SRC_ENTRIES = path.join(SRC_MAIN, ENTRIES);
+const SRC_COMMON = path.join(SRC_MAIN, COMMON);
+const BUILD_ASSETS = path.join(__dirname, 'build/resources/main/assets');
+
+
+module.exports = {
+    mode: 'production',
+    
+    entry: Object.assign({},
+        getEntries(SRC_ENTRIES, 'jsx', HOME + '/'),
+        getEntries(SRC_ENTRIES, 'js', HOME + '/'),
+        getEntries(SRC_ENTRIES, 'es6', HOME + '/')
+    ),
+
+    output: {
+        path: path.join(BUILD_ASSETS),
+        filename: "[name].[contenthash:9].js"
+    },
+    
+    resolve: {
+        extensions: ['.es6', '.js', '.jsx', '.less']
+    },
+    module: {
+        rules: [{
+            test: /\.((jsx?)|(es6))$/,
+            exclude: /node_modules/,
+            loader: 'babel-loader'
+        }, {
+            test: /\.less$/,
+            loaders: ["style-loader", "css-loader", "less-loader"]
+        }]
+    },
+
+    plugins: [
+        new HtmlWebpackPlugin({
+            inject: false,
+            hash: false,
+            template: path.join(SRC_JSX4XP, 'index.ejs'),
+            filename: path.join(BUILD_ASSETS, 'index.html')
+        })
+    ],
+
+    optimization: {
+        splitChunks: {
+            name: false,
+            cacheGroups: getCacheGroups()
+        }
+    }
+};
+
+function getEntries(fullDirPath, extension, entryPrefix) {
+    return glob.sync(path.join(fullDirPath, '**.' + extension)).reduce(function(obj, el) {
+        obj[entryPrefix + path.parse(el).name] = el;
+        return obj
+    }, {});
+}
+
+function getCacheGroups() {
+    const chunks = {
+        vendors: {
+            name: 'vendors',
+            enforce: true,
+            test: /[\\/]node_modules[\\/]/,
+            chunks: 'all',
+            priority: 3
+        },
+        common: {
+            name: COMMON,
+            enforce: true,
+            test: new RegExp(SRC_COMMON),
+            chunks: 'all',
+            priority: 2
+        }
+    };
+
+    // Makes array of names of first-level directories below SRC_JSX4XP, other than _entries and _common:
+    const chunkDirs = (glob.sync(path.join(SRC_JSX4XP, '**/')) || [])
+        .filter(dirr => !!dirr && dirr.startsWith(SRC_JSX4XP))
+        .map(dirr => path.parse(dirr.substring(SRC_JSX4XP.length)))
+        .filter(dirr => !!dirr && dirr.dir === "/" && dirr.name !== "" && dirr.name !== SUB_ENTRIES && dirr.name !== SUB_COMMON)
+        .map(dirr => dirr.name)
+
+    chunkDirs.forEach(dirr => {
+        chunks[dirr] = {
+            name: path.join(HOME, dirr),
+            enforce: true,
+            test: new RegExp(path.join(SRC_JSX4XP, dirr)),
+            chunks: 'all',
+            priority: 1
+        }
+    })
+
+    console.log(JSON.stringify(chunks, null, 4));
+
+    return chunks;
+}

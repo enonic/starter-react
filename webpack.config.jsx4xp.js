@@ -6,24 +6,22 @@ const SRC_MAIN = path.join(__dirname, 'src/main');
 
 const HOME = 'jsx4xp';
 const SUB_ENTRIES = '_entries';
-const SUB_COMMON = '_common';
+const SUB_COMMON = 'common';
 const ENTRIES = path.join(HOME, SUB_ENTRIES);
 const COMMON = path.join(HOME, SUB_COMMON);
 
 const SRC_JSX4XP = path.join(SRC_MAIN, HOME);
 const SRC_ENTRIES = path.join(SRC_MAIN, ENTRIES);
 const SRC_COMMON = path.join(SRC_MAIN, COMMON);
+
 const BUILD_ASSETS = path.join(__dirname, 'build/resources/main/assets');
+const BUILD_ASSETS_TARGETSUBDIR = HOME;
 
 
 module.exports = {
     mode: 'production',
     
-    entry: Object.assign({},
-        getEntries(SRC_ENTRIES, 'jsx', HOME + '/'),
-        getEntries(SRC_ENTRIES, 'js', HOME + '/'),
-        getEntries(SRC_ENTRIES, 'es6', HOME + '/')
-    ),
+    entry: getEntries(SRC_ENTRIES, ['jsx', 'js', 'es6'], BUILD_ASSETS_TARGETSUBDIR + '/'),
 
     output: {
         path: path.join(BUILD_ASSETS),  // <-- Must be built to assets, since the use of {{assetUrl}} in index.html (or index.ejs) relates to that as base url
@@ -61,11 +59,18 @@ module.exports = {
     }
 };
 
-function getEntries(fullDirPath, extension, entryPrefix) {
-    return glob.sync(path.join(fullDirPath, '**.' + extension)).reduce(function(obj, el) {
-        obj[entryPrefix + path.parse(el).name] = el;
-        return obj
-    }, {});
+function getEntries(fullDirPath, extensions, entryPrefix) {
+    const entries = {};
+    extensions.forEach(extension => {
+        Object.assign(
+            entries, 
+            glob.sync(path.join(fullDirPath, '**.' + extension)).reduce(function(obj, el) {
+                obj[entryPrefix + path.parse(el).name] = el;
+                return obj
+            }, {})
+        );
+    });
+    return entries
 }
 
 function getCacheGroups() {

@@ -8,9 +8,15 @@ import AnotherComponent from '../components/more/AnotherComponent';
 const MOUNT_NODE = document.getElementById('mountHere');
 
 ReactDOM.render(
-    <AComponent>
+    <div>
+        <p>Heres some stuff.</p>
+        <AComponent />
+    </div>,
+
+    /*<AComponent>
         <p>Heres some child stuff.</p>
-        <AnotherComponent />
-    </AComponent>,
+        
+        
+    </AComponent>,*/
     MOUNT_NODE
 );

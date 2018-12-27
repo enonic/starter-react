@@ -1,6 +1,8 @@
 const path = require('path');
 const glob = require('glob');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin')
 
 const SRC_MAIN = path.join(__dirname, 'src/main');
 
@@ -48,7 +50,8 @@ module.exports = {
             hash: false,
             template: path.join(SRC_JSX4XP, 'index.ejs'),
             filename: path.join(BUILD_ASSETS, 'index.html')  // <-- Must be built to assets, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url. If needed somewhere else, move it after this build step.
-        })
+        }),
+        new CleanWebpackPlugin(path.join(BUILD_ASSETS, BUILD_ASSETS_TARGETSUBDIR))
     ],
 
     optimization: {

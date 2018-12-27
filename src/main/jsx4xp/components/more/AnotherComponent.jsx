@@ -7,7 +7,7 @@ const AnotherComponent = (props) =>
         <h1>React stuff is happening again!</h1>
         <p>More stuff is reacting:</p>
         <Shared2 something="SOMETHING ELSE" />
-        { props.children }
+        {props.children}
     </div> ;
 
 export default AnotherComponent;

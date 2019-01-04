@@ -65,21 +65,16 @@ module.exports = {
 function getEntries(fullDirPath, extensions, targetPath, entryPrefix) {
     const entries = {};
     targetPath += "/";
-    console.log("targetPath: " + JSON.stringify(targetPath, null, 4));
     extensions.forEach(extension => {
         Object.assign(
             entries, 
             glob.sync(path.join(fullDirPath, '**/*.' + extension)).reduce(function(obj, el) {
                 const parsedEl = path.parse(el);
-                console.log("fullDirPath: " + JSON.stringify(fullDirPath, null, 4));
-                console.log("el:        " + JSON.stringify(parsedEl, null, 4));
                 if (parsedEl && parsedEl.dir.startsWith(fullDirPath)) {
                     let subdir = parsedEl.dir.substring(fullDirPath.length).replace(/(^\/+)|(\/+$)/g, "");;
                     if (subdir.length) {
                         subdir += "/";
                     }
-                    console.log("subdir: " + JSON.stringify(subdir, null, 4));
-
                     obj[targetPath + subdir +  parsedEl.name] = el;
                 }
                 return obj;
@@ -87,7 +82,7 @@ function getEntries(fullDirPath, extensions, targetPath, entryPrefix) {
         );
     });
 
-    console.log("entries: " + JSON.stringify(entries, null, 4));
+    //console.log("entries: " + JSON.stringify(entries, null, 4));
     return entries
 }
 
@@ -126,7 +121,7 @@ function getCacheGroups() {
         }
     })
 
-    console.log(JSON.stringify(chunks, null, 4));
+    console.log("Bundled (non-_entries) chunks: " + JSON.stringify(chunks, null, 4));
 
     return chunks;
 }

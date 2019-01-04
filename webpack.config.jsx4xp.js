@@ -71,7 +71,7 @@ function getEntries(fullDirPath, extensions, targetPath, entryPrefix) {
             glob.sync(path.join(fullDirPath, '**/*.' + extension)).reduce(function(obj, el) {
                 const parsedEl = path.parse(el);
                 if (parsedEl && parsedEl.dir.startsWith(fullDirPath)) {
-                    let subdir = parsedEl.dir.substring(fullDirPath.length).replace(/(^\/+)|(\/+$)/g, "");;
+                    let subdir = parsedEl.dir.substring(fullDirPath.length).replace(/(^\/+)|(\/+$)/g, "");
                     if (subdir.length) {
                         subdir += "/";
                     }

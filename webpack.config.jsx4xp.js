@@ -23,7 +23,7 @@ const BUILD_ASSETS_TARGETSUBDIR = HOME;
 module.exports = {
     mode: 'production',
     
-    entry: getEntries(SRC_ENTRIES, ['jsx', 'js', 'es6'], BUILD_ASSETS_TARGETSUBDIR + '/'),
+    entry: getEntries(SRC_ENTRIES, ['jsx', 'js', 'es6'], BUILD_ASSETS_TARGETSUBDIR),
 
     output: {
         path: path.join(BUILD_ASSETS),  // <-- Must be built to assets, since the use of {{assetUrl}} in index.html (or index.ejs) relates to that as base url
@@ -62,17 +62,32 @@ module.exports = {
     }
 };
 
-function getEntries(fullDirPath, extensions, entryPrefix) {
+function getEntries(fullDirPath, extensions, targetPath, entryPrefix) {
     const entries = {};
+    targetPath += "/";
+    console.log("targetPath: " + JSON.stringify(targetPath, null, 4));
     extensions.forEach(extension => {
         Object.assign(
             entries, 
-            glob.sync(path.join(fullDirPath, '**.' + extension)).reduce(function(obj, el) {
-                obj[entryPrefix + path.parse(el).name] = el;
-                return obj
+            glob.sync(path.join(fullDirPath, '**/*.' + extension)).reduce(function(obj, el) {
+                const parsedEl = path.parse(el);
+                console.log("fullDirPath: " + JSON.stringify(fullDirPath, null, 4));
+                console.log("el:        " + JSON.stringify(parsedEl, null, 4));
+                if (parsedEl && parsedEl.dir.startsWith(fullDirPath)) {
+                    let subdir = parsedEl.dir.substring(fullDirPath.length).replace(/(^\/+)|(\/+$)/g, "");;
+                    if (subdir.length) {
+                        subdir += "/";
+                    }
+                    console.log("subdir: " + JSON.stringify(subdir, null, 4));
+
+                    obj[targetPath + subdir +  parsedEl.name] = el;
+                }
+                return obj;
             }, {})
         );
     });
+
+    console.log("entries: " + JSON.stringify(entries, null, 4));
     return entries
 }
 

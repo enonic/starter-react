@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Shared2 } from '../../common';
+import Something from '../../common/Something';
 
 const AnotherComponent = (props) =>
     <div>

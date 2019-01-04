@@ -1,11 +1,12 @@
 import React from 'react';
 
-import { Shared } from '../common';
+import Shared from '../common/Shared';
 
 const AComponent = (props) =>
     <div>
-        <h1>React stuff is happening.</h1>
-        <p>Stuff is reacting.</p>
+        <h1>Acomponent.jsx: React stuff is happening.</h1>
+        <p>Acomponent.jsx: Stuff is reacting.</p>
+        <Shared></Shared>
         {props.children}
     </div> ;
 

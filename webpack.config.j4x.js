@@ -56,7 +56,7 @@ module.exports = {
             inject: false,
             hash: false,
             template: path.join(SRC_J4X, 'index.ejs'),
-            filename: path.join(BUILD_ASSETS_JSX, 'index.html')  // <-- TODO: Must be moved to assets after build, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url.
+            filename: path.join(BUILD, 'index.html')  // <-- TODO: Must be moved to assets after build, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url.
         }),
 
         new CleanWebpackPlugin(BUILD_ASSETS_JSX),

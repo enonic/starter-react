@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<commonChunks>
+    <headEnd>
+        <chunk name="assets/vendors" entry="<%= htmlWebpackPlugin.files.chunks['assets/vendors'].entry %>" />
+        <chunk name="assets/j4x/common" entry="<%= htmlWebpackPlugin.files.chunks['assets/j4x/common'].entry %>" />
+    </headEnd>
+
+    <bodyEnd>
+        <chunk defer="true" name="assets/j4x/components" entry="<%= htmlWebpackPlugin.files.chunks['assets/j4x/components'].entry %>" />
+    </bodyEnd>
+</commonChunks>

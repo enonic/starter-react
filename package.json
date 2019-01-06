@@ -6,7 +6,9 @@
         "build": "gradle build",
         "deploy": "gradle deploy",
         "watch": "gradle deploy -t",
-        "j4x": "rm -rf build; node_modules/webpack/bin/webpack.js --config webpack.config.j4x.js"
+        "j4x": "rm -rf build; node_modules/webpack/bin/webpack.js --config webpack.config.j4x.js",
+        "babelSite": "babel src/main/resources --out-dir build/resources/main --ignore \"**/*.js\"",
+        "babelSiteWatch": "babel src/main/resources --out-dir build/resources/main --ignore \"**/*.js\" --watch"
     },
     "repository": {
         "type": "git",

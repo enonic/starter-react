@@ -28,25 +28,12 @@ module.exports = {
     
     entry: Object.assign({},
         getEntries(SRC_J4X_ENTRIES, ['jsx', 'js', 'es6'], J4X_TARGETSUBDIR),
-        getEntries(SRC_SITE, ['jsx'], SITE)
+        getEntries(SRC_SITE, ['jsx'], SITE) // <-- Note: this is where top-level react components are included, in the enonic site structure. Only JSX files are included: in order for these to be transpiled here (and thereby become a part of the chunk structure for these static assets) and not by the transpilation of "pure XP" source code files (which should be transpiled separately, outside of the static-asset/chunk structure), take care to separate them! Here, this is done by including only .JSX files here, reserving that extension for toplevel react components, and excluding .JSX files in the babelSite task in build.gradle. Note that if the top-level components import .es6 dependencies, that separation must be done more thoroughly.
     ),
 
     output: {
         path: path.join(BUILD),  // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
-        filename: (chunkData) => {
-            console.log("fileData:", chunkData);
-            console.log("chunkData:", chunkData.chunk.entryModule._chunks)
-            if (
-                ((chunkData.chunk.entryModule.context || "").startsWith(SRC_J4X_ENTRIES)) &&
-                ((chunkData.chunk.entryModule.context || "").startsWith(SRC_SITE))
-            ) {
-                //console.log("--> [name].[contenthash:9].js\n");
-                return "[name].[contenthash:9].js";
-            }
-
-            //console.log("--> [name].js\n");
-            return "[name].js"
-        },
+        filename: "[name].js",
         chunkFilename: "[name].[contenthash:9].js"
     },
     
@@ -54,18 +41,20 @@ module.exports = {
         extensions: ['.es6', '.js', '.jsx', '.less']
     },
     module: {
-        rules: [{
-            test: /\.((jsx?)|(es6))$/,
-            exclude: /node_modules/,
-            loader: 'babel-loader'
-        }, {
-            test: /\.less$/,
-            loaders: ["style-loader", "css-loader", "less-loader"]
-        }]
+        rules: [
+            {
+                // Babel for building static assets
+                test: /\.((jsx?)|(es6))$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader'
+            }, {
+                test: /\.less$/,
+                loaders: ["style-loader", "css-loader", "less-loader"]
+            }
+        ]
     },
 
     plugins: [
-
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,

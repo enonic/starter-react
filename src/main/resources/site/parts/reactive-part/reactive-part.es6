@@ -30,8 +30,9 @@ exports.get = function(req) {
 
     // ******************************************************************** Lib do this:
 
-    // Uniquely postfix the ID of the target placeholder element (where the react will be inserted)
-    jsx4xpId = ((jsx4xpId || "") + "").replace(/\s+/g, "_");
+    // Uniquely postfix the ID of the react component. 
+    // This identifies the target placeholder element as well as inserted props and values.
+    jsx4xpId = ((jsx4xpId || "") + "").replace(/\s+/g, "");
     if (jsx4xpId === "") {
         jsx4xpId = "jsx4xp";
     }
@@ -69,15 +70,12 @@ exports.get = function(req) {
             const lastTagPattern = new RegExp(rootElem + "(?!.*" + rootElem + ")", "gi");
             const endPos = body.search(lastTagPattern);
 
-            log.info(body);
-            log.info(endPos);
+            log.info(JSON.stringify({body, endPos}, null, 2));
 
             body = body.slice(0, endPos) + makeFallbackBody(jsx4xpId) + body.slice(endPos);
-            log.info(body);
+            log.info(JSON.stringify({body}, null, 2));
         }
     }
-
-
 
     // Return the response object
     return { body }

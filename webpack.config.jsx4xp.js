@@ -26,7 +26,7 @@ module.exports = {
     entry: getEntries(SRC_ENTRIES, ['jsx', 'js', 'es6'], BUILD_ASSETS_TARGETSUBDIR),
 
     output: {
-        path: path.join(BUILD_ASSETS),  // <-- Must be built to assets, since the use of {{assetUrl}} in index.html (or index.ejs) relates to that as base url
+        path: path.join(BUILD_ASSETS),  // <-- Built to assets, since output.path sets the base url, and the use of {{assetUrl}} in index.html (or index.ejs) relates to that base url.
         filename: "[name].[contenthash:9].js"
     },
     
@@ -49,7 +49,7 @@ module.exports = {
             inject: false,
             hash: false,
             template: path.join(SRC_JSX4XP, 'index.ejs'),
-            filename: path.join(BUILD_ASSETS, 'index.html')  // <-- Must be built to assets, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url. If needed somewhere else, move it after this build step.
+            filename: path.join(BUILD_ASSETS, 'index.html')  // <-- Built to assets, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url. If needed somewhere else, move it after this build step.
         }),
         new CleanWebpackPlugin(path.join(BUILD_ASSETS, BUILD_ASSETS_TARGETSUBDIR))
     ],
@@ -62,7 +62,7 @@ module.exports = {
     }
 };
 
-function getEntries(fullDirPath, extensions, targetPath, entryPrefix) {
+function getEntries(fullDirPath, extensions, targetPath) {
     const entries = {};
     targetPath += "/";
     extensions.forEach(extension => {

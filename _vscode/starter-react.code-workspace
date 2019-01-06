@@ -28,6 +28,6 @@
 		"typescript.referencesCodeLens.enabled": true,
 		"typescript.suggest.completeFunctionCalls": true,
 		"typescriptHero.imports.organizeOnSave": true,
-		"java.configuration.updateBuildConfiguration": "interactive"
+		"java.configuration.updateBuildConfiguration": "disabled"
 	}
 }

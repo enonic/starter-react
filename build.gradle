@@ -36,16 +36,16 @@ repositories {
     xp.enonicRepo()
 }
 
-task webpackJSX4XP(type: NodeTask) {
+task webpackJ4X(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
-    args = ['--config', 'webpack.config.jsx4xp.js']
+    args = ['--config', 'webpack.config.j4x.js']
 
     doLast {
          file("build/resources/main/assets/index.html").renameTo(file("build/resources/main/index.html"))
     }
 }
 // processes your package.json before running webpack
-webpackJSX4XP.dependsOn 'npmInstall'
-webpackJSX4XP.dependsOn 'processResources'
+webpackJ4X.dependsOn 'npmInstall'
+webpackJ4X.dependsOn 'processResources'
 
-jar.dependsOn webpackJSX4XP
+jar.dependsOn webpackJ4X

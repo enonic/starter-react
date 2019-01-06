@@ -2,7 +2,7 @@ var portal = require('/lib/xp/portal');
 var mustache = require('/lib/xp/mustache');
 
 
-var view = resolve('./index.html');
+var view = resolve('./assets/j4x/index.html');
 
 function handleGet(req) {
 

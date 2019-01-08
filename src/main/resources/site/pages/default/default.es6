@@ -6,18 +6,19 @@ var libs = {
 
 // Specify the view file to use
 var view = resolve('default.html');
+var exemel = resolve('default.xml');
 
 
 // Handle the GET request
 exports.get = function(req) {
-    libs.util.log({request:req}, null, 2); // Source: https://github.com/enonic/lib-util/blob/master/src/main/resources/site/lib/enonic/util/index.js
 
     // Get the content that is using the page
-    var content = libs.portal.getContent();
+    var content = libs.portal.getContent();    
+
     //var site = libs.portal.getSite();
     //var config = libs.portal.getSiteConfig();
 
-	 var mainRegion = content.page.regions.main;
+	var mainRegion = content.page.regions.main;
 
     //log.info(JSON.stringify({site:site}, null, 2));
 

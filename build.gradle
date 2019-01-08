@@ -56,7 +56,7 @@ babelJs.dependsOn += 'processResources'
 
 task webpackJ4X(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
-    args = ['--config', 'webpack.config.j4x.js']
+    args = ['--config', 'webpack.config.react4xp.js']
 
     /*doLast {
          file("build/resources/main/assets/index.html").renameTo(file("build/resources/main/index.html"))

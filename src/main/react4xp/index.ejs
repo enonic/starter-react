@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title> Enonic React Seed</title>
+
+    <script type="text/javascript" src="{{assetUrl}}/<%= htmlWebpackPlugin.files.chunks['assets/react4xp/vendors'].entry %>"></script>
+    <script type="text/javascript" src="{{assetUrl}}/<%= htmlWebpackPlugin.files.chunks['assets/react4xp/common'].entry %>"></script>
+</head>
+
+<body>
+    <div id="mountHere"></div>
+</body>
+
+<script defer type="text/javascript" src="{{assetUrl}}/<%= htmlWebpackPlugin.files.chunks['assets/react4xp/components'].entry %>"></script>
+<script defer type="text/javascript" src="{{assetUrl}}/<%= htmlWebpackPlugin.files.chunks['assets/react4xp/app'].entry %>"></script>

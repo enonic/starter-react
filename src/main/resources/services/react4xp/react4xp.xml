@@ -1,6 +1,5 @@
 <service>
-  <allow>
-    <principal>role:system.everyone</principal>
-    <principal>role:system.su</principal>
-  </allow>
+    <allow>
+        <principal>role:system.everyone</principal>
+    </allow>
 </service>

@@ -23,6 +23,8 @@ const SRC_R4X_ENTRIES = path.join(SRC_MAIN, R4X_ENTRIES);
 const BUILD_ASSETS = path.join(BUILD, ASSETS);
 const BUILD_ASSETS_JSX = path.join(BUILD, R4X_TARGETSUBDIR);
 
+const MODE = 'development'; /*/'production' //*/
+
 module.exports = {
     mode: 'production',
     
@@ -50,7 +52,7 @@ module.exports = {
                 exclude: /[\\/]node_modules[\\/]/,
                 loader: 'babel-loader',
                 query: {
-                    compact: false,
+                    compact: (MODE === 'production'),
                 }
             }, {
                 test: /\.less$/,

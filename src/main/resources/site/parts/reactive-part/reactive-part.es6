@@ -105,7 +105,7 @@ exports.get = function(req) {
             const elemPatt = /^<\s*(\w+)[\s>]/g;
             const outerElement = elemPatt.exec(body);
             if (!outerElement[1]) {
-                throw Error("Huh? Deal with this later: body seems to not have a root element/outer container.");
+                throw Error("Huh? Deal with this later: body seems to lack a root element/outer container.");
             }
             const rootElem = outerElement[1];
             const lastTagPattern = new RegExp(rootElem + "(?!.*" + rootElem + ")", "gi");

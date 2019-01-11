@@ -65,15 +65,22 @@ module.exports = {
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,
-            template: path.join(SRC_R4X, 'index.ejs'),
+            template: path.join(SRC_R4X, 'index.html.ejs'),
             filename: path.join(BUILD, 'index.html')  // <-- TODO: Must be moved to assets after webpack, and have its urls postprocessed, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url.
         }),
 
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,
-            template: path.join(SRC_R4X, 'commonChunks.ejs'),
-            filename: path.join(BUILD, 'commonChunks.xml')  // <-- TODO: Must be moved to assets after webpack, and have its urls postprocessed, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url.
+            template: path.join(SRC_R4X, 'commonChunks.xml.ejs'),
+            filename: path.join(BUILD, 'commonChunks.xml')  
+        }),
+
+        new HtmlWebpackPlugin({
+            inject: false,
+            hash: false,
+            template: path.join(SRC_R4X, 'commonChunks.json.ejs'),
+            filename: path.join(BUILD, 'commonChunks.json')  
         }),
     ],
 

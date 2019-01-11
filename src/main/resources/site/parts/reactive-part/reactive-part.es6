@@ -22,7 +22,24 @@ const getComponentName = (component) => {
     return BASE_PATHS[component.type] + thisName + "/" + thisName + ".js";
 };
 
+const COMMON_CHUNKS = JSON.parse(
+    libs.util.data.forceArray(
+        libs.io.readLines(
+            libs.io.getResource('/commonChunks.json').getStream()
+        )
+    ).join("")).commonChunks;
+log.info("COMMON_CHUNKS: " + JSON.stringify(COMMON_CHUNKS, null, 2));
 
+const PAGE_CONTRIBUTIONS = {};
+Object.keys(COMMON_CHUNKS).forEach(section => {
+    COMMON_CHUNKS[section].forEach(chunk => {
+        if ((chunk.entry || "").startsWith('assets/react4xp/')) {
+            chunk.entry = chunk.entry.substring('assets/react4xp/'.length);
+        }
+        PAGE_CONTRIBUTIONS[section] = `${(PAGE_CONTRIBUTIONS[section] || '')}<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${REACT4XP_SERVICE + chunk.entry}" ></script>`;
+    });
+});
+log.info("PAGE_CONTRIBUTIONS: " + JSON.stringify(PAGE_CONTRIBUTIONS, null, 2));
 
 
 // Handle the GET request
@@ -39,8 +56,8 @@ exports.get = function(req) {
     const component = libs.portal.getComponent();
     const config = component.config;
 
-    log.info("\n\ncontent: " + JSON.stringify(content, null, 2));
-    log.info("\n\ncomponent: " + JSON.stringify(component, null, 2));
+    //log.info("\n\ncontent: " + JSON.stringify(content, null, 2));
+    //log.info("\n\ncomponent: " + JSON.stringify(component, null, 2));
 
     //var site = libs.portal.getSite();
     //var config = libs.portal.getSiteConfig();
@@ -52,7 +69,9 @@ exports.get = function(req) {
     // Prepare the model that will be passed to the view
     let model = {};
 
-    const props = {};
+    const props = {
+        insertedMessage: "fra controlleren!"
+    };
 
     let componentName = null;
 
@@ -76,15 +95,33 @@ exports.get = function(req) {
         body = libs.thymeleaf.render(view, model);
     }
 
-    const pageContributions = {};
-
+    
+    const pageContributions = {...PAGE_CONTRIBUTIONS};
     componentName = REACT4XP_SERVICE + "site/" + (
         ((componentName || "") + "").trim() || 
         getComponentName(component)
     );
+    pageContributions.bodyEnd = `${pageContributions.bodyEnd || ""}<script defer type="text/javascript" src="${componentName}" ></script>`;
+    log.info("pageContributions: " + JSON.stringify(pageContributions, null, 2));
 
-    pageContributions.bodyEnd = `<script defer type="text/javascript" src="${componentName}" />`;
+    // HACKY BUT WORKS!
+    // Wait for the Library React4xp to exist in the global namespace (that is the library name for the transpiled reactive-part.jsx), then trigger the exported default function from reactive-part.jsx. 
+    // TODO: Don't know whence comes '.name' or if that will be overwritten in the case of multiple top-level components. And it should trigger on an event instead. 
+    pageContributions.bodyEnd += `<script defer>
+        function tryTriggerReact4xp(attemptsLeft) {
+            if (attemptsLeft > 0 && typeof React4xp !== "undefined" && React4xp.name && typeof React4xp.name.default === 'function') {
+                console.log("Triggering react component: " + attemptsLeft);
+                
+                React4xp.name.default(${JSON.stringify(react4xpId)}, ${JSON.stringify(props)});
 
+            } else {
+                setTimeout(function() {
+                    tryTriggerReact4xp(attemptsLeft - 1);
+                }, 50);
+            }
+        }
+        tryTriggerReact4xp(1000);
+    </script>`;
 
     // If the body is empty: Generate fallback body with only a target placeholder element.
     if (((body || '') + "").replace(/(^\s+)|(\s+$)/g, "") === "") {

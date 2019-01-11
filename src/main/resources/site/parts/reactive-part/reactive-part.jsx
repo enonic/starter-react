@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-console.log("Okay then.");
-const Test = (props) => <h1>Dette er en test</h1>;
+const Test = (props) => <h1>Dette er en test {props.insertedMessage}</h1>;
 
-ReactDOM.render(Test(), document.getElementById('wow'));
+// TODO: Make this wrapping generalized, from the lib or from the gradle build, pre-transpiled!
+export default (targetId, props) => { ReactDOM.render(
+    Test(props)
+, document.getElementById(targetId)); }

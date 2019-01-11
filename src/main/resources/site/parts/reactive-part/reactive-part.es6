@@ -11,7 +11,7 @@ var view = ""; // resolve('reactive-part.html');
 const makeFallbackBody = (react4xpId) => `<div id="${react4xpId}"></div>`;
 
 
-
+const REACT4XP_SERVICE = `/_/service/${app.name}/react4xp/`;
 const BASE_PATHS = {
     part: "parts/",
     page: "pages/",
@@ -21,6 +21,7 @@ const getComponentName = (component) => {
     const thisName = component.descriptor.split(":")[1];
     return BASE_PATHS[component.type] + thisName + "/" + thisName + ".js";
 };
+
 
 
 
@@ -77,19 +78,13 @@ exports.get = function(req) {
 
     const pageContributions = {};
 
-    componentName = "/assets/react4xp/site/" + (
+    componentName = REACT4XP_SERVICE + "site/" + (
         ((componentName || "") + "").trim() || 
         getComponentName(component)
     );
 
-    log.info("\nthisName: " + JSON.stringify(componentName, null, 2));
-    if (!libs.io.getResource(resolve(componentName)).exists()) {
-        throw Error("Component resource not found: " + componentName);
-    }
-    
-    const serviceUrl = libs.portal.serviceUrl({service: 'react4xp'});
-    log.info("serviceUrl: " + JSON.stringify(serviceUrl, null, 2));
-    
+    pageContributions.bodyEnd = `<script defer type="text/javascript" src="${componentName}" />`;
+
 
     // If the body is empty: Generate fallback body with only a target placeholder element.
     if (((body || '') + "").replace(/(^\s+)|(\s+$)/g, "") === "") {
@@ -123,9 +118,7 @@ exports.get = function(req) {
     // Return the response object
     return { 
         body,
-        pageContributions: {
-            //bodyEnd: `<script defer type="text/javascript" src="${reactComp} />"`
-        }
+        pageContributions
     }
 
     /**

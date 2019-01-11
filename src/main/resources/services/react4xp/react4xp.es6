@@ -6,20 +6,25 @@ const ROOTNAME = "/_/service/" + app.name + "/react4xp/";
 const REACT4XP_ASSETS = "/assets/react4xp/";
 
 
+// TODO: For content-hashed chunks, Cache-Control should be "private, max-age=31536000". For others, 3 hours? Use commonChunks to separate!
+// TODO: How to update ETag headers for non-cached, short-lived resources?
 const react4xpCache = cacheLib.newCache({
     size: 30,
-    expire: 36000, // 10 hours
+    expire: 10800, // 3 hours
 });
-
 
 
 const getReact4XP = (resource) => {
     const fileContent = utilLib.data.forceArray(ioLib.readLines(resource.getStream())).join("");
     return {
         body: fileContent,
-        contentType: 'application/javascript;charset=utf-8'
+        headers: {
+            'Content-Type': 'application/javascript;charset=utf-8',
+            'Cache-Control': 'max-age=10800' 
+        }
     };
 };
+
 
 
 

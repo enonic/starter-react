@@ -103,27 +103,15 @@ exports.get = function(req) {
         ((componentName || "") + "").trim() || 
         getComponentName(component)
     );
-    pageContributions.bodyEnd = `${pageContributions.bodyEnd || ""}<script defer type="text/javascript" src="${SERVICES_ROOT}${componentName}.js" ></script>\n`;
-    log.info("pageContributions: " + JSON.stringify(pageContributions, null, 2));
 
-    // HACKY BUT WORKS!
-    // Wait for the Library React4xp to exist in the global namespace (that is the library name for the transpiled reactive-part.jsx), then trigger the exported default function from reactive-part.jsx. 
-    // TODO: It should trigger in a better and safer way instead. Event? 
-    pageContributions.bodyEnd += `<script defer>
-        function tryTriggerReact4xp(attemptsLeft) {
-            if (attemptsLeft > 0 && typeof React4xp !== "undefined" && React4xp['${componentName}'] && typeof React4xp['${componentName}'].default === 'function') {
-                console.log("Triggering react component: " + attemptsLeft);
-                
-                React4xp['${componentName}'].default(${JSON.stringify(react4xpId)}, ${JSON.stringify(props)});
-
-            } else {
-                setTimeout(function() {
-                    tryTriggerReact4xp(attemptsLeft - 1);
-                }, 50);
-            }
-        }
-        tryTriggerReact4xp(1000);
-    </script>`;
+    // Adds tje reactive-part.jsx script, assumes it auto-triggers and reads its own required data from the data-react4xp attributes.
+    // If not, the exported default from that script can be reached like this: <script>React4xp['${componentName}'].default</script>
+    pageContributions.bodyEnd = `${pageContributions.bodyEnd || ""}<script 
+        type="text/javascript"
+        data-react4xp-targetId=${JSON.stringify(react4xpId)}
+        ${props ? `data-react4xp-props='${JSON.stringify(props)}'` : ''}
+        src="${SERVICES_ROOT}${componentName}.js" >\n</script>\n`;
+    
 
     // If the body is empty: Generate fallback body with only a target placeholder element.
     if (((body || '') + "").replace(/(^\s+)|(\s+$)/g, "") === "") {

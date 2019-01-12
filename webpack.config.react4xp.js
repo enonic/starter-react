@@ -7,21 +7,19 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const SRC_MAIN = path.join(__dirname, 'src/main');
 const BUILD = path.join(__dirname, 'build/resources/main');
 
-const ASSETS = 'assets';
 const SITE = 'site';
 const R4X_HOME = 'react4xp';
 const R4X_SUB_ENTRIES = '_entries';   // Special-case subdirectory under /react4xp/. All files under this will be their own chunk, for dynamic, on-demand asset loading of top-level components, which in turn uses shared components chunked under all other subdirectories. TODO: WHAT ABOUT FILES IN ROOT /R4X/ ?
 
 const SRC_SITE = path.join(SRC_MAIN, "resources", SITE);
 
-const R4X_TARGETSUBDIR = path.join(ASSETS, R4X_HOME); 
+const R4X_TARGETSUBDIR = R4X_HOME; 
 const R4X_ENTRIES = path.join(R4X_HOME, R4X_SUB_ENTRIES);
 
 const SRC_R4X = path.join(SRC_MAIN, R4X_HOME);
 const SRC_R4X_ENTRIES = path.join(SRC_MAIN, R4X_ENTRIES);
 
-const BUILD_ASSETS = path.join(BUILD, ASSETS);
-const BUILD_ASSETS_JSX = path.join(BUILD, R4X_TARGETSUBDIR);
+const BUILD_R4X = path.join(BUILD, R4X_TARGETSUBDIR);
 
 const MODE = 'development'; /*/'production' //*/
 
@@ -38,7 +36,7 @@ module.exports = {
         filename: "[name].js",
         chunkFilename: "[name].[contenthash:9].js",
         libraryTarget: 'var',
-        library: ['React4xp', 'name'],
+        library: ['React4xp', '[name]'],
     },
     
     resolve: {
@@ -66,21 +64,23 @@ module.exports = {
             inject: false,
             hash: false,
             template: path.join(SRC_R4X, 'index.html.ejs'),
-            filename: path.join(BUILD, 'index.html')  // <-- TODO: Must be moved to assets after webpack, and have its urls postprocessed, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url.
+            filename: path.join(BUILD_R4X, 'index.html')  // <-- TODO: Must be moved to assets after webpack, and have its urls postprocessed, since the paths inside use both {{assetUrl}} and module.exports.output.path as base url.
         }),
 
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,
             template: path.join(SRC_R4X, 'commonChunks.xml.ejs'),
-            filename: path.join(BUILD, 'commonChunks.xml')  
+            filename: path.join(BUILD_R4X, 'commonChunks.xml')  
         }),
 
+        // TODO: Automatically build the content of commonChunks.json.ejs from the getCacheGroups results before running this, in order to automatically add automatically built chunks:
         new HtmlWebpackPlugin({
+        // TODO: Automate these:
             inject: false,
             hash: false,
             template: path.join(SRC_R4X, 'commonChunks.json.ejs'),
-            filename: path.join(BUILD, 'commonChunks.json')  
+            filename: path.join(BUILD_R4X, 'commonChunks.json')  
         }),
     ],
 
@@ -119,7 +119,7 @@ function getEntries(fullDirPath, extensions, targetPath) {
 function getCacheGroups(priorities) {
     const chunks = {
         vendors: {
-            name: path.join(ASSETS, R4X_HOME, 'vendors'),
+            name: path.join(R4X_HOME, 'vendors'),
             enforce: true,
             test: /[\\/]node_modules[\\/]/,
             chunks: 'all',
@@ -137,7 +137,7 @@ function getCacheGroups(priorities) {
     //console.log("Chunkdirs: " + JSON.stringify(chunkDirs, null, 4));
     chunkDirs.forEach(dirr => {
         chunks[dirr] = {
-            name: path.join(ASSETS, R4X_HOME, dirr),
+            name: path.join(R4X_HOME, dirr),
             enforce: true,
             test: new RegExp(path.join(SRC_R4X, dirr)),
             chunks: 'all',

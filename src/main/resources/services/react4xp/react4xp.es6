@@ -2,8 +2,11 @@ var ioLib = require('/lib/xp/io');
 var utilLib = require('/lib/enonic/util');
 var cacheLib = require('/lib/cache');
 
-const ROOTNAME = "/_/service/" + app.name + "/react4xp/";
-const REACT4XP_ASSETS = "/assets/react4xp/";
+// TODO: centralize this even more?
+const R4X = 'react4xp';
+
+const SERVICE_ROOT = `/_/service/${app.name}/${R4X}/`;
+const REACT4XP_ROOT = `/${R4X}/`;
 
 
 // TODO: For content-hashed chunks, Cache-Control should be "private, max-age=31536000". For others, 3 hours? Use commonChunks to separate!
@@ -30,8 +33,8 @@ const getReact4XP = (resource) => {
 
 // Handle all GET requests
 exports.get = function (req) {
-    if ((req.path || "").startsWith(ROOTNAME)) {
-        const target = (req.path.substring(ROOTNAME.length) || "").trim();
+    if ((req.path || "").startsWith(SERVICE_ROOT)) {
+        const target = (req.path.substring(SERVICE_ROOT.length) || "").trim();
         if (!target) {
             return {
                 status: 400,
@@ -40,9 +43,9 @@ exports.get = function (req) {
 
         //log.info("React4xp target: " + JSON.stringify(target, null, 2));
 
-        const resource = ioLib.getResource(REACT4XP_ASSETS + target);
+        const resource = ioLib.getResource(REACT4XP_ROOT + target);
         if (!resource || !resource.exists()) {
-            log.warning(`File not found: ${REACT4XP_ASSETS + target}`);
+            log.warning(`File not found: ${REACT4XP_ROOT + target}`);
             return {
                 status: 404,
             }

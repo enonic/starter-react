@@ -10,22 +10,24 @@ var view = ""; // resolve('reactive-part.html');
 
 const makeFallbackBody = (react4xpId) => `<div id="${react4xpId}"></div>`;
 
+// TODO: centralize this even more?
+const R4X = 'react4xp';
 
-const REACT4XP_SERVICE = `/_/service/${app.name}/react4xp/`;
+const SERVICES_ROOT = `/_/service/${app.name}/`;
 const BASE_PATHS = {
     part: "parts/",
     page: "pages/",
 };
 // Get the corresponding file name 
 const getComponentName = (component) => {
-    const thisName = component.descriptor.split(":")[1];
-    return BASE_PATHS[component.type] + thisName + "/" + thisName + ".js";
+    const compName = component.descriptor.split(":")[1];
+    return BASE_PATHS[component.type] + compName + "/" + compName;
 };
 
 const COMMON_CHUNKS = JSON.parse(
     libs.util.data.forceArray(
         libs.io.readLines(
-            libs.io.getResource('/commonChunks.json').getStream()
+            libs.io.getResource(`/${R4X}/commonChunks.json`).getStream()
         )
     ).join("")).commonChunks;
 log.info("COMMON_CHUNKS: " + JSON.stringify(COMMON_CHUNKS, null, 2));
@@ -33,10 +35,10 @@ log.info("COMMON_CHUNKS: " + JSON.stringify(COMMON_CHUNKS, null, 2));
 const PAGE_CONTRIBUTIONS = {};
 Object.keys(COMMON_CHUNKS).forEach(section => {
     COMMON_CHUNKS[section].forEach(chunk => {
-        if ((chunk.entry || "").startsWith('assets/react4xp/')) {
-            chunk.entry = chunk.entry.substring('assets/react4xp/'.length);
+        if ((chunk.entry || "").startsWith(R4X + '/')) {
+            chunk.entry = chunk.entry.substring(R4X.length + 1);
         }
-        PAGE_CONTRIBUTIONS[section] = `${(PAGE_CONTRIBUTIONS[section] || '')}<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${REACT4XP_SERVICE + chunk.entry}" ></script>`;
+        PAGE_CONTRIBUTIONS[section] = `${(PAGE_CONTRIBUTIONS[section] || '')}<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${SERVICES_ROOT}${R4X}/${chunk.entry}" ></script>\n`;
     });
 });
 log.info("PAGE_CONTRIBUTIONS: " + JSON.stringify(PAGE_CONTRIBUTIONS, null, 2));
@@ -97,22 +99,22 @@ exports.get = function(req) {
 
     
     const pageContributions = {...PAGE_CONTRIBUTIONS};
-    componentName = REACT4XP_SERVICE + "site/" + (
+    componentName = R4X + "/site/" + (
         ((componentName || "") + "").trim() || 
         getComponentName(component)
     );
-    pageContributions.bodyEnd = `${pageContributions.bodyEnd || ""}<script defer type="text/javascript" src="${componentName}" ></script>`;
+    pageContributions.bodyEnd = `${pageContributions.bodyEnd || ""}<script defer type="text/javascript" src="${SERVICES_ROOT}${componentName}.js" ></script>\n`;
     log.info("pageContributions: " + JSON.stringify(pageContributions, null, 2));
 
     // HACKY BUT WORKS!
     // Wait for the Library React4xp to exist in the global namespace (that is the library name for the transpiled reactive-part.jsx), then trigger the exported default function from reactive-part.jsx. 
-    // TODO: Don't know whence comes '.name' or if that will be overwritten in the case of multiple top-level components. And it should trigger on an event instead. 
+    // TODO: It should trigger in a better and safer way instead. Event? 
     pageContributions.bodyEnd += `<script defer>
         function tryTriggerReact4xp(attemptsLeft) {
-            if (attemptsLeft > 0 && typeof React4xp !== "undefined" && React4xp.name && typeof React4xp.name.default === 'function') {
+            if (attemptsLeft > 0 && typeof React4xp !== "undefined" && React4xp['${componentName}'] && typeof React4xp['${componentName}'].default === 'function') {
                 console.log("Triggering react component: " + attemptsLeft);
                 
-                React4xp.name.default(${JSON.stringify(react4xpId)}, ${JSON.stringify(props)});
+                React4xp['${componentName}'].default(${JSON.stringify(react4xpId)}, ${JSON.stringify(props)});
 
             } else {
                 setTimeout(function() {

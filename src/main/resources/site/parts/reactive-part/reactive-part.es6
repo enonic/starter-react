@@ -17,10 +17,14 @@ exports.get = function(req) {
     const component = portal.getComponent();
     
     const props = {
-        insertedMessage: "fra controlleren!"
+        insertedMessage: "fra \"kontrolleren\"!"
     };
 
-    return React4xp.render({ component, props });
+    return React4xp.render({ 
+        component,
+        jsxFileName: 'another.js',
+        props
+    });
 
 
 

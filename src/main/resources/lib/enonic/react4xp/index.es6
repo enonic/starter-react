@@ -55,13 +55,19 @@ const mergePageContributions = (pageContributions) => (!pageContributions) ?
         bodyEnd: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.bodyEnd), ...utilLib.data.forceArray(pageContributions.bodyEnd) ],
     };
 
+const removeJsExtensions = (jsxFileName) =>
+    (!jsxFileName) ? undefined :
+    (jsxFileName.endsWith('.jsx') || jsxFileName.endsWith('.es6')) ? jsxFileName.slice(0, -4) :
+    (jsxFileName.endsWith('.js')) ? jsxFileName.slice(0, -3) : jsxFileName;
+
 
 class React4xp {
     constructor(params) {
         const {jsxPath, react4xpId, props} = params || {};
         this.react4xpId = react4xpId;
-        this.jsxPath = jsxPath;
+        this.jsxPath = undefined;
         this.props = undefined
+        this.setJsxComponentPath(jsxPath) 
         this.setProps(props);
     }
 
@@ -89,7 +95,7 @@ class React4xp {
 
     //////////////////////////////////////////////////
     setJsxComponentPath(jsxPath) {
-        this.jsxPath = jsxPath;
+        this.jsxPath = removeJsExtensions(jsxPath);
         return this;
     }
 
@@ -100,13 +106,14 @@ class React4xp {
             if (jsxFileName.startsWith('./')) {
                 jsxFileName = jsxFileName.substring(2);
             }
+            jsxFileName = removeJsExtensions(jsxFileName);
         }
 
         const compName = component.descriptor.split(":")[1];
         this.jsxPath = `/site/${BASE_PATHS[component.type]}/${compName}/${jsxFileName || compName}`;
 
         if (!skipId) {
-            const react4xpId = `${BASE_PATHS[component.type]}:${compName}:${component.path}`
+            const react4xpId = `${BASE_PATHS[component.type]}_${compName}_${component.path}`.replace(/\//g, "_")
             if (uniqueId) {
                 this.setReact4xpIdPrefix(react4xpId);
             } else {
@@ -124,7 +131,7 @@ class React4xp {
         if (props && typeof props !== 'object') {
             throw Error("Props are optional, but must be an object.");
         }
-        this.props = props || {};
+        this.props = props;
         return this;
     }
 
@@ -133,7 +140,7 @@ class React4xp {
     //////////////////////////////////////////////////
     getBody(body) {
         if (!this.react4xpId) {
-            throw Error("ID for the target container element, react4xpId, has not been set. Add it in the constructor or with one of the setters.");
+            throw Error("ID for the target container element, react4xpId, has not been set. And there is no component from which to derive it either. Add one of them in the constructor or with one of the setters.");
         }
 
         // If no (or empty) body is supplied: generate a minimal body with only a target container element.
@@ -167,7 +174,7 @@ class React4xp {
             throw Error("Target path for JSX component, jsxPath, has not been set. Add an absolute path or a component in the React4XP constructor or with the setters.");
         }
         if (!this.react4xpId) {
-            throw Error("ID for the target container element, react4xpId, has not been set. Add it in the constructor or with one of the setters.");
+            throw Error("ID for the target container element, react4xpId, has not been set. And there is no component from which to derive it either. Add one of them in the constructor or with one of the setters.");
         }
 
         const adjustedPgContributions = mergePageContributions(pageContributions);
@@ -195,20 +202,15 @@ class React4xp {
         const react4xp = new React4xp({jsxPath, react4xpId, props});
 
         if (react4xpId) {
-            react4xp.setReact4xpId(react4xpId);
             if (uniqueId) {
-                react4xp.uniqueId();
+                react4xp.setReact4xpIdPrefix(react4xpId);
+            } else {
+                react4xp.setReact4xpId(react4xpId);
             }
-        } else {
-            react4xp.setReact4xpIdPrefix("react4xp");
-        }
+        } 
 
         if (!jsxPath) {
             react4xp.useXpComponent(component, jsxFileName, !!react4xpId, uniqueId);
-
-            if (!react4xpId && uniqueId) {
-                react4xp.uniqueId();
-            }
         }
 
         return {

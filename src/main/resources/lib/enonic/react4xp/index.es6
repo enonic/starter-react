@@ -1,0 +1,221 @@
+const ioLib = require('/lib/xp/io');
+const portal = require('/lib/xp/portal'); // Import the portal functions
+const thymeleaf = require('/lib/xp/thymeleaf'); // Import the Thymeleaf rendering function
+const utilLib = require('/lib/enonic/util');
+
+
+// TODO: centralize this even more?
+const R4X = 'react4xp';
+
+const SERVICES_ROOT = `/_/service/${app.name}/`;
+const BASE_PATHS = {
+    part: "parts",
+    page: "pages",
+};
+
+const COMMON_CHUNKS = JSON.parse(
+    utilLib.data.forceArray(
+        ioLib.readLines(
+            ioLib.getResource(`/${R4X}/commonChunks.json`).getStream()
+        )
+    ).join("")).commonChunks;
+//log.info("COMMON_CHUNKS: " + JSON.stringify(COMMON_CHUNKS, null, 2));
+
+const PAGE_CONTRIBUTIONS = {};
+Object.keys(COMMON_CHUNKS).forEach(section => {
+    COMMON_CHUNKS[section].forEach(chunk => {
+        if ((chunk.entry || "").startsWith(R4X + '/')) {
+            chunk.entry = chunk.entry.substring(R4X.length + 1);
+        }
+        PAGE_CONTRIBUTIONS[section] = `${(PAGE_CONTRIBUTIONS[section] || '')}<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${SERVICES_ROOT}${R4X}/${chunk.entry}" ></script>\n`;
+    });
+});
+//log.info("PAGE_CONTRIBUTIONS: " + JSON.stringify(PAGE_CONTRIBUTIONS, null, 2));
+
+
+
+const bodyHasContainer = (body, react4xpId) => {
+    const react4xpPattern = new RegExp("<[^>]+\\s+id\\s*=\\s*[\"']" + react4xpId + "[\"']", 'i');
+    //log.info(JSON.stringify({react4xpId: react4xpId, react4xpPattern}, null, 2));
+
+    return !!body.match(react4xpPattern);
+};
+
+
+
+const getContainer = (react4xpId) => `<div id="${react4xpId}"></div>`;
+
+
+const mergePageContributions = (pageContributions) => (!pageContributions) ?
+    {...PAGE_CONTRIBUTIONS} :
+    {
+        headBegin: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.headBegin), ...utilLib.data.forceArray(pageContributions.headBegin) ],
+        headEnd: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.headEnd), ...utilLib.data.forceArray(pageContributions.headEnd) ],
+        bodyBegin: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.bodyBegin), ...utilLib.data.forceArray(pageContributions.bodyBegin) ],
+        bodyEnd: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.bodyEnd), ...utilLib.data.forceArray(pageContributions.bodyEnd) ],
+    };
+
+
+class React4xp {
+    constructor(params) {
+        const {jsxPath, react4xpId, props} = params || {};
+        this.react4xpId = react4xpId;
+        this.jsxPath = jsxPath;
+        this.props = undefined
+        this.setProps(props);
+    }
+
+
+
+    ///////////////////////////////////////////////////
+
+    uniqueId() {
+        this.react4xpId = (this.react4xpId || "") + "_" + Math.floor(Math.random() * 99999999); // TODO: Better make this determined by component path?";
+        return this;
+    }
+
+    setReact4xpId(react4xpId) {
+        this.react4xpId = react4xpId;
+        return this;
+    }
+
+    setReact4xpIdPrefix(prefix) {
+        this.setReact4xpId(prefix);
+        this.uniqueId();
+        return this;
+    }
+
+
+
+    //////////////////////////////////////////////////
+    setJsxComponentPath(jsxPath) {
+        this.jsxPath = jsxPath;
+        return this;
+    }
+
+    useXpComponent(component, jsxFileName, skipId, uniqueId) {
+        log.info("Use component: " + JSON.stringify(component, null, 2));
+
+        if (jsxFileName) {
+            if (jsxFileName.startsWith('./')) {
+                jsxFileName = jsxFileName.substring(2);
+            }
+        }
+
+        const compName = component.descriptor.split(":")[1];
+        this.jsxPath = `/site/${BASE_PATHS[component.type]}/${compName}/${jsxFileName || compName}`;
+
+        if (!skipId) {
+            const react4xpId = `${BASE_PATHS[component.type]}:${compName}:${component.path}`
+            if (uniqueId) {
+                this.setReact4xpIdPrefix(react4xpId);
+            } else {
+                this.setReact4xpId(react4xpId)
+            }
+        }
+        return this;
+    }
+
+
+
+    //////////////////////////////////////////////////
+
+    setProps(props) {
+        if (props && typeof props !== 'object') {
+            throw Error("Props are optional, but must be an object.");
+        }
+        this.props = props || {};
+        return this;
+    }
+
+
+
+    //////////////////////////////////////////////////
+    getBody(body) {
+        if (!this.react4xpId) {
+            throw Error("ID for the target container element, react4xpId, has not been set. Add it in the constructor or with one of the setters.");
+        }
+
+        // If no (or empty) body is supplied: generate a minimal body with only a target container element.
+        if (((body || '') + "").replace(/(^\s+)|(\s+$)/g, "") === "") {
+            return getContainer(this.react4xpId);
+        }
+
+        // If there is a body but it's missing a target container element: 
+        // Make a container and insert it right before the closing tag.
+        if (!bodyHasContainer(body, this.react4xpId)) {
+            const elemPatt = /^<\s*(\w+)[\s>]/g;
+            const outerElement = elemPatt.exec(body);
+            if (!outerElement[1]) {
+                throw Error("Huh? Deal with this later: body seems to lack a root element/outer container.");
+            }
+            const rootElem = outerElement[1];
+            const lastTagPattern = new RegExp(rootElem + "(?!.*" + rootElem + ")", "gi");
+            const endPos = body.search(lastTagPattern);
+
+            log.info(JSON.stringify({body, endPos}, null, 2));
+
+            body = body.slice(0, endPos) + getContainer(this.react4xpId) + body.slice(endPos);
+            log.info(JSON.stringify({body}, null, 2));
+        }
+
+        return body;
+    }
+
+    getPageContributions = (pageContributions) => {       
+        if (!this.jsxPath) {
+            throw Error("Target path for JSX component, jsxPath, has not been set. Add an absolute path or a component in the React4XP constructor or with the setters.");
+        }
+        if (!this.react4xpId) {
+            throw Error("ID for the target container element, react4xpId, has not been set. Add it in the constructor or with one of the setters.");
+        }
+
+        const adjustedPgContributions = mergePageContributions(pageContributions);
+        adjustedPgContributions.bodyEnd = utilLib.data.forceArray(adjustedPgContributions.bodyEnd);
+
+        // Adds the component.jsx script. Assumes that it auto-triggers and reads its own required data from the data-react4xp attributes -targetId and -props.
+        // If not, the exported default from that script can be reached like this: <script>React4xp['${componentName}'].default</script>
+        adjustedPgContributions.bodyEnd.push(`<script 
+                type="text/javascript"
+                data-react4xp-targetId=${JSON.stringify(this.react4xpId)}
+                ${this.props ? `data-react4xp-props='${JSON.stringify(this.props)}'` : ''}
+                src="${SERVICES_ROOT}${R4X}${this.jsxPath}.js" 
+            ></script>
+        `);
+        
+        return adjustedPgContributions;
+    };
+
+
+
+    /////////////////////////////////////////////////
+
+    static render = (params) => {
+        const {jsxPath, component, jsxFileName, props, react4xpId, body, pageContributions, uniqueId} = params || {};
+        const react4xp = new React4xp({jsxPath, react4xpId, props});
+
+        if (react4xpId) {
+            react4xp.setReact4xpId(react4xpId);
+            if (uniqueId) {
+                react4xp.uniqueId();
+            }
+        } else {
+            react4xp.setReact4xpIdPrefix("react4xp");
+        }
+
+        if (!jsxPath) {
+            react4xp.useXpComponent(component, jsxFileName, !!react4xpId, uniqueId);
+
+            if (!react4xpId && uniqueId) {
+                react4xp.uniqueId();
+            }
+        }
+
+        return {
+            body: react4xp.getBody(body),
+            pageContributions: react4xp.getPageContributions(pageContributions)
+        }
+    }
+}
+
+module.exports = React4xp;

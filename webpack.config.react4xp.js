@@ -42,6 +42,7 @@ module.exports = {
     resolve: {
         extensions: ['.es6', '.js', '.jsx', '.less']
     },
+    devtool: 'source-map',
     module: {
         rules: [
             {
@@ -51,7 +52,7 @@ module.exports = {
                 loader: 'babel-loader',
                 query: {
                     compact: (MODE === 'production'),
-                }
+                },
             }, {
                 test: /\.less$/,
                 loaders: ["style-loader", "css-loader", "less-loader"]

@@ -28,6 +28,7 @@
 		"typescript.referencesCodeLens.enabled": true,
 		"typescript.suggest.completeFunctionCalls": true,
 		"typescriptHero.imports.organizeOnSave": true,
-		"java.configuration.updateBuildConfiguration": "disabled"
+		"java.configuration.updateBuildConfiguration": "disabled",
+		"java.dependency.packagePresentation": "hierarchical"
 	}
 }

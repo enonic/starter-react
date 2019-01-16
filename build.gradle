@@ -31,18 +31,23 @@ dependencies {
     include "com.enonic.lib:lib-router:1.0.1"
     include 'com.enonic.lib:util:1.3.0'
     include 'com.enonic.lib:lib-cache:1.1.0'
+
+    include group: 'org.jdom', name: 'jdom', version: '2.0.2'
 }
 
 repositories {
     mavenLocal()
     jcenter()
     xp.enonicRepo()
+    maven {
+        url 'http://repo.enonic.com/public'
+    }
 }
 
 // Transpile .js and .es6 files under src/main/resources. 
-// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackJ4X task below. 
+// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below. 
 // This is currently done by reserving .es6 and .js files below src/main/resources/ for this task, 
-// while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackJ4X task.
+// while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackReact4xp task.
 task babelJs(type: NodeTask) {
     script = file('node_modules/babel-cli/bin/babel.js') 
     args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]
@@ -55,7 +60,7 @@ babelJs.dependsOn += 'npmInstall'
 babelJs.dependsOn += 'processResources'
 
 
-task webpackJ4X(type: NodeTask) {
+task webpackReact4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.js']
 
@@ -65,6 +70,6 @@ task webpackJ4X(type: NodeTask) {
 }
 
 // processes your package.json before running webpack
-webpackJ4X.dependsOn babelJs
+webpackReact4xp.dependsOn babelJs
 
-jar.dependsOn webpackJ4X
+jar.dependsOn webpackReact4xp

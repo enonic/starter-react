@@ -2,6 +2,7 @@ const ioLib = require('/lib/xp/io');
 const portal = require('/lib/xp/portal'); // Import the portal functions
 const thymeleaf = require('/lib/xp/thymeleaf'); // Import the Thymeleaf rendering function
 const utilLib = require('/lib/enonic/util');
+var htmlInserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
 
 
 // TODO: centralize this even more?
@@ -61,6 +62,11 @@ const removeJsExtensions = (jsxFileName) =>
     (jsxFileName.endsWith('.js')) ? jsxFileName.slice(0, -3) : jsxFileName;
 
 
+
+//////////////////////////////////////////////////////////////////////
+
+
+
 class React4xp {
     constructor(params) {
         const {jsxPath, react4xpId, props} = params || {};
@@ -73,7 +79,7 @@ class React4xp {
 
 
 
-    ///////////////////////////////////////////////////
+    //---------------------------------------------------------------
 
     uniqueId() {
         this.react4xpId = (this.react4xpId || "") + "_" + Math.floor(Math.random() * 99999999); // TODO: Better make this determined by component path?";
@@ -93,7 +99,8 @@ class React4xp {
 
 
 
-    //////////////////////////////////////////////////
+    //---------------------------------------------------------------
+
     setJsxComponentPath(jsxPath) {
         this.jsxPath = removeJsExtensions(jsxPath);
         return this;
@@ -125,7 +132,7 @@ class React4xp {
 
 
 
-    //////////////////////////////////////////////////
+    //---------------------------------------------------------------
 
     setProps(props) {
         if (props && typeof props !== 'object') {
@@ -137,7 +144,8 @@ class React4xp {
 
 
 
-    //////////////////////////////////////////////////
+    //---------------------------------------------------------------
+
     getBody(body) {
         if (!this.react4xpId) {
             throw Error("ID for the target container element, react4xpId, has not been set. And there is no component from which to derive it either. Add one of them in the constructor or with one of the setters.");
@@ -152,18 +160,10 @@ class React4xp {
         // Make a container and insert it right before the closing tag.
         if (!bodyHasContainer(body, this.react4xpId)) {
             const elemPatt = /^<\s*(\w+)[\s>]/g;
-            const outerElement = elemPatt.exec(body);
-            if (!outerElement[1]) {
-                throw Error("Huh? Deal with this later: body seems to lack a root element/outer container.");
-            }
-            const rootElem = outerElement[1];
-            const lastTagPattern = new RegExp(rootElem + "(?!.*" + rootElem + ")", "gi");
-            const endPos = body.search(lastTagPattern);
-
-            log.info(JSON.stringify({body, endPos}, null, 2));
-
-            body = body.slice(0, endPos) + getContainer(this.react4xpId) + body.slice(endPos);
-            log.info(JSON.stringify({body}, null, 2));
+            
+            log.info("body: " + JSON.stringify(body));
+            const done = htmlInserter.insertAtEndOfRoot(body, "<p>Heisann</p>");
+            log.info("done: " + JSON.stringify(done));
         }
 
         return body;
@@ -192,6 +192,7 @@ class React4xp {
         
         return adjustedPgContributions;
     };
+    
 
 
 

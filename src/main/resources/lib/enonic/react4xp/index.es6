@@ -119,7 +119,7 @@ class React4xp {
         const compName = component.descriptor.split(":")[1];
         this.jsxPath = `site/${BASE_PATHS[component.type]}/${compName}/${jsxFileName || compName}`;
 
-        if (!skipId) {
+        if (!skipId && !this.react4xpId) {
             const react4xpId = `${BASE_PATHS[component.type]}_${compName}_${component.path}`.replace(/\//g, "_")
             if (uniqueId) {
                 this.setReact4xpIdPrefix(react4xpId);

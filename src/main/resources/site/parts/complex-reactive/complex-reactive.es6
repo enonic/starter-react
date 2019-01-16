@@ -27,7 +27,7 @@ exports.get = function(req) {
     };
     
     
-
+    // Demonstrates construction using the telescope builder pattern, using the "first.jsx" component in the part's (XP component) own path and generating a unique target container ID, also using the component
     const firstReact = new React4xp()
         .useXpComponent(component, 'first')
         .uniqueId()
@@ -37,21 +37,24 @@ exports.get = function(req) {
     body = firstReact.getBody(body);
     pageContributions = firstReact.getPageContributions(pageContributions);
 
+
+    // Demonstrates targeting an existing target container in the HTML view. useXpComponent.skipId is important for that. Targets the "second.jsx" react component in this (the XP component's own) folder
     const props2 = {
         insertedMessage: "fra \"andre props\"!"
     };
     const secondReact = new React4xp({
         props: props2,
-        react4xpId: 'secondReact4xp'
+        react4xpId: 'existing-react4xp-target'
     }).useXpComponent(component, 'second', true);
     body = secondReact.getBody(body);
     pageContributions = secondReact.getPageContributions(pageContributions);
 
 
+    // Demonstrates setting a chosen ID without uniquifying it, but generating it as it's not found in the HTML
     const thirdReact = new React4xp({
         jsxPath: 'app',
         react4xpId: 'thirdReact4xp'
-    }).uniqueId();
+    });
     body = thirdReact.getBody(body);
     pageContributions = thirdReact.getPageContributions(pageContributions);
 

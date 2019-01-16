@@ -117,7 +117,7 @@ class React4xp {
         }
 
         const compName = component.descriptor.split(":")[1];
-        this.jsxPath = `/site/${BASE_PATHS[component.type]}/${compName}/${jsxFileName || compName}`;
+        this.jsxPath = `site/${BASE_PATHS[component.type]}/${compName}/${jsxFileName || compName}`;
 
         if (!skipId) {
             const react4xpId = `${BASE_PATHS[component.type]}_${compName}_${component.path}`.replace(/\//g, "_")
@@ -151,7 +151,7 @@ class React4xp {
             throw Error("ID for the target container element, react4xpId, has not been set. And there is no component from which to derive it either. Add one of them in the constructor or with one of the setters.");
         }
 
-        // If no (or empty) body is supplied: generate a minimal body with only a target container element.
+        // If no (or empty) body is supplied: generate a minimal container body with only a target container element.
         if (((body || '') + "").replace(/(^\s+)|(\s+$)/g, "") === "") {
             return getContainer(this.react4xpId);
         }
@@ -159,11 +159,7 @@ class React4xp {
         // If there is a body but it's missing a target container element: 
         // Make a container and insert it right before the closing tag.
         if (!bodyHasContainer(body, this.react4xpId)) {
-            const elemPatt = /^<\s*(\w+)[\s>]/g;
-            
-            log.info("body: " + JSON.stringify(body));
-            const done = htmlInserter.insertAtEndOfRoot(body, "<p>Heisann</p>");
-            log.info("done: " + JSON.stringify(done));
+            return htmlInserter.insertAtEndOfRoot(body, getContainer(this.react4xpId));
         }
 
         return body;
@@ -186,7 +182,7 @@ class React4xp {
                 type="text/javascript"
                 data-react4xp-targetId=${JSON.stringify(this.react4xpId)}
                 ${this.props ? `data-react4xp-props='${JSON.stringify(this.props)}'` : ''}
-                src="${SERVICES_ROOT}${R4X}${this.jsxPath}.js" 
+                src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js" 
             ></script>
         `);
         

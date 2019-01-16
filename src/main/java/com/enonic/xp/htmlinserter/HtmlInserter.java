@@ -11,31 +11,39 @@ import java.io.StringReader;
 
 
 public class HtmlInserter {
-    private SAXBuilder saxBuilder = new SAXBuilder();
+    private static SAXBuilder saxBuilder = new SAXBuilder();
+    private static XMLOutputter outputter = new XMLOutputter();
+    static {
+        // Make the output HTML-compliant:
+        outputter.getFormat()
+                .setOmitDeclaration(true)
+                .setOmitEncoding(true)
+                .setExpandEmptyElements(true);
+    }
 
     public String insertAtEndOfRoot(String body, String insert) {
-        System.out.println("BODY:\n" + body);
+        //System.out.println("\n\nBODY:\n" + body);
+        //System.out.println("INSERT:\n" + insert);
         try {
             Document bodyDoc = saxBuilder.build(new StringReader(body));
-            System.out.println("bodyDoc:\n" + bodyDoc.toString());
+            //System.out.println("bodyDoc:\n" + bodyDoc.toString());
             Element bodyRoot = bodyDoc.getRootElement();
-            System.out.println("bodyRoot:\n" + bodyRoot.toString());
+            //System.out.println("bodyRoot:\n" + bodyRoot.toString());
 
             Document insertDoc = saxBuilder.build(new StringReader(insert));
-            System.out.println("insertDoc:\n" + insertDoc.toString());
+            //System.out.println("insertDoc:\n" + insertDoc.toString());
             Element insertRoot = insertDoc.getRootElement();
-            System.out.println("insertRoot:\n" + insertRoot.toString());
+            //System.out.println("insertRoot:\n" + insertRoot.toString());
 
             insertRoot.detach();
             bodyRoot.addContent(insertRoot);
-            System.out.println("rootText:\n" + bodyDoc);
+            //System.out.println("bodyRoot:\n" + bodyRoot);
 
-            return new XMLOutputter().outputString(bodyDoc);
+            //System.out.println("Output:\n" + outputter.outputString(bodyDoc) + "\n\n");
+            return outputter.outputString(bodyDoc);
 
-        } catch (JDOMException e) {
-            // handle JDOMException
-        } catch (IOException e) {
-            // handle IOException
+        } catch (JDOMException | IOException e) {
+            System.err.println("\n\nERROR: [ " + e + " ] ... while trying to insert HTML:\n\n" + insert + "\n\n...into body:\n\n" + body + "\n\n");
         }
 
         return null;

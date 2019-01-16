@@ -8,14 +8,16 @@ exports.render = (Component) => {
     })();
 
     let container = null;
+    let targetId = null;
     try {
-        const targetId = currentScript.getAttribute("data-react4xp-targetId");
+        targetId = currentScript.getAttribute("data-react4xp-targetId");
         if (!targetId) {
             console.error("React4xp can't mount into target container: 'data-react4xp-targetId' attribute is missing or empty in surrounding <script> tag.");
         }
         container = document.getElementById(targetId);
 
     } catch (e) { console.error(e); }
+
     if (!container) {
         console.error("React4xp can't mount into target container: no DOM element with ID '" + targetId +"'");
     }

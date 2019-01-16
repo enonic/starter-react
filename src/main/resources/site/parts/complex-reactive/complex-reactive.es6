@@ -2,7 +2,6 @@ const portal = require('/lib/xp/portal');
 const thymeleaf = require('/lib/xp/thymeleaf'); 
 const React4xp = require('/lib/enonic/react4xp'); 
 
-const htmlInserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
 
 // Specify the view file to use
 const view = resolve('complex-reactive.html');

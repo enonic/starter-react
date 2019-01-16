@@ -1,8 +1,7 @@
 const ioLib = require('/lib/xp/io');
-const portal = require('/lib/xp/portal'); // Import the portal functions
-const thymeleaf = require('/lib/xp/thymeleaf'); // Import the Thymeleaf rendering function
 const utilLib = require('/lib/enonic/util');
-var htmlInserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
+const htmlInserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
+const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.React4xp');
 
 
 // TODO: centralize this even more?
@@ -188,7 +187,8 @@ class React4xp {
         
         return adjustedPgContributions;
     };
-    
+
+
 
 
 
@@ -214,6 +214,11 @@ class React4xp {
             body: react4xp.getBody(body),
             pageContributions: react4xp.getPageContributions(pageContributions)
         }
+    }
+
+
+    static testSSR = () => {
+        SSRreact4xp.test();
     }
 }
 

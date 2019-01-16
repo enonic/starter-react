@@ -23,6 +23,7 @@
     "homepage": "https://github.com/enonic/starter-react#readme",
     "dependencies": {
         "immutable": "^3.8.2",
+        "jvm-npm": "^0.1.1",
         "react": "^16.4.1",
         "react-dom": "^16.4.1",
         "react-redux": "^5.0.7",

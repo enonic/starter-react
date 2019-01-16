@@ -60,6 +60,14 @@ babelJs.dependsOn += 'npmInstall'
 babelJs.dependsOn += 'processResources'
 
 
+task webpackReactBackend(type: NodeTask) {
+    script = file('node_modules/webpack/bin/webpack.js')
+    args = ['--config', 'webpack.config.reactBackend.js']
+
+    inputs.dir 'node_modules/react/'
+}
+
+
 task webpackReact4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.js']
@@ -73,3 +81,4 @@ task webpackReact4xp(type: NodeTask) {
 webpackReact4xp.dependsOn babelJs
 
 jar.dependsOn webpackReact4xp
+jar.dependsOn += 'webpackReactBackend'

@@ -7,6 +7,7 @@
         "deploy": "gradle deploy",
         "watch": "gradle deploy -t",
         "react4xp": "rm -rf build; node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.js",
+        "reactBackend": "rm -rf build; node_modules/webpack/bin/webpack.js --config webpack.config.reactBackend.js",
         "babelSite": "babel src/main/resources --out-dir build/resources/main --ignore \"**/*.js\"",
         "babelSiteWatch": "babel src/main/resources --out-dir build/resources/main --ignore \"**/*.js\" --watch"
     },

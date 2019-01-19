@@ -27,6 +27,7 @@ module.exports = {
     mode: 'production',
     
     entry: Object.assign({},
+        {'_core_': path.join(SRC_R4X, '_frontendCore_.es6')},
         getEntries(SRC_R4X_ENTRIES, ['jsx', 'js', 'es6'], R4X_TARGETSUBDIR),
         getEntries(SRC_SITE, ['jsx'], path.join(R4X_TARGETSUBDIR, SITE)) // <-- Note: this is where top-level react components are included, in the enonic site structure. Only JSX files are included: in order for these to be transpiled here (and thereby become a part of the chunk structure for these static assets) and not by the transpilation of "pure XP" source code files (which should be transpiled separately, outside of the static-asset/chunk structure), take care to separate them! Here, this is done by including only .JSX files here, reserving that extension for toplevel react components, and excluding .JSX files in the babelSite task in build.gradle. Note that if the top-level components import .es6 dependencies, that separation must be done more thoroughly.
     ),
@@ -35,7 +36,7 @@ module.exports = {
         path: path.join(BUILD),  // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
         filename: "[name].js",
         chunkFilename: "[name].[contenthash:9].js",
-        libraryTarget: 'commonjs', // 'var' would easier to use in pure-frontend, accessing exports like: React.[name].function() etc... But 'commonjs' makes chunks easier to use from nashorn.
+        libraryTarget: 'var', // 'var' would easier to use in pure-frontend, accessing exports like: React.[name].function() etc... But 'commonjs' makes chunks easier to use from nashorn.
         library: ['React4xp', '[name]'],
     },
     

@@ -1,22 +1,21 @@
 const path = require('path');
 const NODE_MODULES = path.join(__dirname, 'node_modules');
 const BUILD = path.join(__dirname, 'build', 'resources', 'main', 'lib', 'enonic', 'react4xp');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 
 module.exports = {
     mode: 'development',
     
     entry: {
-        'react': path.join(NODE_MODULES, 'react', 'index.js'),
-        'reactDOMServer': path.join(NODE_MODULES, 'react-dom', 'server.js')
+        'backendReact': path.join(NODE_MODULES, 'react', 'index.js'),
+        'backendReactDOMServer': path.join(NODE_MODULES, 'react-dom', 'server.js')
     },
 
     output: {
         path: BUILD,  // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
         filename: "[name].js",
         libraryTarget: 'var',
-        library: ['[name]']
+        //library: ['[name]']
     },
     
     resolve: {

@@ -1,4 +1,5 @@
-const portal = require('/lib/xp/portal'); 
+const portal = require('/lib/xp/portal');
+const utilLib = require('/lib/enonic/util');
 const React4xp = require('/lib/enonic/react4xp'); 
 
 // Handle the GET request
@@ -11,5 +12,3 @@ exports.get = function(req) {
 
     return React4xp.render({ component, props });
 };
-
-

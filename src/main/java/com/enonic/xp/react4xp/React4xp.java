@@ -64,19 +64,19 @@ public class React4xp {
     public void test() throws IOException {
         System.out.println("Testing nashorn...");
 
+        // Proof of concept:
         String backendReact = readResource("/lib/enonic/react4xp/backendReact.js");
         String backendReactDOMServer = readResource("/lib/enonic/react4xp/backendReactDOMServer.js");
-        String finsinte = readResource("/lib/enonic/react4xp/finsinte.js");
 
         try {
             System.out.println("\n\n\n############################################# Running...\n\n\n:");
 
             NashornScriptEngine engine = (NashornScriptEngine)new ScriptEngineManager().getEngineByName("nashorn");
 
-
             engine.eval(NASHORN_POLYFILL);
             engine.eval("k = 42;");
-            //engine.eval(content);
+            engine.eval(backendReact);
+            engine.eval(backendReactDOMServer);
 
             engine.eval("console.log('Howdy world!');");
             engine.eval("console.log(k);");

@@ -60,7 +60,7 @@ task babelXP(type: NodeTask) {
     args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]
 
     inputs.dir 'src/main/resources'
-    outputs.dir "build/resources"
+    outputs.dir "build/resources/main"
 }
 babelXP.dependsOn += 'npmInstall'
 babelXP.dependsOn += 'processResources'
@@ -71,6 +71,8 @@ task webpack_r4xp_frontCore(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.frontCore.js']
 
+    inputs.file("webpack.config.constants.js")
+    inputs.file("webpack.config.react4xp.frontCore.js")
     inputs.dir("node_modules")
     inputs.dir("src/main/react4xp")
     outputs.dir("build/resources/main/react4xp")
@@ -82,6 +84,8 @@ task webpack_r4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.js']
 
+    inputs.file("webpack.config.constants.js")
+    inputs.file("webpack.config.react4xp.js")
     inputs.dir("node_modules")
     inputs.dir("src/main/react4xp")
     inputs.dir("src/main/resources/site")

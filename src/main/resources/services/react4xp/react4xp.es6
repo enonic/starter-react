@@ -2,7 +2,7 @@ var ioLib = require('/lib/xp/io');
 var utilLib = require('/lib/enonic/util');
 var cacheLib = require('/lib/cache');
 
-// TODO: centralize this even more?
+// TODO: centralize this even more? Along with other strings that must match?
 const R4X = 'react4xp';
 
 const SERVICE_ROOT = `/_/service/${app.name}/${R4X}/`;
@@ -18,7 +18,7 @@ const react4xpCache = cacheLib.newCache({
 
 
 const getReact4XP = (resource) => {
-    const fileContent = utilLib.data.forceArray(ioLib.readLines(resource.getStream())).join("");
+    const fileContent = utilLib.data.forceArray(ioLib.readLines(resource.getStream())).join("\n");
     return {
         body: fileContent,
         headers: {

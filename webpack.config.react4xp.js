@@ -3,27 +3,13 @@ const glob = require('glob');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const SRC_MAIN = path.join(__dirname, 'src/main');
-const BUILD = path.join(__dirname, 'build/resources/main');
+const {
+    SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_SUB_ENTRIES, BUILD_R4X, BUILD_ENV, LIBRARY_NAME
+} = require('./webpack.config.constants');
 
-const SITE = 'site';
-const R4X_HOME = 'react4xp';
-const R4X_SUB_ENTRIES = '_entries';   // Special-case subdirectory under /react4xp/. All files under this will be their own chunk, for dynamic, on-demand asset loading of top-level components, which in turn uses shared components chunked under all other subdirectories. TODO: WHAT ABOUT FILES IN ROOT /R4X/ ?
-
-const SRC_SITE = path.join(SRC_MAIN, "resources", SITE);
-
-const R4X_TARGETSUBDIR = R4X_HOME; 
-const R4X_ENTRIES = path.join(R4X_HOME, R4X_SUB_ENTRIES);
-
-const SRC_R4X = path.join(SRC_MAIN, R4X_HOME);
-const SRC_R4X_ENTRIES = path.join(SRC_MAIN, R4X_ENTRIES);
-
-const BUILD_R4X = path.join(BUILD, R4X_TARGETSUBDIR);
-
-const MODE = 'development'; /*/'production' //*/
 
 module.exports = {
-    mode: MODE,
+    mode: BUILD_ENV,
     
     entry: Object.assign({},
         getEntries(SRC_R4X_ENTRIES, ['jsx', 'js', 'es6'], ""),
@@ -35,13 +21,13 @@ module.exports = {
         filename: "[name].js",
         chunkFilename: "[name].[contenthash:9].js",
         libraryTarget: 'var', // 'var' would easier to use in pure-frontend, accessing exports like: React.[name].function() etc... But 'commonjs' makes chunks easier to use from nashorn.
-        library: ['React4xp', '[name]'],
+        library: [LIBRARY_NAME, '[name]'],
     },
     
     resolve: {
         extensions: ['.es6', '.js', '.jsx', '.less']
     },
-    devtool: 'source-map',
+    devtool: (BUILD_ENV === 'production') ? false : 'source-map',
     module: {
         rules: [
             {
@@ -50,7 +36,7 @@ module.exports = {
                 exclude: /[\\/]node_modules[\\/]/,
                 loader: 'babel-loader',
                 query: {
-                    compact: (MODE === 'production'),
+                    compact: (BUILD_ENV === 'production'),
                 },
             }, {
                 test: /\.less$/,

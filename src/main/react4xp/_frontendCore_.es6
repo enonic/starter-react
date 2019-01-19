@@ -1,4 +1,3 @@
-// TODO: This - index.js (.es6) - is a bad place to put this code, might quickly get overwritten by user code. Move, but where? Mind that the import statement should stay easy. So, /node_modules/ maybe?
 import ReactDOM from 'react-dom';
 
 exports.render = (Component) => {

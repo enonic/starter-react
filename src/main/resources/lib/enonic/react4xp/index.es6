@@ -4,8 +4,9 @@ const htmlInserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
 const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.React4xp');
 
 
-// TODO: centralize this even more?
+// TODO: centralize these even more? Along with other strings that must match?
 const R4X = 'react4xp';
+const LIBRARY_NAME = 'React4xp';
 
 const SERVICES_ROOT = `/_/service/${app.name}/`;
 const BASE_PATHS = {
@@ -13,32 +14,48 @@ const BASE_PATHS = {
     page: "pages",
 };
 
-const COMMON_CHUNKS = JSON.parse(
-    utilLib.data.forceArray(
-        ioLib.readLines(
-            ioLib.getResource(`/${R4X}/commonChunks.json`).getStream()
-        )
-    ).join("")).commonChunks;
-//log.info("COMMON_CHUNKS: " + JSON.stringify(COMMON_CHUNKS, null, 2));
 
-const PAGE_CONTRIBUTIONS = {};
-Object.keys(COMMON_CHUNKS).forEach(section => {
-    COMMON_CHUNKS[section].forEach(chunk => {
-        if ((chunk.entry || "").startsWith(R4X + '/')) {
-            chunk.entry = chunk.entry.substring(R4X.length + 1);
-        }
-        PAGE_CONTRIBUTIONS[section] = `${(PAGE_CONTRIBUTIONS[section] || '')}<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${SERVICES_ROOT}${R4X}/${chunk.entry}" ></script>\n`;
+const buildBasicPageContributions = (chunkHashFiles) => {
+    const pageContributions = {
+        // Polyfill commonJS for rendered frontend code?
+        /*headEnd: [
+            '<script>if (typeof exports === "undefined") { var exports = {}; }</script>'
+        ],*/
+    };
+
+    chunkHashFiles.forEach(chunkFile => {
+        const commonChunks = JSON.parse(
+            utilLib.data.forceArray(
+                ioLib.readLines(
+                    ioLib.getResource(chunkFile).getStream()
+                )
+            ).join("")).commonChunks;
+        //log.info("commonChunks: " + JSON.stringify(commonChunks, null, 2));
+
+        Object.keys(commonChunks).forEach(section => {
+            commonChunks[section].forEach(chunk => {
+                if ((chunk.entry || "").startsWith(R4X + '/')) {
+                    chunk.entry = chunk.entry.substring(R4X.length + 1);
+                }
+                pageContributions[section] = [
+                    ...(pageContributions[section] || []),
+                    `<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${SERVICES_ROOT}${R4X}/${chunk.entry}" ></script>`
+                ];
+            });
+        });
     });
-});
+    log.info("\nBuilt basic pageContributions:\n" + JSON.stringify(pageContributions, null, 2) + "\n");
+    return pageContributions;
+}
 
-// TODO: PLAN: TRE ULIKE React4XP WEBPACKS: frontendCore, backendCore og userAssets! Auto-load de to første her:
 
-// Polyfill commonJS for rendered frontend code:
-PAGE_CONTRIBUTIONS.headEnd = [
-    '\n<script>if (typeof exports === "undefined") { var exports={}; }</script>\n',
-    ...(utilLib.data.forceArray(PAGE_CONTRIBUTIONS.headEnd) || [])
-];
-//log.info("PAGE_CONTRIBUTIONS: " + JSON.stringify(PAGE_CONTRIBUTIONS, null, 2));
+
+// Use the two json files built by webpack to fetch the contenthashed filenames for common chunks. Then use those to
+// build a set of basic page contributions common to all components:
+const PAGE_CONTRIBUTIONS = buildBasicPageContributions([
+    `/${R4X}/core.json`,
+    `/${R4X}/commonChunks.json`
+]);
 
 
 
@@ -183,16 +200,19 @@ class React4xp {
         const adjustedPgContributions = mergePageContributions(pageContributions);
         adjustedPgContributions.bodyEnd = utilLib.data.forceArray(adjustedPgContributions.bodyEnd);
 
-        // Adds the component.jsx script. Assumes that it auto-triggers and reads its own required data from the data-react4xp attributes -targetId and -props.
+        // Adds the component.jsx script and a trigger. Assumes that it reads its own required data from the data-react4xp attributes -targetId and -props.
         // If not, the exported default from that script can be reached like this: <script>React4xp['${componentName}'].default</script>
-        adjustedPgContributions.bodyEnd.push(`<script 
+        adjustedPgContributions.bodyEnd.push(`
+            <script type="text/javascript" src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script> 
+            <script defer
                 type="text/javascript"
                 data-react4xp-targetId=${JSON.stringify(this.react4xpId)}
                 ${this.props ? `data-react4xp-props='${JSON.stringify(this.props)}'` : ''}
-                src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js" 
-            ></script>
-        `);
-        
+                 
+            >
+                ${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default);
+            </script>`);
+
         return adjustedPgContributions;
     };
 

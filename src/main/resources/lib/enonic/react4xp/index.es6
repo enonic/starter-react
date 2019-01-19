@@ -30,6 +30,12 @@ Object.keys(COMMON_CHUNKS).forEach(section => {
         PAGE_CONTRIBUTIONS[section] = `${(PAGE_CONTRIBUTIONS[section] || '')}<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${SERVICES_ROOT}${R4X}/${chunk.entry}" ></script>\n`;
     });
 });
+
+// Polyfill commonJS for rendered frontend code:
+PAGE_CONTRIBUTIONS.headEnd = [
+    '\n<script>if (typeof exports === "undefined") {\n\tvar exports={};\n}</script>\n',
+    ...(utilLib.data.forceArray(PAGE_CONTRIBUTIONS.headEnd) || [])
+];
 //log.info("PAGE_CONTRIBUTIONS: " + JSON.stringify(PAGE_CONTRIBUTIONS, null, 2));
 
 
@@ -106,7 +112,7 @@ class React4xp {
     }
 
     useXpComponent(component, jsxFileName, skipId, uniqueId) {
-        log.info("Use component: " + JSON.stringify(component, null, 2));
+        //log.info("Use component: " + JSON.stringify(component, null, 2));
 
         if (jsxFileName) {
             if (jsxFileName.startsWith('./')) {

@@ -35,7 +35,7 @@ module.exports = {
         path: path.join(BUILD),  // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
         filename: "[name].js",
         chunkFilename: "[name].[contenthash:9].js",
-        libraryTarget: 'var',
+        libraryTarget: 'commonjs', // 'var' would easier to use in pure-frontend, accessing exports like: React.[name].function() etc... But 'commonjs' makes chunks easier to use from nashorn.
         library: ['React4xp', '[name]'],
     },
     

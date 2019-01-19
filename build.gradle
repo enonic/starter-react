@@ -44,53 +44,59 @@ repositories {
     }
 }
 
-// Transpile .js and .es6 files under src/main/resources. 
-// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below. 
-// This is currently done by reserving .es6 and .js files below src/main/resources/ for this task, 
+
+
+npmInstall.inputs.file("package.json")
+npmInstall.inputs.file("package-lock.json")
+npmInstall.outputs.dir("node_modules")
+
+
+// Transpile .js and .es6 files under src/main/resources.
+// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below.
+// This is currently done by reserving .es6 and .js files below src/main/resources/ for this task,
 // while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackReact4xp task.
 task babelXP(type: NodeTask) {
-    script = file('node_modules/babel-cli/bin/babel.js') 
+    script = file('node_modules/babel-cli/bin/babel.js')
     args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]
 
     inputs.dir 'src/main/resources'
-    outputs.dir "build/resources/main"
+    outputs.dir "build/resources"
 }
-
 babelXP.dependsOn += 'npmInstall'
 babelXP.dependsOn += 'processResources'
 
 
-task webpackReact4xpFrontCore(type: NodeTask) {
+
+task webpack_r4xp_frontCore(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.frontCore.js']
 
-    //inputs.dir 'node_modules/react/'
+    inputs.dir("node_modules")
+    inputs.dir("src/main/react4xp")
+    outputs.dir("build/resources/main/react4xp")
 }
-webpackReact4xpFrontCore.dependsOn += 'npmInstall'
+webpack_r4xp_frontCore.dependsOn += 'npmInstall'
 
 
-task webpackReact4xpBackCore(type: NodeTask) {
-    script = file('node_modules/webpack/bin/webpack.js')
-    args = ['--config', 'webpack.config.react4xp.backCore.js']
-
-    //inputs.dir 'node_modules/react/'
-}
-webpackReact4xpBackCore.dependsOn += 'npmInstall'
-
-
-task webpackReact4xp(type: NodeTask) {
+task webpack_r4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.js']
+
+    inputs.dir("node_modules")
+    inputs.dir("src/main/react4xp")
+    inputs.dir("src/main/resources/site")
+    outputs.dir("build/resources/main/react4xp")
 
     /*doLast {
          file("build/resources/main/assets/index.html").renameTo(file("build/resources/main/index.html"))
     }*/
 }
-webpackReact4xp.dependsOn += 'npmInstall'
-webpackReact4xp.dependsOn babelXP
+webpack_r4xp.dependsOn += 'npmInstall'
+
+
 
 // processes your package.json before running webpack
+jar.dependsOn babelXP
+jar.dependsOn += 'webpack_r4xp'
+jar.dependsOn += 'webpack_r4xp_frontCore'
 
-jar.dependsOn webpackReact4xp
-jar.dependsOn += 'webpackReact4xpFrontCore'
-jar.dependsOn += 'webpackReact4xpBackCore'

@@ -33,7 +33,7 @@ Object.keys(COMMON_CHUNKS).forEach(section => {
 
 // Polyfill commonJS for rendered frontend code:
 PAGE_CONTRIBUTIONS.headEnd = [
-    '\n<script>if (typeof exports === "undefined") {\n\tvar exports={};\n}</script>\n',
+    '\n<script>if (typeof exports === "undefined") { var exports={}; }</script>\n',
     ...(utilLib.data.forceArray(PAGE_CONTRIBUTIONS.headEnd) || [])
 ];
 //log.info("PAGE_CONTRIBUTIONS: " + JSON.stringify(PAGE_CONTRIBUTIONS, null, 2));

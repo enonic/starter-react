@@ -64,8 +64,9 @@ task webpackReactBackend(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.reactBackend.js']
 
-    inputs.dir 'node_modules/react/'
+    //inputs.dir 'node_modules/react/'
 }
+webpackReactBackend.dependsOn += 'npmInstall'
 
 
 task webpackReact4xp(type: NodeTask) {

@@ -31,7 +31,7 @@ Object.keys(COMMON_CHUNKS).forEach(section => {
     });
 });
 
-PLAN: TRE ULIKE React4XP WEBPACKS: frontendCore, backendCore og userAssets! Auto-load de to første her:
+// TODO: PLAN: TRE ULIKE React4XP WEBPACKS: frontendCore, backendCore og userAssets! Auto-load de to første her:
 
 // Polyfill commonJS for rendered frontend code:
 PAGE_CONTRIBUTIONS.headEnd = [

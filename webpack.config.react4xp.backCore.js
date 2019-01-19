@@ -1,4 +1,5 @@
 const path = require('path');
+
 const NODE_MODULES = path.join(__dirname, 'node_modules');
 const BUILD = path.join(__dirname, 'build', 'resources', 'main', 'lib', 'enonic', 'react4xp');
 

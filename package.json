@@ -1,15 +1,19 @@
 {
-    "name": "starter-react",
+    "name": "react4xp",
     "version": "1.0.0",
     "description": "React starter for Enonic XP Platform",
     "scripts": {
-        "build": "gradle build",
-        "deploy": "gradle deploy",
-        "watch": "gradle deploy -t",
-        "react4xp": "rm -rf build; node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.js",
-        "reactBackend": "rm -rf build; node_modules/webpack/bin/webpack.js --config webpack.config.reactBackend.js",
-        "babelSite": "babel src/main/resources --out-dir build/resources/main --ignore \"**/*.js\"",
-        "babelSiteWatch": "babel src/main/resources --out-dir build/resources/main --ignore \"**/*.js\" --watch"
+        "build": "npm i; ./gradlew build",
+        "deploy": "./gradlew deploy",
+        "build:xp": "./gradlew babelXP",
+        "watch:xp": "./gradlew deploy -t",
+        "rm": "node_modules/rimraf/bin.js build",
+        "build:r4xp": "node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.js --color --progress",
+        "watch:r4xp": "node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.js --color --progress --watch",
+        "build:r4xp-back": "node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.backCore.js --color --progress",
+        "watch:r4xp-back": "node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.backCore.js --color --progress --watch",
+        "build:r4xp-front": "node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.frontCore.js --color --progress",
+        "watch:r4xp-front": "node_modules/webpack/bin/webpack.js --config webpack.config.react4xp.frontCore.js --color --progress --watch"
     },
     "repository": {
         "type": "git",

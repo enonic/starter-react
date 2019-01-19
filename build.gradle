@@ -48,7 +48,7 @@ repositories {
 // These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below. 
 // This is currently done by reserving .es6 and .js files below src/main/resources/ for this task, 
 // while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackReact4xp task.
-task babelJs(type: NodeTask) {
+task babelXP(type: NodeTask) {
     script = file('node_modules/babel-cli/bin/babel.js') 
     args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]
 
@@ -56,17 +56,26 @@ task babelJs(type: NodeTask) {
     outputs.dir "build/resources/main"
 }
 
-babelJs.dependsOn += 'npmInstall'
-babelJs.dependsOn += 'processResources'
+babelXP.dependsOn += 'npmInstall'
+babelXP.dependsOn += 'processResources'
 
 
-task webpackReactBackend(type: NodeTask) {
+task webpackReact4xpFrontCore(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
-    args = ['--config', 'webpack.config.reactBackend.js']
+    args = ['--config', 'webpack.config.react4xp.frontCore.js']
 
     //inputs.dir 'node_modules/react/'
 }
-webpackReactBackend.dependsOn += 'npmInstall'
+webpackReact4xpFrontCore.dependsOn += 'npmInstall'
+
+
+task webpackReact4xpBackCore(type: NodeTask) {
+    script = file('node_modules/webpack/bin/webpack.js')
+    args = ['--config', 'webpack.config.react4xp.backCore.js']
+
+    //inputs.dir 'node_modules/react/'
+}
+webpackReact4xpBackCore.dependsOn += 'npmInstall'
 
 
 task webpackReact4xp(type: NodeTask) {
@@ -77,9 +86,11 @@ task webpackReact4xp(type: NodeTask) {
          file("build/resources/main/assets/index.html").renameTo(file("build/resources/main/index.html"))
     }*/
 }
+webpackReact4xp.dependsOn += 'npmInstall'
+webpackReact4xp.dependsOn babelXP
 
 // processes your package.json before running webpack
-webpackReact4xp.dependsOn babelJs
 
 jar.dependsOn webpackReact4xp
-jar.dependsOn += 'webpackReactBackend'
+jar.dependsOn += 'webpackReact4xpFrontCore'
+jar.dependsOn += 'webpackReact4xpBackCore'

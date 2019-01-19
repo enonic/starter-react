@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <commonChunks>
     <headEnd>
-        <chunk name="react4xp/vendors" entry="<%= htmlWebpackPlugin.files.chunks['react4xp/vendors'].entry %>" />
-        <chunk name="react4xp/common" entry="<%= htmlWebpackPlugin.files.chunks['react4xp/common'].entry %>" />
+        <chunk name="vendors" entry="<%= htmlWebpackPlugin.files.chunks.vendors.entry %>" />
+        <chunk name="common" entry="<%= htmlWebpackPlugin.files.chunks.common.entry %>" />
     </headEnd>
 
     <bodyEnd>
-        <chunk defer="true" name="react4xp/components" entry="<%= htmlWebpackPlugin.files.chunks['react4xp/components'].entry %>" />
+        <chunk defer="true" name="components" entry="<%= htmlWebpackPlugin.files.chunks.components.entry %>" />
     </bodyEnd>
 </commonChunks>

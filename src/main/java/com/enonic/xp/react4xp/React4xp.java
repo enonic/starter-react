@@ -20,10 +20,9 @@ public class React4xp {
     private final static List<String> CHUNK_FILES = Arrays.asList(
             CHUNKFILES_HOME + "chunks.nashornPolyfills.json",
             CHUNKFILES_HOME + "chunks.externals.json",
-            CHUNKFILES_HOME + "chunks.core.json",
+            //CHUNKFILES_HOME + "chunks.core.json",
             CHUNKFILES_HOME + "chunks.components.json"
     );
-
 
     public void test() throws IOException {
         System.out.println("\n\n\n############################################# Running nashorn test...\n\n\n");
@@ -42,14 +41,20 @@ public class React4xp {
                 engine.eval(script);
             }
 
-            engine.eval("k = 42;");
-            //engine.eval(backendReact);
-            //engine.eval(backendReactDOMServer);
+            /////////////////////////////////////////////////////////////
 
-            engine.eval("console.log('Howdy world!');");
-            engine.eval("console.log(k);");
+            String testComponent = ResourceHandler.readResource(SCRIPTS_HOME + "site/parts/simple-reactive/simple-reactive.js");
+            engine.eval(testComponent);
+            engine.eval("console.log(Object.keys(React4xp));");
+            engine.eval("var props = {insertedMessage: \"fra den simple kontrolleren!\"};");
 
-            engine.eval("console.log(Object.keys(exports));");
+            engine.eval("var Component = React4xp['site/parts/simple-reactive/simple-reactive'].default;");
+            engine.eval("console.log('Component: ' + Component);");
+
+            engine.eval("console.log('ReactDOMServer: ' + JSON.stringify(Object.keys(ReactDOMServer), null, 2));");
+            engine.eval("var rendered = ReactDOMServer.renderToString(Component(props));");
+            engine.eval("console.log(rendered);");
+
 
         } catch (ScriptException e) {
             e.printStackTrace();

@@ -1,8 +1,17 @@
 package com.enonic.xp.react4xp;
 
-public class Polyfills {
+import jdk.nashorn.api.scripting.NashornScriptEngine;
 
-    public final static String POLYFILL_BASICS = "" +
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.enonic.xp.react4xp.React4xp.SCRIPTS_HOME;
+
+public class EngineFactory {
+    private final static String POLYFILL_BASICS = "" +
             "if (typeof exports === 'undefined') { var exports = {}; }\n" +
             "if (typeof global === 'undefined') { var global = this; }\n" +
             "if (typeof window === 'undefined') { var window = this; }\n" +
@@ -13,18 +22,53 @@ public class Polyfills {
             "console.warn = print;\n" +
             "console.error = print;";
 
+    private final static String CHUNKFILES_HOME = "/react4xp/";
+
+
+    // Sequence matters! These engine initialization scripts are run in this order,
+    // scripts found in chunks.polyfill.json must come first, and chunks.components.json last!
+    private final static List<String> CHUNK_FILES = Arrays.asList(
+            CHUNKFILES_HOME + "chunks.nashornPolyfills.json",
+            CHUNKFILES_HOME + "chunks.externals.json",
+            CHUNKFILES_HOME + "chunks.components.json"
+    );
+
+    private static NashornScriptEngine engineInstance = null;
+
+    public static NashornScriptEngine getEngine() throws ScriptException, IOException {
+        if (engineInstance == null) {
+            engineInstance = (NashornScriptEngine)new ScriptEngineManager().getEngineByName("nashorn");
+            engineInstance.eval(POLYFILL_BASICS);
+
+            List<String> dependencyScripts = new ChunkDependencyParser().getScriptDependencies(CHUNK_FILES);
+            for (String scriptFile : dependencyScripts) {
+                System.out.println("\tNashorn init script: " + SCRIPTS_HOME + scriptFile);
+                String script = ResourceHandler.readResource(SCRIPTS_HOME + scriptFile);
+                engineInstance.eval(script);
+            }
+        }
+        return engineInstance;
+    }
 }
 
+
+
+
+
+
+
+
+
+
+
+
     /* For reference: the following is now replaced by transpiled code, read from transpiled file: _nashornPolyfills_.js
+
 
 
     // Polyfilling setTimeout() and friends:
     // https://gist.github.com/josmardias/20493bd205e24e31c0a406472330515a
     //
-    // TODO: Are we gonna have a problem?
-    // At least one timeout needs to be set, larger then your code bootstrap
-    // or Nashorn will run forever
-    // preferably, put a timeout 0 after your code bootstrap
     public final static String POLYFILL_TIMERS = "(function(context) {\n" +
                     "  'use strict';\n" +
                     "\n" +

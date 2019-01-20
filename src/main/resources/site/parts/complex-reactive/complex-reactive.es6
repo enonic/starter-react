@@ -10,6 +10,8 @@ const view = resolve('complex-reactive.html');
 //const config = component.config;
 
 
+
+
 // Handle the GET request
 exports.get = function(req) {
     log.info("complex-reactive request: " + JSON.stringify(req, null, 2)); 

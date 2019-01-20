@@ -1,6 +1,6 @@
 const ioLib = require('/lib/xp/io');
 const utilLib = require('/lib/enonic/util');
-const htmlInserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
+const HTMLinserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
 const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.React4xp');
 
 
@@ -179,7 +179,7 @@ class React4xp {
         // If there is a body but it's missing a target container element: 
         // Make a container and insert it right before the closing tag.
         if (!bodyHasContainer(body, this.react4xpId)) {
-            return htmlInserter.insertAtEndOfRoot(body, getContainer(this.react4xpId));
+            return HTMLinserter.insertAtEndOfRoot(body, getContainer(this.react4xpId));
         }
 
         return body;
@@ -208,6 +208,9 @@ class React4xp {
     };
 
 
+    renderToStaticMarkup = () => SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(this.props));
+
+
 
 
 
@@ -233,12 +236,7 @@ class React4xp {
             body: react4xp.getBody(body),
             pageContributions: react4xp.getPageContributions(pageContributions)
         }
-    }
-
-
-    static testSSR = () => {
-        SSRreact4xp.test();
-    }
+    };
 }
 
 module.exports = React4xp;

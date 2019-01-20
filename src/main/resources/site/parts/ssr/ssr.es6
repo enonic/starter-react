@@ -6,11 +6,15 @@
 const React4xp = require('/lib/enonic/react4xp');
 
 exports.get = (req) => {
-
-    React4xp.testSSR();
-
+    const comp = new React4xp({
+        jsxPath: 'site/parts/simple-reactive/simple-reactive',
+        react4xpId: 'thirdReact4xp',
+        props: {
+            insertedMessage: "- easy peasy lemon squeezy!"
+        }
+    });
 
     return {
-        body: "OK"
+        body: comp.renderToStaticMarkup()
     };
 };

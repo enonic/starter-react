@@ -66,12 +66,26 @@ babelXP.dependsOn += 'npmInstall'
 babelXP.dependsOn += 'processResources'
 
 
+task webpack_r4xp_externals(type: NodeTask) {
+    script = file('node_modules/webpack/bin/webpack.js')
+    args = ['--config', 'webpack.config.react4xp.externals.js']
+
+    inputs.file("config.constants.json")
+    inputs.file("config.constants.js")
+    inputs.file("webpack.config.react4xp.externals.js")
+    inputs.dir("node_modules")
+    inputs.dir("src/main/react4xp")
+    outputs.dir("build/resources/main/react4xp")
+}
+webpack_r4xp_externals.dependsOn += 'npmInstall'
+
 
 task webpack_r4xp_frontCore(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.frontCore.js']
 
-    inputs.file("webpack.config.constants.js")
+    inputs.file("config.constants.json")
+    inputs.file("config.constants.js")
     inputs.file("webpack.config.react4xp.frontCore.js")
     inputs.dir("node_modules")
     inputs.dir("src/main/react4xp")
@@ -84,7 +98,8 @@ task webpack_r4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.js']
 
-    inputs.file("webpack.config.constants.js")
+    inputs.file("config.constants.json")
+    inputs.file("config.constants.js")
     inputs.file("webpack.config.react4xp.js")
     inputs.dir("node_modules")
     inputs.dir("src/main/react4xp")
@@ -103,4 +118,5 @@ webpack_r4xp.dependsOn += 'npmInstall'
 jar.dependsOn babelXP
 jar.dependsOn += 'webpack_r4xp'
 jar.dependsOn += 'webpack_r4xp_frontCore'
+jar.dependsOn += 'webpack_r4xp_externals'
 

@@ -1,0 +1,6 @@
+{
+  "EXTERNALS": {
+    "react": "React",
+    "react-dom": "ReactDOM"
+  }
+}

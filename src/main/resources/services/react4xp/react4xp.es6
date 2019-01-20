@@ -13,7 +13,7 @@ const REACT4XP_ROOT = `/${R4X}/`;
 // TODO: How to update ETag headers for non-cached, short-lived resources?
 const react4xpCache = cacheLib.newCache({
     size: 30,
-    expire: 10800, // 3 hours
+    expire: 10, //10800 = 3 hours
 });
 
 

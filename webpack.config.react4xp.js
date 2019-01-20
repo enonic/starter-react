@@ -4,8 +4,8 @@ const glob = require('glob');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const {
-    SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_SUB_ENTRIES, BUILD_R4X, BUILD_ENV, LIBRARY_NAME
-} = require('./webpack.config.constants');
+    SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_SUB_ENTRIES, BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS
+} = require('./config.constants');
 
 
 module.exports = {
@@ -44,6 +44,8 @@ module.exports = {
             }
         ]
     },
+
+    externals: EXTERNALS,
 
     plugins: [
         // TODO: Autogenerate these:

@@ -1,3 +1,13 @@
+// Webpack for transpiling "frontend core":
+// React4xp (not-third-party) the core functionality for running in the client, necessary
+// for components to run/render.
+//
+// Look mainly at src/main/react4xp/_frontendCore_.es6.
+//
+// The output will be Core.[contentHash].js. Content-hashed file name for cache busting, hash is stored for
+// runtime reference in commonChunks.json.
+
+
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');

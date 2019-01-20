@@ -16,12 +16,7 @@ const BASE_PATHS = {
 
 
 const buildBasicPageContributions = (chunkHashFiles) => {
-    const pageContributions = {
-        // Polyfill commonJS for rendered frontend code?
-        /*headEnd: [
-            '<script>if (typeof exports === "undefined") { var exports = {}; }</script>'
-        ],*/
-    };
+    const pageContributions = {};
 
     chunkHashFiles.forEach(chunkFile => {
         const commonChunks = JSON.parse(

@@ -1,3 +1,17 @@
+// Webpack for transpiling user-added JS, primarily react JSX components: top-level or shared components, component libraries.
+// Look mainy for JSX files in:
+//
+// - src/main/react4xp: Here, each file under /_entries/ will become a separate, top-level component/asset, and
+// all other dependencies to those, in all other folders below react4xp, will be bundled into chunks by the name of
+// the folder. Third-pardy dependencies in /node_modules/ will be separated out into a vendors bundle, except for externals,
+// (based on config.constants.json .EXTERNALS).
+//
+// All such second-level assets will have content-hashed file names for cache busting, hashes are stored for
+// runtime reference in commonChunks.json.
+//
+// - ...and in the XP structure under src/main/resources/site: Here, JSX files are more tightly bound to their corresponding
+// XP component (part, page, etc) but can still use the second-level dependency chunks mentioned above.
+
 const path = require('path');
 const glob = require('glob');
 
@@ -72,6 +86,7 @@ module.exports = {
     }
 };
 
+// Builds entries from files found under a directory, for selected file extensions, for bein transpiled out to a target path
 function getEntries(fullDirPath, extensions, targetPath) {
     const entries = {};
     targetPath += "/";
@@ -96,6 +111,11 @@ function getEntries(fullDirPath, extensions, targetPath) {
     return entries
 }
 
+
+// Sets up chunking / code splitting: turns subfolders below src/main/react4xp (except _entries)
+// into layers of dependency chunks:
+// - vendors is third level / third party libs under /node_modules/
+// - subfolder names is second level, below the top-level entry components
 function getCacheGroups(priorities) {
     const chunks = {
         vendors: {

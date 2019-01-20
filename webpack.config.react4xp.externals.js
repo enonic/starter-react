@@ -1,3 +1,10 @@
+// Webpack for transpiling externals (aka vendors) chunk/asset file, for gathering up heavy and rarely-changed
+// (and so, nicely cacheable) libs and dependencies - React etc.
+// Basis for externals (affects other transpilations too): config.constants.json
+//
+// Output, externals.[contentHash].js, is content-hashed file name for cache busting, hash is stored for
+// runtime reference in commonChunks.json.
+
 const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');

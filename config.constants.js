@@ -17,7 +17,7 @@ const SRC_SITE = path.join(SRC_MAIN, "resources", SITE);
 const R4X_ENTRIES = path.join(R4X_HOME, R4X_SUB_ENTRIES);
 const SRC_R4X_ENTRIES = path.join(SRC_MAIN, R4X_ENTRIES);
 
-const BUILD_ENV = 'production'; /*/ 'development'; //*/
+const BUILD_ENV = /*'production'; /*/ 'development'; //*/
 const LIBRARY_NAME = 'React4xp';
 
 // Shared constants that for different reasons must be available in a mor general format than JS:

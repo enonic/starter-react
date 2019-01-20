@@ -88,19 +88,27 @@ module.exports = {
 
 // Builds entries from files found under a directory, for selected file extensions, for bein transpiled out to a target path
 function getEntries(fullDirPath, extensions, targetPath) {
+    console.log("Components in " + fullDirPath + " (." + extensions.join(", .") + "):")
     const entries = {};
-    targetPath += "/";
+    if (targetPath && targetPath.length) {
+        targetPath += "/";
+    }
     extensions.forEach(extension => {
         Object.assign(
             entries, 
-            glob.sync(path.join(fullDirPath, '**/*.' + extension)).reduce(function(obj, el) {
-                const parsedEl = path.parse(el);
+            glob.sync(path.join(fullDirPath, '**/*.' + extension)).reduce(function(obj, entry) {
+                const parsedEl = path.parse(entry);
                 if (parsedEl && parsedEl.dir.startsWith(fullDirPath)) {
                     let subdir = parsedEl.dir.substring(fullDirPath.length).replace(/(^\/+)|(\/+$)/g, "");
                     if (subdir.length) {
                         subdir += "/";
                     }
-                    obj[targetPath + subdir +  parsedEl.name] = el;
+                    const name = targetPath + subdir +  parsedEl.name;
+                    console.log("\t", name);
+                    /*console.log("\ttargetPath:", targetPath);
+                    console.log("\tsubdir:", subdir);
+                    console.log("\tparsedEl.name:", parsedEl.name);*/
+                    obj[name] = entry;
                 }
                 return obj;
             }, {})

@@ -199,15 +199,10 @@ class React4xp {
         // Adds the component.jsx script and a trigger. Assumes that it reads its own required data from the data-react4xp attributes -targetId and -props.
         // If not, the exported default from that script can be reached like this: <script>React4xp['${componentName}'].default</script>
         adjustedPgContributions.bodyEnd.push(`
-            <script type="text/javascript" src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script> 
-            <script defer
-                type="text/javascript"
-                data-react4xp-targetId=${JSON.stringify(this.react4xpId)}
-                ${this.props ? `data-react4xp-props='${JSON.stringify(this.props)}'` : ''}
-                 
-            >
-                ${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default);
-            </script>`);
+<script type="text/javascript" src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script> 
+<script defer type="text/javascript" data-react4xp-targetId=${JSON.stringify(this.react4xpId)} ${this.props ? `data-react4xp-props='${JSON.stringify(this.props)}'` : ''}>
+    ${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default);
+</script>`);
 
         return adjustedPgContributions;
     };

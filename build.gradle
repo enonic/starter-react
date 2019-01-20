@@ -98,12 +98,14 @@ task webpack_r4xp_externals(type: NodeTask) {
     }
 
     script = file('node_modules/webpack/bin/webpack.js')
-    args = ['--config', 'webpack.config.react4xp.externals.js']
+    args = ['--config', 'webpack.config.react4xp.externals.js', '--progress', '--color']
+
+    inputs.file("webpack.config.react4xp.externals.js")
 
     inputs.file("config.constants.json")
     inputs.file("config.constants.js")
-    inputs.file("webpack.config.react4xp.externals.js")
-    inputs.dir("node_modules")
+    inputs.file("package.json")
+    inputs.file("package-lock.json")
     inputs.dir("src/main/react4xp")
     outputs.dir("build/resources/main/react4xp")
 }
@@ -112,12 +114,14 @@ webpack_r4xp_externals.dependsOn += 'npmInstall'
 
 task webpack_r4xp_frontCore(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
-    args = ['--config', 'webpack.config.react4xp.frontCore.js']
+    args = ['--config', 'webpack.config.react4xp.frontCore.js', '--progress', '--color']
+
+    inputs.file("webpack.config.react4xp.frontCore.js")
 
     inputs.file("config.constants.json")
     inputs.file("config.constants.js")
-    inputs.file("webpack.config.react4xp.frontCore.js")
-    inputs.dir("node_modules")
+    inputs.file("package.json")
+    inputs.file("package-lock.json")
     inputs.dir("src/main/react4xp")
     outputs.dir("build/resources/main/react4xp")
 }
@@ -126,14 +130,16 @@ webpack_r4xp_frontCore.dependsOn += 'npmInstall'
 
 task webpack_r4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
-    args = ['--config', 'webpack.config.react4xp.js']
+    args = ['--config', 'webpack.config.react4xp.js', '--progress', '--color']
+
+    inputs.file("webpack.config.react4xp.js")
+    inputs.dir("src/main/resources/site")
 
     inputs.file("config.constants.json")
     inputs.file("config.constants.js")
-    inputs.file("webpack.config.react4xp.js")
-    inputs.dir("node_modules")
+    inputs.file("package.json")
+    inputs.file("package-lock.json")
     inputs.dir("src/main/react4xp")
-    inputs.dir("src/main/resources/site")
     outputs.dir("build/resources/main/react4xp")
 
     /*doLast {
@@ -149,4 +155,6 @@ jar.dependsOn babelXP
 jar.dependsOn += 'webpack_r4xp'
 jar.dependsOn += 'webpack_r4xp_frontCore'
 jar.dependsOn += 'webpack_r4xp_externals'
+
+jar.outputs.dir('build/libs')
 

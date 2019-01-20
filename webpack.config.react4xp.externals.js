@@ -43,8 +43,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,
-            template: path.join(SRC_R4X, 'externalsChunks.json.ejs'),
-            filename: path.join(BUILD_R4X, 'externalsChunks.json')
+            template: path.join(SRC_R4X, 'chunks.externals.json.ejs'),
+            filename: path.join(BUILD_R4X, 'chunks.externals.json')
         }),
     ],
 };

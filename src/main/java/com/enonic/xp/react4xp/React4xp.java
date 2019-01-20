@@ -115,9 +115,9 @@ public class React4xp {
     private final static String SCRIPTS_HOME = "/react4xp/";
 
     private final static List<String> CHUNK_FILES = Arrays.asList(
-            CHUNKFILES_HOME + "externalsChunks.json",
-            CHUNKFILES_HOME + "coreChunks.json",
-            CHUNKFILES_HOME + "commonChunks.json"
+            CHUNKFILES_HOME + "chunks.externals.json",
+            CHUNKFILES_HOME + "chunks.core.json",
+            CHUNKFILES_HOME + "chunks.components.json"
     );
 
 

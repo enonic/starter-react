@@ -66,15 +66,15 @@ module.exports = {
         /*new HtmlWebpackPlugin({
             inject: false,
             hash: false,
-            template: path.join(SRC_R4X, 'commonChunks.xml.ejs'),
-            filename: path.join(BUILD_R4X, 'commonChunks.xml')  
+            template: path.join(SRC_R4X, 'chunks.components.xml.ejs'),
+            filename: path.join(BUILD_R4X, 'chunks.components.xml')
         }), */
 
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,
-            template: path.join(SRC_R4X, 'commonChunks.json.ejs'),
-            filename: path.join(BUILD_R4X, 'commonChunks.json')  
+            template: path.join(SRC_R4X, 'chunks.components.json.ejs'),
+            filename: path.join(BUILD_R4X, 'chunks.components.json')
         }),
     ],
 

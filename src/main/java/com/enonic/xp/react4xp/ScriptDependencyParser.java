@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ScriptDependencyParser {
-    private final static String CHUNKFILE_MAINKEY = "commonChunks";
+    private final static String CHUNKFILE_MAINKEY = "chunks";
     private final static String CHUNKFILE_ENTRYKEY = "entry";
     private final static List<String> CHUNK_KEYS = Arrays.asList(
             "headBegin",

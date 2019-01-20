@@ -19,16 +19,16 @@ const buildBasicPageContributions = (chunkHashFiles) => {
     const pageContributions = {};
 
     chunkHashFiles.forEach(chunkFile => {
-        const commonChunks = JSON.parse(
+        const chunks = JSON.parse(
             utilLib.data.forceArray(
                 ioLib.readLines(
                     ioLib.getResource(chunkFile).getStream()
                 )
-            ).join("")).commonChunks;
-        //log.info("commonChunks: " + JSON.stringify(commonChunks, null, 2));
+            ).join("")).chunks;
+        //log.info("chunks: " + JSON.stringify(chunks, null, 2));
 
-        Object.keys(commonChunks).forEach(section => {
-            commonChunks[section].forEach(chunk => {
+        Object.keys(chunks).forEach(section => {
+            chunks[section].forEach(chunk => {
                 if ((chunk.entry || "").startsWith(R4X + '/')) {
                     chunk.entry = chunk.entry.substring(R4X.length + 1);
                 }
@@ -48,9 +48,9 @@ const buildBasicPageContributions = (chunkHashFiles) => {
 // Use the json files built by webpack to fetch the contenthashed filenames for commonChunks.
 // Then use those to build a set of basic page contributions common to all components:
 const PAGE_CONTRIBUTIONS = buildBasicPageContributions([
-    `/${R4X}/externalsChunks.json`,
-    `/${R4X}/coreChunks.json`,
-    `/${R4X}/commonChunks.json`
+    `/${R4X}/chunks.externals.json`,
+    `/${R4X}/chunks.core.json`,
+    `/${R4X}/chunks.components.json`
 ]);
 
 

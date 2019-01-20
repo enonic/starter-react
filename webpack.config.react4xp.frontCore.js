@@ -52,8 +52,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,
-            template: path.join(SRC_R4X, 'coreChunks.json.ejs'),
-            filename: path.join(BUILD_R4X, 'coreChunks.json')
+            template: path.join(SRC_R4X, 'chunks.core.json.ejs'),
+            filename: path.join(BUILD_R4X, 'chunks.core.json')
         }),
     ],
 

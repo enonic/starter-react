@@ -1,3 +1,6 @@
+// React4xp static-asset file server, with specified cache control headers
+// TODO: This should probably be a controller-mapping instead of a service. Then it can be put in better places too.
+
 var ioLib = require('/lib/xp/io');
 var utilLib = require('/lib/enonic/util');
 var cacheLib = require('/lib/cache');
@@ -9,11 +12,13 @@ const SERVICE_ROOT = `/_/service/${app.name}/${R4X}/`;
 const REACT4XP_ROOT = `/${R4X}/`;
 
 
-// TODO: For content-hashed chunks, Cache-Control should be "private, max-age=31536000". For others, 3 hours? Use commonChunks to separate!
+// TODO: For content-hashed chunks, Cache-Control should be "private, max-age=31536000". For others, 3 hours?
+//          TODO: Use the commonChunks files to figure this out.
 // TODO: How to update ETag headers for non-cached, short-lived resources?
+
 const react4xpCache = cacheLib.newCache({
     size: 30,
-    expire: 10, //10800 = 3 hours
+    expire: 10800 // 3 hours
 });
 
 

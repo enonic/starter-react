@@ -50,8 +50,8 @@ const buildBasicPageContributions = (chunkHashFiles) => {
 
 
 
-// Use the two json files built by webpack to fetch the contenthashed filenames for common chunks. Then use those to
-// build a set of basic page contributions common to all components:
+// Use the json files built by webpack to fetch the contenthashed filenames for commonChunks.
+// Then use those to build a set of basic page contributions common to all components:
 const PAGE_CONTRIBUTIONS = buildBasicPageContributions([
     `/${R4X}/externals.json`,
     `/${R4X}/core.json`,

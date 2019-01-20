@@ -42,7 +42,6 @@ const JSON_CONSTANTS = JSON.parse(fs.readFileSync('config.constants.json', 'utf8
    }
 */
 const EXTERNALS = JSON_CONSTANTS.EXTERNALS;
-console.log(EXTERNALS);
 
 module.exports = {
     SITE,

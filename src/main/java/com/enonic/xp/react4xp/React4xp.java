@@ -4,14 +4,12 @@ import jdk.nashorn.api.scripting.NashornScriptEngine;
 
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.List;
 
 public class React4xp {
-    private static String NASHORN_POLYFILL = "" +
+    private final static String NASHORN_POLYFILL = "" +
             "if (typeof exports === 'undefined') { var exports = {}; }\n" +
             "if (typeof global === 'undefined') { var global = this; }\n" +
             "if (typeof window === 'undefined') { var window = this; }\n" +
@@ -22,61 +20,34 @@ public class React4xp {
             "console.warn = print;\n" +
             "console.error = print;";
 
+    private final static String CHUNKFILES_HOME = "/react4xp/";
+    private final static String SCRIPTS_HOME = "/react4xp/";
 
-    /** Read as string the content of a file (resource) inside the built JAR.
-      * @param path is full "file" name, relative to JAR root. */
-    private String readResource(String path) throws IOException {
-        //System.out.println("Reading resource: " + path);
-
-        InputStream in = getClass().getResourceAsStream(path);
-        if (in == null) {
-            throw new FileNotFoundException("Not found: " + path);
-        }
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-        StringBuilder sb = new StringBuilder();
-        String line;
-
-        try {
-            while ((line = reader.readLine()) != null) {
-                sb.append(line + "\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-
-        } finally {
-            try {
-                reader.close();
-                in.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw e;
-            }
-        }
-
-        //System.out.println("\tOK");
-        return sb.toString();
-    }
+    private final static List<String> CHUNK_FILES = Arrays.asList(
+            CHUNKFILES_HOME + "externalsChunks.json",
+            CHUNKFILES_HOME + "coreChunks.json",
+            CHUNKFILES_HOME + "commonChunks.json"
+    );
 
 
     public void test() throws IOException {
-        System.out.println("Testing nashorn...");
-
-        // Proof of concept:
-        String backendReact = readResource("/lib/enonic/react4xp/backendReact.js");
-        String backendReactDOMServer = readResource("/lib/enonic/react4xp/backendReactDOMServer.js");
+        System.out.println("\n\n\n############################################# Running nashorn test...\n\n\n");
 
         try {
-            System.out.println("\n\n\n############################################# Running...\n\n\n:");
 
             NashornScriptEngine engine = (NashornScriptEngine)new ScriptEngineManager().getEngineByName("nashorn");
-
             engine.eval(NASHORN_POLYFILL);
+
+            List<String> dependencyScripts = new ScriptDependencyParser().getScriptDependencies(CHUNK_FILES);
+            for (String scriptFile : dependencyScripts) {
+                System.out.println("\tReading and running script: " + SCRIPTS_HOME + scriptFile);
+                String script = ResourceHandler.readResource(SCRIPTS_HOME + scriptFile);
+                engine.eval(script);
+            }
+
             engine.eval("k = 42;");
-            engine.eval(backendReact);
-            engine.eval(backendReactDOMServer);
+            //engine.eval(backendReact);
+            //engine.eval(backendReactDOMServer);
 
             engine.eval("console.log('Howdy world!');");
             engine.eval("console.log(k);");

@@ -63,12 +63,12 @@ module.exports = {
 
     plugins: [
         // TODO: Autogenerate these:
-        new HtmlWebpackPlugin({
+        /*new HtmlWebpackPlugin({
             inject: false,
             hash: false,
             template: path.join(SRC_R4X, 'commonChunks.xml.ejs'),
             filename: path.join(BUILD_R4X, 'commonChunks.xml')  
-        }),
+        }), */
 
         new HtmlWebpackPlugin({
             inject: false,

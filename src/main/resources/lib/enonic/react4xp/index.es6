@@ -39,7 +39,7 @@ const buildBasicPageContributions = (chunkHashFiles) => {
             });
         });
     });
-    log.info("\nBuilt basic pageContributions:\n" + JSON.stringify(pageContributions, null, 2) + "\n");
+    //log.info("\nBuilt basic pageContributions:\n" + JSON.stringify(pageContributions, null, 2) + "\n");
     return pageContributions;
 }
 
@@ -86,6 +86,9 @@ const removeJsExtensions = (jsxFileName) =>
 //////////////////////////////////////////////////////////////////////
 
 
+
+PLAN: FIKS CONSTRUCTOREN HER SÅNN AT DEN TAR IMOT KUN OBLIGATORISKE PARAMETERE - OG DET BARE ER DER DE KAN SETTES.
+TELESKOPMETODENE SKAL BARE KUNNE JUSTERE VALGFRIE PARAMETERE, OG DE KAN BARE SETTES SÅNN.
 
 class React4xp {
     constructor(params) {

@@ -6,6 +6,8 @@ import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import static com.enonic.xp.react4xp.React4xp.SCRIPTS_HOME;
@@ -25,8 +27,8 @@ public class EngineFactory {
     private final static String CHUNKFILES_HOME = "/react4xp/";
 
 
-    // Sequence matters! These engine initialization scripts are run in this order,
-    // scripts found in chunks.polyfill.json must come first, and chunks.components.json last!
+    // Sequence matters! These engine initialization scripts are run in this order.
+    // Scripts found in chunks.polyfill.json must come first, and chunks.components.json last!
     private final static List<String> CHUNK_FILES = Arrays.asList(
             CHUNKFILES_HOME + "chunks.nashornPolyfills.json",
             CHUNKFILES_HOME + "chunks.externals.json",
@@ -35,18 +37,63 @@ public class EngineFactory {
 
     private static NashornScriptEngine engineInstance = null;
 
-    public static NashornScriptEngine getEngine() throws ScriptException, IOException {
+    public static NashornScriptEngine getEngine() throws IOException, ScriptException {
         if (engineInstance == null) {
-            engineInstance = (NashornScriptEngine)new ScriptEngineManager().getEngineByName("nashorn");
-            engineInstance.eval(POLYFILL_BASICS);
 
-            List<String> dependencyScripts = new ChunkDependencyParser().getScriptDependencies(CHUNK_FILES);
-            for (String scriptFile : dependencyScripts) {
-                System.out.println("\tNashorn init script: " + SCRIPTS_HOME + scriptFile);
-                String script = ResourceHandler.readResource(SCRIPTS_HOME + scriptFile);
-                engineInstance.eval(script);
+            // Sequence matters! Use ordered collection for iteration! Hashmaps are not ordered!
+            LinkedList<String> scriptList = new LinkedList<>();
+            HashMap<String, String> scripts = new HashMap<>();
+
+            scripts.put("POLYFILL_BASICS", POLYFILL_BASICS);
+            scriptList.add("POLYFILL_BASICS");
+
+            LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(CHUNK_FILES);
+            for (String scriptFile : transpiledDependencies) {
+                String file = SCRIPTS_HOME + scriptFile;
+                scripts.put(file, ResourceHandler.readResource(file));
+                scriptList.add(file);
+            }
+
+            StringBuilder script = new StringBuilder();
+
+            String chunkLabel = null;
+            String chunkScript = null;
+
+            try {
+                engineInstance = (NashornScriptEngine)new ScriptEngineManager().getEngineByName("nashorn");
+
+                for (String scriptFile : scriptList) {
+                    chunkLabel = scriptFile;
+                    chunkScript = scripts.get(chunkLabel);
+                    System.out.println("Initializing React4xp engine: " + chunkLabel);
+                    script.append(chunkScript);
+                }
+
+                engineInstance.eval(script.toString());
+
+            } catch (ScriptException bloatedError) {
+
+                // Multiple scripts were chained together, then evaluated, then one failed.
+                // Unravel which one failed in order to give a clear error message:
+                try {
+                    NashornScriptEngine tmpEngineInstance = (NashornScriptEngine)new ScriptEngineManager().getEngineByName("nashorn");
+                    for (String scriptFile : scriptList) {
+                        chunkLabel = scriptFile;
+                        chunkScript = scripts.get(chunkLabel);
+                        tmpEngineInstance.eval(chunkScript);
+                    }
+
+                } catch (ScriptException specificError) {
+                    System.err.println(EngineFactory.class.getCanonicalName() + " INIT SCRIPT FAILED (" + chunkLabel + "):\n---------------------------------\n\n" + chunkScript + "\n\n---------------------------------------");
+                    throw specificError;
+                }
+
+                // Fallback if unravelling failed
+                System.err.println(EngineFactory.class.getCanonicalName() + " INIT SCRIPTS FAILED (script interaction?):\n---------------------------------\n\n" + script.toString() + "\n\n---------------------------------------");
+                throw bloatedError;
             }
         }
+
         return engineInstance;
     }
 }

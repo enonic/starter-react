@@ -5,37 +5,42 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 import javax.script.ScriptException;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class React4xp {
     public final static String SCRIPTS_HOME = "/react4xp/";
+    Set<String> componentScripts = new HashSet<>();
 
     // Examples:
-    // component: "site/parts/simple-reactive/simple-reactive"
-    // props: "{\"insertedMessage\": \"fra den simple kontrolleren!\"}"
-    public String renderToStaticMarkup(String component, String props) throws IOException {
+    // component: name of a transpiled JSX component, i.e. path under /react4xp/, e.g: "site/parts/simple-reactive/simple-reactive"
+    // props: valid stringified JSON on props object, e.g. '{"insertedMessage": "this is a prop!"}'
+    public String renderToStaticMarkup(String component, String props) throws IOException, ScriptException {
+
+        NashornScriptEngine engine = EngineFactory.getEngine();
+
+        StringBuilder script = new StringBuilder();
         try {
-            NashornScriptEngine engine = EngineFactory.getEngine();
+            if (!componentScripts.contains(component)) {
+                System.out.println("Initializing React4xp component: " + component);
+                String componentScript = ResourceHandler.readResource(SCRIPTS_HOME + component + ".js");
+                componentScripts.add(component);
+                script.append(componentScript);
+            }
+            script.append("var obj = { rendered: ReactDOMServer.renderToStaticMarkup(React4xp['" + component + "'].default(" + props + ")) };");
+            script.append("obj;");
 
-            // TODO: Make function library where (props)=> component functions are stored in the engine, on first use
-            
-            engine.eval(ResourceHandler.readResource(SCRIPTS_HOME + component + ".js"));
-            engine.eval(""
-                // + "console.log(Object.keys(React4xp));"
-                + "var props = " + props + ";"
-                + "var Component = React4xp['" + component + "'].default;"
-                // + "console.log('Component: ' + Component);"
-                // + "console.log('ReactDOMServer: ' + JSON.stringify(Object.keys(ReactDOMServer), null, 2));"
-                + "var obj = { rendered: ReactDOMServer.renderToStaticMarkup(Component(props)) };"
-                // + "console.log(obj.rendered);"
-            );
+            ScriptObjectMirror obj = (ScriptObjectMirror)engine.eval(script.toString());
 
-            ScriptObjectMirror obj = (ScriptObjectMirror)engine.eval("obj;");
             return (String)obj.get("rendered");
 
         } catch (ScriptException e) {
-            e.printStackTrace();
-            return e.getMessage();
+            System.err.println(React4xp.class.getCanonicalName() + ".renderToStaticMarkup: COMPONENT SCRIPT FAILED.\n" +
+                    "Component: " + component + "\n" +
+                    "Props: " + props + "" +
+                    "Script:\n---------------------------------\n\n" + script.toString() + "\n\n---------------------------------------");
+            throw e;
         }
     }
 }

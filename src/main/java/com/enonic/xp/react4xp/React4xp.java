@@ -18,7 +18,98 @@ public class React4xp {
             "console.debug = print;\n" +
             "console.log = print;\n" +
             "console.warn = print;\n" +
-            "console.error = print;";
+            "console.error = print;\n" +
+
+            // Polyfill Map:
+            "var Map = Java.type('java.util.HashMap');\n"+
+
+            // Polyfilling setTimeout() and friends:
+            // https://gist.github.com/josmardias/20493bd205e24e31c0a406472330515a
+            //
+            // TODO: Are we gonna have a problem?
+            // At least one timeout needs to be set, larger then your code bootstrap
+            // or Nashorn will run forever
+            // preferably, put a timeout 0 after your code bootstrap
+            "(function(context) {\n" +
+            "  'use strict';\n" +
+            "\n" +
+            "  var Timer = Java.type('java.util.Timer');\n" +
+            "  var Phaser = Java.type('java.util.concurrent.Phaser');\n" +
+            "\n" +
+            "  var timer = new Timer('jsEventLoop', false);\n" +
+            "  var phaser = new Phaser();\n" +
+            "\n" +
+            "  var timeoutStack = 0;\n" +
+            "  function pushTimeout() {\n" +
+            "    timeoutStack++;\n" +
+            "  }\n" +
+            "  function popTimeout() {\n" +
+            "    timeoutStack--;\n" +
+            "    if (timeoutStack > 0) {\n" +
+            "      return;\n" +
+            "    }\n" +
+            "    timer.cancel();\n" +
+            "    phaser.forceTermination();\n" +
+            "  }\n" +
+            "\n" +
+            "  var onTaskFinished = function() {\n" +
+            "    phaser.arriveAndDeregister();\n" +
+            "  };\n" +
+            "\n" +
+            "  context.setTimeout = function(fn, millis /* [, args...] */) {\n" +
+            "    var args = [].slice.call(arguments, 2, arguments.length);\n" +
+            "\n" +
+            "    var phase = phaser.register();\n" +
+            "    var canceled = false;\n" +
+            "    timer.schedule(function() {\n" +
+            "      if (canceled) {\n" +
+            "        return;\n" +
+            "      }\n" +
+            "\n" +
+            "      try {\n" +
+            "        fn.apply(context, args);\n" +
+            "      } catch (e) {\n" +
+            "        print(e);\n" +
+            "      } finally {\n" +
+            "        onTaskFinished();\n" +
+            "        popTimeout();\n" +
+            "      }\n" +
+            "    }, millis);\n" +
+            "\n" +
+            "    pushTimeout();\n" +
+            "\n" +
+            "    return function() {\n" +
+            "      onTaskFinished();\n" +
+            "      canceled = true;\n" +
+            "      popTimeout();\n" +
+            "    };\n" +
+            "  };\n" +
+            "\n" +
+            "  context.clearTimeout = function(cancel) {\n" +
+            "    cancel();\n" +
+            "  };\n" +
+            "\n" +
+            "  context.setInterval = function(fn, delay /* [, args...] */) {\n" +
+            "    var args = [].slice.call(arguments, 2, arguments.length);\n" +
+            "\n" +
+            "    var cancel = null;\n" +
+            "\n" +
+            "    var loop = function() {\n" +
+            "      cancel = context.setTimeout(loop, delay);\n" +
+            "      fn.apply(context, args);\n" +
+            "    };\n" +
+            "\n" +
+            "    cancel = context.setTimeout(loop, delay);\n" +
+            "    return function() {\n" +
+            "      cancel();\n" +
+            "    };\n" +
+            "  };\n" +
+            "\n" +
+            "  context.clearInterval = function(cancel) {\n" +
+            "    cancel();\n" +
+            "  };\n" +
+            "\n" +
+            "})(this);";
 
     private final static String CHUNKFILES_HOME = "/react4xp/";
     private final static String SCRIPTS_HOME = "/react4xp/";

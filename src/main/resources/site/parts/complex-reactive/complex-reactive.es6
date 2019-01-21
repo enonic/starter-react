@@ -34,8 +34,8 @@ exports.get = function(req) {
         .setProps({
             insertedMessage: "fra \"første props\"!"
         });
-    body = firstReact.getBody(body);
-    pageContributions = firstReact.getPageContributions(pageContributions);
+    body = firstReact.renderClientBody(body);
+    pageContributions = firstReact.renderClientPageContributions(pageContributions);
 
 
     // Demonstrates targeting an existing target container in the HTML view. useXpComponent.skipId is important for that. Targets the "second.jsx" react component in this (the XP component's own) folder
@@ -46,8 +46,8 @@ exports.get = function(req) {
         props: props2,
         react4xpId: 'existing-react4xp-target'
     }).useXpComponent(component, 'second', true);
-    body = secondReact.getBody(body);
-    pageContributions = secondReact.getPageContributions(pageContributions);
+    body = secondReact.renderClientBody(body);
+    pageContributions = secondReact.renderClientPageContributions(pageContributions);
 
 
     // Demonstrates setting a chosen ID without uniquifying it, but generating it as it's not found in the HTML
@@ -55,8 +55,8 @@ exports.get = function(req) {
         jsxPath: 'app',
         react4xpId: 'thirdReact4xp'
     });
-    body = thirdReact.getBody(body);
-    pageContributions = thirdReact.getPageContributions(pageContributions);
+    body = thirdReact.renderClientBody(body);
+    pageContributions = thirdReact.renderClientPageContributions(pageContributions);
 
     return { body, pageContributions };
 

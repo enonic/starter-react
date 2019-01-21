@@ -10,5 +10,5 @@ exports.get = function(req) {
         insertedMessage: "fra \"den simple kontrolleren\"!"
     };
 
-    return React4xp.render({ component, props });
+    return React4xp.renderClient({ component, props });
 };

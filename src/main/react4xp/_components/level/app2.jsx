@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Something from '../../common/Something';
-import AComponent from '../../components/AComponent';
+import AComponent from '../../sharedcomps/AComponent';
 
 export default (props) =>
     <div>

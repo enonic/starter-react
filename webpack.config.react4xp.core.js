@@ -1,6 +1,6 @@
 // Webpack for transpiling "frontend core":
-// React4xp (not-third-party) the core functionality for running in the client, necessary
-// for components to run/render.
+// The React4xp (not-third-party) core functionality for running in the client,
+// necessary for components to run/render.
 //
 // Look mainly at src/main/react4xp/_frontendCore_.es6.
 //
@@ -12,7 +12,7 @@ const path = require('path');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const { SRC_R4X, BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS } = require('./config.constants');
+const { SRC_R4X, BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS } = require('./webpack.config.constants');
 
 module.exports = {
     mode: BUILD_ENV,

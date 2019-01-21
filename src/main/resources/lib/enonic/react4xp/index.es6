@@ -284,6 +284,8 @@ class React4xp {
     ${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default);
 </script>`);
 
+        // TODO: Only include the first of the two scripts if pageContributions don't include it already. No need to run it twice.
+
         return adjustedPgContributions;
     };
 

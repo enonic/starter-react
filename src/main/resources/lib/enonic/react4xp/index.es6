@@ -283,6 +283,7 @@ class React4xp {
 <script defer type="text/javascript" data-react4xp-targetId=${JSON.stringify(this.react4xpId)} ${this.props ? `data-react4xp-props='${JSON.stringify(this.props)}'` : ''}>
     ${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default);
 </script>`);
+        // TODO: Do props really need the byway through data-react4xp-props? What about the targetId, can't they both be inserteed directly into the Core.render function here?
 
         // TODO: Only include the first of the two scripts if pageContributions don't include it already. No need to run it twice. Maybe split out those scripts, since they are pretty static and can be cached?
 

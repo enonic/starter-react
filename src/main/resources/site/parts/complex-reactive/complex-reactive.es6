@@ -22,6 +22,8 @@ exports.get = function(req) {
         headEnd: '<script>console.log("headEnd");</script>',
         bodyEnd: '<script>console.log("bodyEnd");</script>',
     };
+
+    // --------------------------------------------------
     
     
     // Construction using the telescope builder pattern, using the "first.jsx" component in the part's (XP component) own path and generating a unique target container ID, also using the component
@@ -31,16 +33,19 @@ exports.get = function(req) {
         .setProps({ insertedMessage: "fra \"første props\"!" });
 
 
-    // Demonstrates targeting an existing target container in the HTML view. Targets the "second.jsx" react component in this (the XP component's own) folder
+    // Targeting an existing target container in the HTML view. Targets the "second.jsx" react component in this (the XP component's own) folder
     const secondReact = new React4xp(component)
         .setProps({ insertedMessage: "fra \"andre props\"!" })
         .setId('existing-react4xp-target')
         .setJsxFileName('second');
 
 
-    // Demonstrates setting a chosen ID and uniquifying it, but generating the container as it's not found in the HTML
+    // Setting a chosen ID and uniquifying it, but appending a generated container element as it's not found in the HTML
     const thirdReact = new React4xp('app')
         .setId('thirdReact4xp').uniqueId();
+
+
+    // --------------------------------------------------
 
 
     // Builds the body and page contributions by appending them stepwise:

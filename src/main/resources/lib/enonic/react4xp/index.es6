@@ -79,38 +79,18 @@ const mergePageContributions = (pageContributions) => (!pageContributions) ?
 
 
 
-const getReact4xpWithParams = (params) => {
-    const {jsxPath, component, jsxFileName, props, react4xpId, uniqueId} = params || {};
 
-    if (jsxPath && component) {
-        throw Error("Can't render React4xp for client: ambiguent parameters - use jsxPath or component, not both.");
-    } else if (!jsxPath && !component) {
-        throw Error("Can't render React4xp for client: need jsxPath or component (but not both)");
-    }
 
-    const react4xp = new React4xp(component || jsxPath);
 
-    if (props) {
-        react4xp.setProps(props);
-    }
 
-    if (react4xpId) {
-        react4xp.setId(react4xpId);
-    }
 
-    if (uniqueId) {
-        if (typeof uniqueId === "string") {
-            react4xp.setId(uniqueId);
-        }
-        react4xp.uniqueId();
-    }
 
-    if (jsxFileName) {
-        react4xp.setJsxFileName(jsxFileName);
-    }
 
-    return react4xp;
-}
+
+
+
+
+
 
 
 //////////////////////////////////////////////////////////////////////
@@ -148,7 +128,7 @@ class React4xp {
             this.component = initParam;
             const compName = this.component.descriptor.split(":")[1];
             this.jsxPath = `site/${BASE_PATHS[this.component.type]}/${compName}/${compName}`;
-            this.react4xpId = `${BASE_PATHS[component.type]}_${compName}_${component.path}`.replace(/\//g, "_")
+            this.react4xpId = `${BASE_PATHS[this.component.type]}_${compName}_${this.component.path}`.replace(/\//g, "_")
 
         } else if (typeof initParam === "string") {
             this.component = null;
@@ -173,6 +153,14 @@ class React4xp {
         }
     }
 
+    ensureAndLockId() {
+        if (!this.react4xpId) {
+            this.uniqueId();
+        }
+        this.react4xpIdLocked = true;
+    }
+
+
     /** Sets the react4xpId - the HTML ID of the target container this component will be rendered into.
       * Deletes the ID if arguemnt is omitted.
       */
@@ -188,13 +176,6 @@ class React4xp {
         this.checkIdLock();
         this.react4xpId = (this.react4xpId || "") + "_" + Math.floor(Math.random() * 99999999);
         return this;
-    }
-
-    ensureAndLockId() {
-        if (!this.react4xpId) {
-            this.uniqueId();
-        }
-        this.react4xpIdLocked = true;
     }
 
 
@@ -226,6 +207,7 @@ class React4xp {
 
         const compName = this.component.descriptor.split(":")[1];
         this.jsxPath = `site/${BASE_PATHS[this.component.type]}/${compName}/${jsxFileName}`;
+        return this;
     }
 
 
@@ -242,6 +224,16 @@ class React4xp {
         this.props = props;
         return this;
     }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -299,15 +291,33 @@ class React4xp {
 
 
 
-    /////////////////////////////////////////////////
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ///////////////////////////////////////////////// STATIC ALL-IN-ONE RENDERERS
 
     /** All-in-one client-renderer. Returns a body and pageContributions object that can be directly returned from an XP controller.
       * @param params
       */
     static renderClient = (params) => {
-        const react4xp = getReact4xpWithParams(params);
+        const react4xp = React4xp.buildFromParams(params);
         const {body, pageContributions} = params || {};
         return {
             body: react4xp.renderClientBody(body),
@@ -316,14 +326,56 @@ class React4xp {
     };
 
 
+
     /** All-in-one serverside-renderer. Returns a static HTML body string.
      * @param params
      */
     static renderStaticMarkups = (params) => {
-        const react4xp = getReact4xpWithParams(params);
+        const react4xp = React4xp.buildFromParams(params);
         const {body} = params || {};
         return react4xp.renderToStaticMarkup(body)
     };
+
+
+
+
+
+    /** Optional initializer: returns a React4xp component instance initialized from a single set of parameters instead of
+     * the class approach.
+     * TODO: Document the params, similar to the class methods.
+     */
+    static buildFromParams = (params) => {
+        const {jsxPath, component, jsxFileName, props, react4xpId, uniqueId} = params || {};
+
+        if (jsxPath && component) {
+            throw Error("Can't render React4xp for client: ambiguent parameters - use jsxPath or component, not both.");
+        } else if (!jsxPath && !component) {
+            throw Error("Can't render React4xp for client: need jsxPath or component (but not both)");
+        }
+
+        const react4xp = new React4xp(component || jsxPath);
+
+        if (props) {
+            react4xp.setProps(props);
+        }
+
+        if (react4xpId) {
+            react4xp.setId(react4xpId);
+        }
+
+        if (uniqueId) {
+            if (typeof uniqueId === "string") {
+                react4xp.setId(uniqueId);
+            }
+            react4xp.uniqueId();
+        }
+
+        if (jsxFileName) {
+            react4xp.setJsxFileName(jsxFileName);
+        }
+
+        return react4xp;
+    }
 }
 
 module.exports = React4xp;

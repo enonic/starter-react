@@ -284,11 +284,12 @@ class React4xp {
     ${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default);
 </script>`);
 
-        // TODO: Only include the first of the two scripts if pageContributions don't include it already. No need to run it twice.
+        // TODO: Only include the first of the two scripts if pageContributions don't include it already. No need to run it twice. Maybe split out those scripts, since they are pretty static and can be cached?
 
         return adjustedPgContributions;
     };
 
+    // TODO: Like in renderClientBody, render it into the container!
     renderToStaticMarkup = (body) => SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(this.props));
 
 

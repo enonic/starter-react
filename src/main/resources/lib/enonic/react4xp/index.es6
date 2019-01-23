@@ -65,7 +65,7 @@ const bodyHasContainer = (body, react4xpId) => {
 
 
 
-const buildContainer = (react4xpId) => `<div id="${react4xpId}"></div>`;
+const buildContainer = (react4xpId, content) => `<div id="${react4xpId}">${content || ''}</div>`;
 
 
 const getUniqueEntries = (arrayOfArrays, controlSet) => {
@@ -126,9 +126,6 @@ const mergePageContributions = (incomingPgContrib, newPgContrib) => {
 
 class React4xp {
 
-    // TODO: FIKS CONSTRUCTOREN HER SÅNN AT DEN TAR IMOT KUN OBLIGATORISKE PARAMETERE - OG DET BARE ER DER DE KAN SETTES.
-    // //TELESKOPMETODENE SKAL BARE KUNNE JUSTERE VALGFRIE PARAMETERE, OG DE KAN BARE SETTES SÅNN.
-
     /** Mandatory constructor initParam, one of two options (overloaded function):
      * @param Component {Object} The portal.getComponent() object of the Enonic XP component (currently page or part
      *     only) that the react component belongs to. XP and react components are found in the same folder (and the component
@@ -174,6 +171,45 @@ class React4xp {
 
 
 
+
+    /** Optional initializer: returns a React4xp component instance initialized from a single set of parameters instead of
+     * the class approach.
+     * TODO: Document the params, similar to the class methods.
+     */
+    static buildFromParams = (params) => {
+        const {jsxPath, component, jsxFileName, props, react4xpId, uniqueId} = params || {};
+
+        if (jsxPath && component) {
+            throw Error("Can't render React4xp for client: ambiguent parameters - use jsxPath or component, not both.");
+        } else if (!jsxPath && !component) {
+            throw Error("Can't render React4xp for client: need jsxPath or component (but not both)");
+        }
+
+        const react4xp = new React4xp(component || jsxPath);
+
+        if (props) {
+            react4xp.setProps(props);
+        }
+
+        if (react4xpId) {
+            react4xp.setId(react4xpId);
+        }
+
+        if (uniqueId) {
+            if (typeof uniqueId === "string") {
+                react4xp.setId(uniqueId);
+            }
+            react4xp.uniqueId();
+        }
+
+        if (jsxFileName) {
+            react4xp.setJsxFileName(jsxFileName);
+        }
+
+        return react4xp;
+    }
+
+
     //---------------------------------------------------------------
 
     checkIdLock() {
@@ -182,6 +218,9 @@ class React4xp {
         }
     }
 
+    // For now, it seems like a good idea to ensure two things when starting the client side rendering:
+    // 1, there is a target ID set.
+    // 2, it can't be changed once the rendering has started, i.e. between render body and render pagecontributions
     ensureAndLockId() {
         if (!this.react4xpId) {
             this.uniqueId();
@@ -269,29 +308,6 @@ class React4xp {
     //--------------------------------------------------------------- RENDERING METHODS:
 
 
-    /** Generates or modifies an HTML body, with a target container whose ID matches this component's react4xpId.
-      * @param body {string} Existing HTML body, for example rendered from thymeleaf.
-      *     If it already has a matching-ID target container, body passes through unchanged (use this option and the
-      *     setId method to control where in the body the react component should be inserted). If it doesn't have a
-      *     matching container, a matching <div> will be inserted at the end of the body, inside the root element. If
-      *     body is missing, a pure-target-container body is generated and returned.
-      */
-    renderClientBody(body) {
-        this.ensureAndLockId();
-
-        // If no (or empty) body is supplied: generate a minimal container body with only a target container element.
-        if (((body || '') + "").replace(/(^\s+)|(\s+$)/g, "") === "") {
-            return buildContainer(this.react4xpId);
-        }
-
-        // If there is a body but it's missing a target container element: 
-        // Make a container and insert it right before the closing tag.
-        if (!bodyHasContainer(body, this.react4xpId)) {
-            return HTMLinserter.insertAtEndOfRoot(body, buildContainer(this.react4xpId));
-        }
-
-        return body;
-    }
 
 
     /** Generates or modifies existing enonic XP pageContributions. Adds client-side dependency chunks (core React4xp frontend,
@@ -323,8 +339,43 @@ class React4xp {
         });
     };
 
-    // TODO: Like in renderClientBody, render it into the container!
-    renderToStaticMarkup = (body) => SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(this.props));
+
+    /** Generates or modifies an HTML body, with a target container whose ID matches this component's react4xpId.
+     * @param body {string} Existing HTML body, for example rendered from thymeleaf.
+     *     If it already has a matching-ID target container, body passes through unchanged (use this option and the
+     *     setId method to control where in the body the react component should be inserted). If it doesn't have a
+     *     matching container, a matching <div> will be inserted at the end of the body, inside the root element. If
+     *     body is missing, a pure-target-container body is generated and returned.
+     * @param content {string} HTML content that, if included, is inserted into the container with the matching Id.
+     */
+    renderBodyWithContainer(body, content) {
+        this.ensureAndLockId();
+
+        // If no (or empty) body is supplied: generate a minimal container body with only a target container element.
+        if (((body || '') + "").replace(/(^\s+)|(\s+$)/g, "") === "") {
+            return buildContainer(this.react4xpId, content);
+        }
+
+        // If there is a body but it's missing a target container element:
+        // Make a container and insert it right before the closing tag.
+        if (!bodyHasContainer(body, this.react4xpId)) {
+            return HTMLinserter.insertAtEndOfRoot(body, buildContainer(this.react4xpId, content));
+        }
+
+        if (content) {
+            return HTMLinserter.insertInsideContainer(body, content, this.react4xpId);
+        }
+
+        return body;
+    }
+
+    // TODO: Like in renderBodyWithContainer, render it into the container!
+    renderToStaticMarkup = (body) => {
+        const markup = SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(this.props));
+        body = this.renderBodyWithContainer(body, markup);
+        log.info("body: " + JSON.stringify(body, null, 2));
+
+    }
 
 
 
@@ -351,7 +402,7 @@ class React4xp {
         const react4xp = React4xp.buildFromParams(params);
         const {body, pageContributions} = params || {};
         return {
-            body: react4xp.renderClientBody(body),
+            body: react4xp.renderBodyWithContainer(body),
             pageContributions: react4xp.renderClientPageContributions(pageContributions)
         }
     };
@@ -361,52 +412,15 @@ class React4xp {
     /** All-in-one serverside-renderer. Returns a static HTML body string.
      * @param params
      */
-    static renderStaticMarkups = (params) => {
+    static renderStaticMarkup = (params) => {
         const react4xp = React4xp.buildFromParams(params);
-        const {body} = params || {};
+        let {body} = params || {};
         return react4xp.renderToStaticMarkup(body)
     };
 
 
 
 
-
-    /** Optional initializer: returns a React4xp component instance initialized from a single set of parameters instead of
-     * the class approach.
-     * TODO: Document the params, similar to the class methods.
-     */
-    static buildFromParams = (params) => {
-        const {jsxPath, component, jsxFileName, props, react4xpId, uniqueId} = params || {};
-
-        if (jsxPath && component) {
-            throw Error("Can't render React4xp for client: ambiguent parameters - use jsxPath or component, not both.");
-        } else if (!jsxPath && !component) {
-            throw Error("Can't render React4xp for client: need jsxPath or component (but not both)");
-        }
-
-        const react4xp = new React4xp(component || jsxPath);
-
-        if (props) {
-            react4xp.setProps(props);
-        }
-
-        if (react4xpId) {
-            react4xp.setId(react4xpId);
-        }
-
-        if (uniqueId) {
-            if (typeof uniqueId === "string") {
-                react4xp.setId(uniqueId);
-            }
-            react4xp.uniqueId();
-        }
-
-        if (jsxFileName) {
-            react4xp.setJsxFileName(jsxFileName);
-        }
-
-        return react4xp;
-    }
 }
 
 module.exports = React4xp;

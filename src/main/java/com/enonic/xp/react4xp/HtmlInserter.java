@@ -43,7 +43,39 @@ public class HtmlInserter {
             return outputter.outputString(bodyDoc);
 
         } catch (JDOMException | IOException e) {
-            System.err.println("\n\nERROR: [ " + e + " ] ... while trying to insert HTML:\n\n" + insert + "\n\n...into body:\n\n" + body + "\n\n");
+            System.err.println("\n\nERROR: [ " + e + " ] ...when trying to insert HTML...\n\n" + insert + "\n\n...into body:\n\n" + body + "\n\n");
+        }
+
+        return null;
+    }
+
+
+    public String insertInsideContainer(String body, String insert, String id) {
+        System.out.println("\n\nBODY:\n" + body);
+        System.out.println("INSERT:\n" + insert);
+        System.out.println("ID:\n" + id);
+        try {
+            Document bodyDoc = saxBuilder.build(new StringReader(body));
+            //System.out.println("bodyDoc:\n" + bodyDoc.toString());
+
+            // TODO: This is probably where the id should be used - find a child element by ID.
+            Element bodyRoot = bodyDoc.getRootElement();
+            //System.out.println("bodyRoot:\n" + bodyRoot.toString());
+
+            Document insertDoc = saxBuilder.build(new StringReader(insert));
+            //System.out.println("insertDoc:\n" + insertDoc.toString());
+            Element insertRoot = insertDoc.getRootElement();
+            //System.out.println("insertRoot:\n" + insertRoot.toString());
+
+            insertRoot.detach();
+            bodyRoot.addContent(insertRoot);
+            //System.out.println("bodyRoot:\n" + bodyRoot);
+
+            System.out.println("Output:\n" + outputter.outputString(bodyDoc) + "\n\n");
+            return outputter.outputString(bodyDoc);
+
+        } catch (JDOMException | IOException e) {
+            System.err.println("\n\nERROR: [ " + e + " ] ...when trying to insert HTML...\n\n" + insert + "\n\n...into body:\n\n" + body + "\n\n");
         }
 
         return null;

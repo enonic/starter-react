@@ -1,13 +1,13 @@
+const portal = require('/lib/xp/portal');
 const React4xp = require('/lib/enonic/react4xp');
 
 exports.get = (req) => {
+    const component = portal.getComponent();
     const then = new Date().getTime();
-    const app2 = new React4xp('level/app2')
-            .setProps({ insertedMessage: "- easy peasy lemon squeezy!" });
 
-    const rendered = app2.renderToStaticMarkup();
+    const rendered = React4xp.renderStaticMarkup({ component });
+
     const now = new Date().getTime();
-
     log.info("SSR rendered in: " + (now - then) + " ms");
 
     // TODO: Same as on client-side rendering: the rendered static markup needs to be inserted into the/a body!

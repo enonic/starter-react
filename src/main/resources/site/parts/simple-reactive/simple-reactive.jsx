@@ -1,3 +1,3 @@
 import React from 'react';
 
-export default (props) => <h1>Dette er en test {props.insertedMessage}</h1>;
+export default () => <h1>Minimalisme er helmaks!</h1>;

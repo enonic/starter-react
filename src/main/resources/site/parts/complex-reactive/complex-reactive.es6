@@ -49,9 +49,9 @@ exports.get = function(req) {
 
 
     // Builds the body and page contributions by appending them stepwise:
-    body = firstReact.renderClientBody(body);
-    body = secondReact.renderClientBody(body);
-    body = thirdReact.renderClientBody(body);
+    body = firstReact.renderBodyWithContainer(body);
+    body = secondReact.renderBodyWithContainer(body);
+    body = thirdReact.renderBodyWithContainer(body);
 
     pageContributions = firstReact.renderClientPageContributions(pageContributions);
     pageContributions = secondReact.renderClientPageContributions(pageContributions);

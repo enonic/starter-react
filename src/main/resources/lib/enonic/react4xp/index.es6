@@ -67,14 +67,40 @@ const bodyHasContainer = (body, react4xpId) => {
 const buildContainer = (react4xpId) => `<div id="${react4xpId}"></div>`;
 
 
-const mergePageContributions = (pageContributions) => (!pageContributions) ?
-    {...PAGE_CONTRIBUTIONS} :
-    {
-        headBegin: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.headBegin), ...utilLib.data.forceArray(pageContributions.headBegin) ],
-        headEnd: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.headEnd), ...utilLib.data.forceArray(pageContributions.headEnd) ],
-        bodyBegin: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.bodyBegin), ...utilLib.data.forceArray(pageContributions.bodyBegin) ],
-        bodyEnd: [ ...utilLib.data.forceArray(PAGE_CONTRIBUTIONS.bodyEnd), ...utilLib.data.forceArray(pageContributions.bodyEnd) ],
+const getUniqueEntries = (arrayOfArrays, controlSet) => {
+    const uniqueEntries = [];
+    arrayOfArrays.forEach(arr => {
+        utilLib.data.forceArray(arr).forEach(item => {
+            if (!controlSet.has(item)) {
+                uniqueEntries.push(item);
+            }
+            controlSet.add(item);
+        })
+    });
+    return uniqueEntries;
+}
+
+
+/** Merges different pageContributions objects into one. Prevents duplicates: no single pageContribution entry is
+  * repeated, this prevents resource-wasting by loading/running the same script twice).
+  *
+  * @param incomingPgContrib incoming pageContributions (from other components / outside / previous this rendering)
+  * @param newPgContrib pageContributions that this specific component will add.
+  *
+  * Also part of the merge: PAGE_CONTRIBUTIONS, the common standard React4xp page contributions
+  */
+const mergePageContributions = (incomingPgContrib, newPgContrib) => {
+    if (!pageContributions) {
+        return {...PAGE_CONTRIBUTIONS};
+    }
+    const controlSet = new Set();
+    return {
+        headBegin: getUniqueEntries([PAGE_CONTRIBUTIONS.headBegin, incomingPgContrib.headBegin, newPgContrib.headBegin], controlSet),
+        headEnd: getUniqueEntries([PAGE_CONTRIBUTIONS.headEnd, incomingPgContrib.headEnd, newPgContrib.headEnd], controlSet),
+        bodyBegin: getUniqueEntries([PAGE_CONTRIBUTIONS.bodyBegin, incomingPgContrib.bodyBegin, newPgContrib.bodyBegin], controlSet),
+        bodyEnd: getUniqueEntries([PAGE_CONTRIBUTIONS.bodyEnd, incomingPgContrib.bodyEnd, newPgContrib.bodyEnd], controlSet)
     };
+}
 
 
 
@@ -239,7 +265,8 @@ class React4xp {
 
     //--------------------------------------------------------------- RENDERING METHODS:
 
-    /** Gets/modifies an HTML body with a target container whose ID matches this component's react4xpId.
+
+    /** Generates or modifies an HTML body, with a target container whose ID matches this component's react4xpId.
       * @param body {string} Existing HTML body, for example rendered from thymeleaf.
       *     If it already has a matching-ID target container, body passes through unchanged (use this option and the
       *     setId method to control where in the body the react component should be inserted). If it doesn't have a
@@ -263,6 +290,14 @@ class React4xp {
         return body;
     }
 
+
+    /** Generates or modifies existing enonic XP pageContributions. Adds client-side dependency chunks (core React4xp frontend,
+      * shared libs and components etc, as well as the entry component scripts.
+      * Also returns/adds small scripts that trigger the component scripts. Prevents duplicate references to dependencies.
+      *
+      * @param pageContributions PageContributions object that the new scripts will be added to. If no input, new ones
+      * are instantiated.
+      */
     renderClientPageContributions = (pageContributions) => {
         this.ensureAndLockId();
 
@@ -273,21 +308,16 @@ class React4xp {
             throw Error("ID for the target container element, react4xpId, has not been set. And there is no component from which to derive it either. Add one of them in the constructor or with one of the setters.");
         }
 
-        const adjustedPgContributions = mergePageContributions(pageContributions);
-        adjustedPgContributions.bodyEnd = utilLib.data.forceArray(adjustedPgContributions.bodyEnd);
+        return mergePageContributions(pageContributions, {
+            bodyEnd: [
 
-        // Adds the component.jsx script and a trigger. Assumes that it reads its own required data from the data-react4xp attributes -targetId and -props.
-        // If not, the exported default from that script can be reached like this: <script>React4xp['${componentName}'].default</script>
-        adjustedPgContributions.bodyEnd.push(`
-<script type="text/javascript" src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script> 
-<script defer type="text/javascript" data-react4xp-targetId=${JSON.stringify(this.react4xpId)} ${this.props ? `data-react4xp-props='${JSON.stringify(this.props)}'` : ''}>
-    ${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default);
-</script>`);
-        // TODO: Do props really need the byway through data-react4xp-props? What about the targetId, can't they both be inserteed directly into the Core.render function here?
+                // Browser-runnable script reference for the "naked" react component:
+                `<script src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script>`,
 
-        // TODO: Only include the first of the two scripts if pageContributions don't include it already. No need to run it twice. Maybe split out those scripts, since they are pretty static and can be cached?
-
-        return adjustedPgContributions;
+                // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
+                `<script defer>${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
+            ]
+        });
     };
 
     // TODO: Like in renderClientBody, render it into the container!
@@ -308,13 +338,7 @@ class React4xp {
 
 
 
-
-
-
-
-
-
-
+    
     ///////////////////////////////////////////////// STATIC ALL-IN-ONE RENDERERS
 
     /** All-in-one client-renderer. Returns a body and pageContributions object that can be directly returned from an XP controller.

@@ -3,7 +3,7 @@ const thymeleaf = require('/lib/xp/thymeleaf');
 const React4xp = require('/lib/enonic/react4xp'); 
 
 // Specify the view file to use
-const view = resolve('complex-reactive.html');
+const view = resolve('complex-ssr.html');
 
 
 // Handle the GET request
@@ -49,9 +49,13 @@ exports.get = function(req) {
 
 
     // Builds the body and page contributions by appending them stepwise:
-    body = firstReact.renderIntoBody(body);
-    body = secondReact.renderIntoBody(body);
-    body = thirdReact.renderIntoBody(body);
+    body = firstReact.renderBody(body);
+    body = secondReact.renderBody(body);
+    body = thirdReact.renderBody(body);
+
+    pageContributions = firstReact.renderClientPageContributions(pageContributions);
+    pageContributions = secondReact.renderClientPageContributions(pageContributions);
+    pageContributions = thirdReact.renderClientPageContributions(pageContributions);
 
     const now = new Date().getTime();
     log.info("Complex-reactive rendered in: " + (now - then) + " ms");

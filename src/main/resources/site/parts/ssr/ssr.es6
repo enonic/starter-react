@@ -5,7 +5,7 @@ exports.get = (req) => {
     const component = portal.getComponent();
     const then = new Date().getTime();
 
-    const rendered = React4xp.renderStaticMarkup({ component });
+    const rendered = React4xp.renderSSRStaticMarkup({ component });
 
     const now = new Date().getTime();
     log.info("SSR rendered in: " + (now - then) + " ms");

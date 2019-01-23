@@ -348,7 +348,7 @@ class React4xp {
      *     body is missing, a pure-target-container body is generated and returned.
      * @param content {string} HTML content that, if included, is inserted into the container with the matching Id.
      */
-    renderBodyWithContainer(body, content) {
+    renderBody(body, content) {
         this.ensureAndLockId();
 
         // If no (or empty) body is supplied: generate a minimal container body with only a target container element.
@@ -369,14 +369,17 @@ class React4xp {
         return body;
     }
 
-    // TODO: Like in renderBodyWithContainer, render it into the container!
-    renderToStaticMarkup = (body) => {
-        const markup = SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(this.props));
-        body = this.renderBodyWithContainer(body, markup);
-        log.info("body: " + JSON.stringify(body, null, 2));
 
+    renderIntoBody(body) {
+        const markup = this.renderToStaticMarkup();
+        return this.renderBody(body, markup);
     }
 
+
+    // TODO: Like in renderBody, render it into the container!
+    renderToStaticMarkup = (overrideProps) => {
+        return SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(overrideProps || this.props));
+    }
 
 
 
@@ -402,7 +405,7 @@ class React4xp {
         const react4xp = React4xp.buildFromParams(params);
         const {body, pageContributions} = params || {};
         return {
-            body: react4xp.renderBodyWithContainer(body),
+            body: react4xp.renderBody(body),
             pageContributions: react4xp.renderClientPageContributions(pageContributions)
         }
     };
@@ -412,15 +415,11 @@ class React4xp {
     /** All-in-one serverside-renderer. Returns a static HTML body string.
      * @param params
      */
-    static renderStaticMarkup = (params) => {
+    static renderSSRStaticMarkup = (params) => {
         const react4xp = React4xp.buildFromParams(params);
-        let {body} = params || {};
-        return react4xp.renderToStaticMarkup(body)
+        const {body} = params || {};
+        return react4xp.renderIntoBody(body);
     };
-
-
-
-
 }
 
 module.exports = React4xp;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <part>
-	<display-name>Server Side Rendering</display-name>
+	<display-name>Simple ServerSide React</display-name>
 	<config>
 		<input type="TextLine" name="header">
 			<label>Header</label>

@@ -1,4 +1,4 @@
-package com.enonic.xp.react4xp;
+package com.enonic.xp.react4xp.ssr;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

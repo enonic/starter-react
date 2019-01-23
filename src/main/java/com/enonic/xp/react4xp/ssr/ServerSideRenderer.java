@@ -1,4 +1,4 @@
-package com.enonic.xp.react4xp;
+package com.enonic.xp.react4xp.ssr;
 
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-public class React4xp {
+public class ServerSideRenderer {
     public final static String SCRIPTS_HOME = "/react4xp/";
     Set<String> componentScripts = new HashSet<>();
 
@@ -23,7 +23,7 @@ public class React4xp {
         StringBuilder script = new StringBuilder();
         try {
             if (!componentScripts.contains(component)) {
-                System.out.println("Initializing React4xp component: " + component);
+                System.out.println("Initializing ServerSideRenderer component: " + component);
                 String componentScript = ResourceHandler.readResource(SCRIPTS_HOME + component + ".js");
                 componentScripts.add(component);
                 script.append(componentScript);
@@ -36,7 +36,7 @@ public class React4xp {
             return (String)obj.get("rendered");
 
         } catch (ScriptException e) {
-            System.err.println(React4xp.class.getCanonicalName() + ".renderToStaticMarkup: COMPONENT SCRIPT FAILED.\n" +
+            System.err.println(ServerSideRenderer.class.getCanonicalName() + ".renderToStaticMarkup: COMPONENT SCRIPT FAILED.\n" +
                     "Component: " + component + "\n" +
                     "Props: " + props + "" +
                     "Script:\n---------------------------------\n\n" + script.toString() + "\n\n---------------------------------------");

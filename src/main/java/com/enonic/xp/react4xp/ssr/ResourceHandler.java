@@ -1,4 +1,4 @@
-package com.enonic.xp.react4xp;
+package com.enonic.xp.react4xp.ssr;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

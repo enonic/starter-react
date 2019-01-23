@@ -1,4 +1,4 @@
-package com.enonic.xp.react4xp;
+package com.enonic.xp.react4xp.ssr;
 
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.enonic.xp.react4xp.React4xp.SCRIPTS_HOME;
+import static com.enonic.xp.react4xp.ssr.ServerSideRenderer.SCRIPTS_HOME;
 
 public class EngineFactory {
     private final static String POLYFILL_BASICS = "" +
@@ -30,7 +30,7 @@ public class EngineFactory {
     // Sequence matters! These engine initialization scripts are run in this order.
     // Scripts found in chunks.polyfill.json must come first, and chunks.components.json last!
     private final static List<String> CHUNK_FILES = Arrays.asList(
-            CHUNKFILES_HOME + "chunks.nashornPolyfills.json",
+            //CHUNKFILES_HOME + "chunks.nashornPolyfills.json",
             CHUNKFILES_HOME + "chunks.externals.json",
             CHUNKFILES_HOME + "chunks.components.json"
     );
@@ -48,6 +48,7 @@ public class EngineFactory {
             scriptList.add("POLYFILL_BASICS");
 
             LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(CHUNK_FILES);
+            transpiledDependencies.addFirst("nashornPolyfills.js");
             for (String scriptFile : transpiledDependencies) {
                 String file = SCRIPTS_HOME + scriptFile;
                 scripts.put(file, ResourceHandler.readResource(file));
@@ -65,7 +66,7 @@ public class EngineFactory {
                 for (String scriptFile : scriptList) {
                     chunkLabel = scriptFile;
                     chunkScript = scripts.get(chunkLabel);
-                    System.out.println("Initializing React4xp engine: " + chunkLabel);
+                    System.out.println("Initializing ServerSideRenderer engine: " + chunkLabel);
                     script.append(chunkScript);
                 }
 

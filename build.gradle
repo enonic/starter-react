@@ -118,6 +118,22 @@ task webpack_r4xp_externals(type: NodeTask) {
 webpack_r4xp_externals.dependsOn += 'npmInstall'
 
 
+task webpack_r4xp_nashornPolyfills(type: NodeTask) {
+    script = file('node_modules/webpack/bin/webpack.js')
+    args = ['--config', 'webpack.config.react4xp.nashornPolyfills.js', '--progress', '--color']
+
+    inputs.file("webpack.config.react4xp.nashornPolyfills.js")
+
+    inputs.file("webpack.config.constants.json")
+    inputs.file("webpack.config.constants.js")
+    inputs.file("package.json")
+    inputs.file("package-lock.json")
+    inputs.dir("src/main/react4xp")
+    outputs.dir("build/resources/main/react4xp")
+}
+webpack_r4xp_nashornPolyfills.dependsOn += 'npmInstall'
+
+
 task webpack_r4xp_frontCore(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = ['--config', 'webpack.config.react4xp.core.js', '--progress', '--color']
@@ -161,6 +177,7 @@ jar.dependsOn babelXP
 jar.dependsOn += 'webpack_r4xp'
 jar.dependsOn += 'webpack_r4xp_frontCore'
 jar.dependsOn += 'webpack_r4xp_externals'
+jar.dependsOn += 'webpack_r4xp_nashornPolyfills'
 
 jar.outputs.dir('build/libs')
 

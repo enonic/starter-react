@@ -1,7 +1,8 @@
 const ioLib = require('/lib/xp/io');
 const utilLib = require('/lib/enonic/util');
-const HTMLinserter = __.newBean('com.enonic.xp.htmlinserter.HtmlInserter');
-const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.React4xp');
+const HTMLinserter = __.newBean('com.enonic.xp.react4xp.HtmlInserter');
+const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.ssr.ServerSideRenderer');
+
 
 
 // TODO: centralize these even more? Along with other strings that must match?
@@ -71,10 +72,10 @@ const getUniqueEntries = (arrayOfArrays, controlSet) => {
     const uniqueEntries = [];
     arrayOfArrays.forEach(arr => {
         utilLib.data.forceArray(arr).forEach(item => {
-            if (!controlSet.has(item)) {
+            if (controlSet.indexOf(item) === -1) {
                 uniqueEntries.push(item);
+                controlSet.push(item);
             }
-            controlSet.add(item);
         })
     });
     return uniqueEntries;
@@ -90,10 +91,12 @@ const getUniqueEntries = (arrayOfArrays, controlSet) => {
   * Also part of the merge: PAGE_CONTRIBUTIONS, the common standard React4xp page contributions
   */
 const mergePageContributions = (incomingPgContrib, newPgContrib) => {
-    if (!pageContributions) {
+    if (!incomingPgContrib && !newPgContrib) {
         return {...PAGE_CONTRIBUTIONS};
     }
-    const controlSet = new Set();
+    incomingPgContrib = incomingPgContrib || {};
+    newPgContrib = newPgContrib || {};
+    const controlSet = [];
     return {
         headBegin: getUniqueEntries([PAGE_CONTRIBUTIONS.headBegin, incomingPgContrib.headBegin, newPgContrib.headBegin], controlSet),
         headEnd: getUniqueEntries([PAGE_CONTRIBUTIONS.headEnd, incomingPgContrib.headEnd, newPgContrib.headEnd], controlSet),
@@ -338,7 +341,7 @@ class React4xp {
 
 
 
-    
+
     ///////////////////////////////////////////////// STATIC ALL-IN-ONE RENDERERS
 
     /** All-in-one client-renderer. Returns a body and pageContributions object that can be directly returned from an XP controller.

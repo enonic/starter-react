@@ -26,25 +26,18 @@ public class HtmlInserter {
                 .setExpandEmptyElements(true);
     }
 
+
     public String insertAtEndOfRoot(String body, String payload) {
-        //System.out.println("\n\nBODY:\n" + body);
-        //System.out.println("PAYLOAD:\n" + payload);
         try {
             Document bodyDoc = saxBuilder.build(new StringReader(body));
-            //System.out.println("bodyDoc:\n" + bodyDoc.toString());
             Element bodyRoot = bodyDoc.getRootElement();
-            //System.out.println("bodyRoot:\n" + bodyRoot.toString());
 
-            Document insertDoc = saxBuilder.build(new StringReader(payload));
-            //System.out.println("insertDoc:\n" + insertDoc.toString());
-            Element insertRoot = insertDoc.getRootElement();
-            //System.out.println("insertRoot:\n" + insertRoot.toString());
+            Document payloadDoc = saxBuilder.build(new StringReader(payload));
+            Element payloadRoot = payloadDoc.getRootElement();
 
-            insertRoot.detach();
-            bodyRoot.addContent(insertRoot);
-            //System.out.println("bodyRoot:\n" + bodyRoot);
+            payloadRoot.detach();
+            bodyRoot.addContent(payloadRoot);
 
-            //System.out.println("Output:\n" + outputter.outputString(bodyDoc) + "\n\n");
             return outputter.outputString(bodyDoc);
 
         } catch (JDOMException | IOException e) {
@@ -65,12 +58,8 @@ public class HtmlInserter {
 
 
     public String insertInsideContainer(String body, String payload, String id) {
-        //System.out.println("\n\nBODY:\n" + body);
-        //System.out.println("PAYLOAD:\n" + payload);
-        //System.out.println("ID:\n" + id);
         try {
             Document bodyDoc = saxBuilder.build(new StringReader(body));
-            //System.out.println("bodyDoc:\n" + bodyDoc.toString());
 
             XPathFactory xFactory = XPathFactory.instance();
             String expression = "//*[@id='" + id + "']";
@@ -82,25 +71,12 @@ public class HtmlInserter {
                 throw new XPathException("ID '" + id + "' not found.");
             }
 
-            System.out.println("Hits: " + links.size());
-
-            /*for (Element linkElement : links) {
-                System.out.println(linkElement);
-            }//*/
-            //System.out.println("bodyRoot:\n" + bodyRoot.toString());
-
             Document payloadDoc = saxBuilder.build(new StringReader(payload));
-            //System.out.println("insertDoc:\n" + insertDoc.toString());
             Element payloadRoot = payloadDoc.getRootElement();
-            //System.out.println("insertRoot:\n" + insertRoot.toString());
-
 
             // Whether or not more than one element with that id was found, insert the first one.
             payloadRoot.detach();
             links.get(0).addContent(payloadRoot);
-
-            //System.out.println("bodyRoot:\n" + bodyRoot);
-            //System.out.println("Output:\n" + outputter.outputString(bodyDoc) + "\n\n");
 
             return outputter.outputString(bodyDoc);
 

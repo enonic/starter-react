@@ -1,17 +1,16 @@
-const portal = require('/lib/xp/portal'); 
-const thymeleaf = require('/lib/xp/thymeleaf'); 
-const React4xp = require('/lib/enonic/react4xp'); 
+const portal = require('/lib/xp/portal');
+const thymeleaf = require('/lib/xp/thymeleaf');
+const React4xp = require('/lib/enonic/react4xp');
 
 // Specify the view file to use
 const view = resolve('complex-ssr.html');
-
 
 // Handle the GET request
 exports.get = function(req) {
     //log.info("complex-reactive request: " + JSON.stringify(req, null, 2));
 
     const component = portal.getComponent();
-    
+
     const model = {};
     let body = thymeleaf.render(view, model);
 
@@ -24,8 +23,8 @@ exports.get = function(req) {
     };
 
     // --------------------------------------------------
-    
-    
+
+
     // Construction using the telescope builder pattern, using the "first.jsx" component in the part's (XP component) own path and generating a unique target container ID, also using the component
     const firstReact = new React4xp(component)
         .setJsxFileName("first")
@@ -49,13 +48,9 @@ exports.get = function(req) {
 
 
     // Builds the body and page contributions by appending them stepwise:
-    body = firstReact.renderBody(body);
-    body = secondReact.renderBody(body);
-    body = thirdReact.renderBody(body);
-
-    pageContributions = firstReact.renderClientPageContributions(pageContributions);
-    pageContributions = secondReact.renderClientPageContributions(pageContributions);
-    pageContributions = thirdReact.renderClientPageContributions(pageContributions);
+    body = firstReact.renderIntoBody(body);
+    body = secondReact.renderIntoBody(body);
+    body = thirdReact.renderIntoBody(body);
 
     const now = new Date().getTime();
     log.info("Complex-reactive rendered in: " + (now - then) + " ms");

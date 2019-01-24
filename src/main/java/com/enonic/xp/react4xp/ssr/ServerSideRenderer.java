@@ -38,8 +38,9 @@ public class ServerSideRenderer {
         } catch (ScriptException e) {
             System.err.println(ServerSideRenderer.class.getCanonicalName() + ".renderToStaticMarkup: COMPONENT SCRIPT FAILED.\n" +
                     "Component: " + component + "\n" +
-                    "Props: " + props + "" +
+                    "Props: " + props + "\n" +
                     "Script:\n---------------------------------\n\n" + script.toString() + "\n\n---------------------------------------");
+            componentScripts.remove(component);
             throw e;
         }
     }

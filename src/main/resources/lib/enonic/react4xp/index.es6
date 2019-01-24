@@ -177,7 +177,7 @@ class React4xp {
      * TODO: Document the params, similar to the class methods.
      */
     static buildFromParams = (params) => {
-        const {jsxPath, component, jsxFileName, props, react4xpId, uniqueId} = params || {};
+        const {jsxPath, component, jsxFileName, props, id, uniqueId} = params || {};
 
         if (jsxPath && component) {
             throw Error("Can't render React4xp for client: ambiguent parameters - use jsxPath or component, not both.");
@@ -191,8 +191,8 @@ class React4xp {
             react4xp.setProps(props);
         }
 
-        if (react4xpId) {
-            react4xp.setId(react4xpId);
+        if (id) {
+            react4xp.setId(id);
         }
 
         if (uniqueId) {

@@ -1,18 +1,38 @@
 const portal = require('/lib/xp/portal');
+const thymeleaf = require('/lib/xp/thymeleaf');
 const React4xp = require('/lib/enonic/react4xp');
+
+const view = resolve("counter.html");
 
 exports.get = (req) => {
     const component = portal.getComponent();
+
+    const model = {
+        heading: component.config.heading,
+        endquote: component.config.endquote,
+    }
+    const body = thymeleaf.render(view, model);
+
+    const props = {
+        startCount: parseInt(component.config.countdown)
+    }
+
+    const id = "the-countdown";
+
+    const rendered = (component.config.rendering === "client") ?
+        React4xp.renderClient({ component, props, body, id}) :
+        React4xp.renderSSRStaticMarkup({ component, props, body, id });
+
     const then = new Date().getTime();
 
-    const rendered = React4xp.renderSSRStaticMarkup({ component });
+
 
     const now = new Date().getTime();
     log.info("SSR rendered in: " + (now - then) + " ms");
 
-    return {
-        body: rendered
-    };
+    log.info("component: " + JSON.stringify(component, null, 2));
+
+    return rendered;
 
 
 

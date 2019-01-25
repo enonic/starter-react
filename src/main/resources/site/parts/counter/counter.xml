@@ -20,7 +20,7 @@
         </input>
 
         <input name="endquote" type="TextLine">
-            <label>I'm sure we'll all miss her so</label>
+            <label>Final end quote</label>
             <occurrences minimum="0" maximum="1"/>
             <default>I'm sure we'll all miss her so</default>
         </input>

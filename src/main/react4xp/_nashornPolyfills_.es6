@@ -1,7 +1,7 @@
 // A basic level ov polyfilling has already been done in Nashorn by the time it runs the following code (transpiled) .
 // So some basics are expected to already be polyfilled: exports, global, window, process, console.
 
-// Polyfills Set an Map:
+// Polyfills Set and Map:
 var Map = require( 'es6-set-and-map' ).map;
 var Set = require( 'es6-set-and-map' ).set;
 

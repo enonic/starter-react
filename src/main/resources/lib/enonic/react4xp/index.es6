@@ -376,7 +376,6 @@ class React4xp {
     }
 
 
-    // TODO: Like in renderBody, render it into the container!
     renderToStaticMarkup = (overrideProps) => {
         return SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(overrideProps || this.props));
     }
@@ -398,7 +397,7 @@ class React4xp {
 
     ///////////////////////////////////////////////// STATIC ALL-IN-ONE RENDERERS
 
-    /** All-in-one client-renderer. Returns a body and pageContributions object that can be directly returned from an XP controller.
+    /** All-in-one client-renderer. Returns a dynamic client-side-running response object that can be directly returned from an XP controller.
       * @param params
       */
     static renderClient = (params) => {
@@ -412,14 +411,36 @@ class React4xp {
 
 
 
-    /** All-in-one serverside-renderer. Returns a static HTML body string.
+    /** All-in-one serverside-renderer. Returns a static HTML response object that can be directly returned from an XP controller.
      * @param params
      */
     static renderSSR = (params) => {
         const react4xp = React4xp.buildFromParams(params);
-        const {body} = params || {};
-        return { body: react4xp.renderIntoBody(body) };
+        const {body, pageContributions} = params || {};
+        return {
+            body: react4xp.renderIntoBody(body),
+            pageContributions
+        };
+    };
+
+
+    /** All-in-one renderer. Returns a response object that can be directly returned from an XP controller.
+      * Renders dynamic/client-side react in XP preview and live mode, and static/server-side in edit mode (XP content studio).
+      */
+    static render = (request, params) => {
+        const react4xp = React4xp.buildFromParams(params);
+        const {body, pageContributions} = params || {};
+        return (request.mode === "edit") ?
+            {
+                body: react4xp.renderIntoBody(body),
+                pageContributions
+            } :
+            {
+                body: react4xp.renderBody(body),
+                pageContributions: react4xp.renderClientPageContributions(pageContributions)
+            }
     };
 }
+
 
 module.exports = React4xp;

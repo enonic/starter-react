@@ -63,7 +63,6 @@ public class HtmlInserter {
 
             XPathFactory xFactory = XPathFactory.instance();
             String expression = "//*[@id='" + id + "']";
-            System.out.println("Expression: " + expression);
             XPathExpression<Element> expr = xFactory.compile(expression, Filters.element());
 
             List<Element> links = expr.evaluate(bodyDoc);

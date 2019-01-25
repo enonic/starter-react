@@ -43,8 +43,11 @@ public class ServerSideRenderer {
                     "Component: " + component + "\n" +
                     "Props: " + props + "\n" +
                     "Script:\n---------------------------------\n\n" + script.toString() + "\n\n---------------------------------------");
+
             componentScripts.remove(component);
-            return "<div class=\"react4xp-error\">" +
+            engine.eval("delete React4xp['" + component + "']");
+
+            return "<div class=\"react4xp-error\" style=\"border: 1px solid red; padding: 15px;\">" +
                     "<h2>" + StringEscapeUtils.escapeHtml(e.getClass().getName()) + "</h2>" +
                     "<p class=\"react4xp-component-name\">" + component + "</p>" +
                     "<p class=\"react4xp-error-message\">" + StringEscapeUtils.escapeHtml(e.getMessage()) + "</p>" +

@@ -5,6 +5,8 @@ const React4xp = require('/lib/enonic/react4xp');
 const view = resolve("counter.html");
 
 exports.get = (req) => {
+    //log.info("counterRequest: " + JSON.stringify(req, null, 2));
+
     const component = portal.getComponent();
 
     const model = {
@@ -19,9 +21,15 @@ exports.get = (req) => {
 
     const id = "the-countdown";
 
-    const rendered = (component.config.rendering === "client") ?
-        React4xp.renderClient({ component, props, body, id}) :
-        React4xp.renderSSRStaticMarkup({ component, props, body, id });
+
+    const rendered =
+        React4xp.renderSSR({ component, props, body, id }); /*/
+
+        (req.mode === "edit") ?
+            React4xp.renderSSR({ component, props, body, id }) :
+            React4xp.renderClient({ component, props, body, id}); //*/
+
+    log.info("rendered: " + JSON.stringify(rendered, null, 2));
 
     const then = new Date().getTime();
 

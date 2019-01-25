@@ -2,6 +2,7 @@ package com.enonic.xp.react4xp.ssr;
 
 import jdk.nashorn.api.scripting.NashornScriptEngine;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.script.ScriptException;
 import java.io.IOException;
@@ -36,12 +37,18 @@ public class ServerSideRenderer {
             return (String)obj.get("rendered");
 
         } catch (ScriptException e) {
-            System.err.println(ServerSideRenderer.class.getCanonicalName() + ".renderToStaticMarkup: COMPONENT SCRIPT FAILED.\n" +
+            e.printStackTrace();
+            System.err.println("ERROR: " + ServerSideRenderer.class.getName() + ".renderToStaticMarkup:\n" +
+                    "Message: " + e.getMessage() + "\n" +
                     "Component: " + component + "\n" +
                     "Props: " + props + "\n" +
                     "Script:\n---------------------------------\n\n" + script.toString() + "\n\n---------------------------------------");
             componentScripts.remove(component);
-            throw e;
+            return "<div class=\"react4xp-error\">" +
+                    "<h2>" + StringEscapeUtils.escapeHtml(e.getClass().getName()) + "</h2>" +
+                    "<p class=\"react4xp-component-name\">" + component + "</p>" +
+                    "<p class=\"react4xp-error-message\">" + StringEscapeUtils.escapeHtml(e.getMessage()) + "</p>" +
+                    "</div>";
         }
     }
 }

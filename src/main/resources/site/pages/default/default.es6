@@ -11,6 +11,7 @@ var exemel = resolve('default.xml');
 
 // Handle the GET request
 exports.get = function(req) {
+    //log.info("pageRequest: " + JSON.stringify(req, null, 2));
 
     // Get the content that is using the page
     var content = libs.portal.getContent();    

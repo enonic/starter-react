@@ -2,10 +2,5 @@
 <part>
 	<display-name>Complex ServerSide React</display-name>
 	<config>
-		<input type="TextLine" name="header">
-			<label>Header</label>
-			<occurrences minimum="0" maximum="1"/>
-			<default>Flippin' C!</default>
-		</input>
 	</config>
 </part>

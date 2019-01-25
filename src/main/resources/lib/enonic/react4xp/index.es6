@@ -415,10 +415,10 @@ class React4xp {
     /** All-in-one serverside-renderer. Returns a static HTML body string.
      * @param params
      */
-    static renderSSRStaticMarkup = (params) => {
+    static renderSSR = (params) => {
         const react4xp = React4xp.buildFromParams(params);
         const {body} = params || {};
-        return react4xp.renderIntoBody(body);
+        return { body: react4xp.renderIntoBody(body) };
     };
 }
 

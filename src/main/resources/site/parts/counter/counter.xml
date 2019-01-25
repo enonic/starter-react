@@ -15,22 +15,12 @@
             <default>42</default>
             <config>
                 <min>1</min>
-                <max>1000</max>
+                <max>99000</max>
             </config>
-        </input>
-
-        <input name="rendering" type="RadioButton">
-            <label>Rendering method</label>
-            <occurrences minimum="0" maximum="0"/>
-            <config>
-                <option value="client">Client-side</option>
-                <option value="ssr">Server-side</option>
-            </config>
-            <default>ssr</default>
         </input>
 
         <input name="endquote" type="TextLine">
-            <label>It's the final end quote</label>
+            <label>I'm sure we'll all miss her so</label>
             <occurrences minimum="0" maximum="1"/>
             <default>I'm sure we'll all miss her so</default>
         </input>

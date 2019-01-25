@@ -28,11 +28,8 @@ class Counter extends React.Component {
     render() {
         const self = this;
 
-        // Counting array: [1... count]
-        const theArray = Array.apply(null, {length: self.state.count}).map(function(value, index){
-            return index;
-        });
-        console.log(JSON.stringify(theArray));
+        // Counting array: [1... count] in a polyfilled-nashorn-kinda-way
+        const theArray = Array.apply(null, {length: self.state.count}).map((value, index) => index);
         return (<ul>
             { theArray.map(c => <li key={c}>{self.state.count - c}</li>) }
         </ul>);

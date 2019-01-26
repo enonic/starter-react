@@ -1,5 +1,5 @@
 <page>
-  <display-name>Minimal page</display-name>
+  <display-name>Default page</display-name>
   <config/>
   <regions>
     <region name="main"/>

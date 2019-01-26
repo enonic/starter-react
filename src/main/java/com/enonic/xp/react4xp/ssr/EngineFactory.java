@@ -1,14 +1,14 @@
 package com.enonic.xp.react4xp.ssr;
 
-import jdk.nashorn.api.scripting.NashornScriptEngine;
-
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+import jdk.nashorn.api.scripting.NashornScriptEngine;
+
 
 import static com.enonic.xp.react4xp.ssr.ServerSideRenderer.SCRIPTS_HOME;
 
@@ -28,11 +28,11 @@ public class EngineFactory {
 
 
     // Sequence matters! These engine initialization scripts are run in this order.
-    // Scripts found in chunks.polyfill.json must come first, and chunks.components.json last!
+    // Scripts found in chunks.json depend on the previous and must be the last!
+    // nashornPolyfills.js script is the basic dependency, and will be added at the very beginning outside of this list.
     private final static List<String> CHUNK_FILES = Arrays.asList(
-            //CHUNKFILES_HOME + "chunks.nashornPolyfills.json",
             CHUNKFILES_HOME + "chunks.externals.json",
-            CHUNKFILES_HOME + "chunks.components.json"
+            CHUNKFILES_HOME + "chunks.json"
     );
 
     private static NashornScriptEngine engineInstance = null;

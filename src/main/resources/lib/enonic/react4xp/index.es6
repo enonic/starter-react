@@ -51,7 +51,7 @@ const buildBasicPageContributions = (chunkHashFiles) => {
 const PAGE_CONTRIBUTIONS = buildBasicPageContributions([
     `/${R4X}/chunks.externals.json`,
     `/${R4X}/chunks.core.json`,
-    `/${R4X}/chunks.components.json`
+    `/${R4X}/chunks.json`
 ]);
 
 

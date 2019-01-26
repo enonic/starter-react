@@ -62,19 +62,12 @@ module.exports = {
     externals: EXTERNALS,
 
     plugins: [
-        /*new HtmlWebpackPlugin({
-            inject: false,
-            hash: false,
-            template: path.join(SRC_R4X, 'chunks.components.xml.ejs'),
-            filename: path.join(BUILD_R4X, 'chunks.components.xml')
-        }), */
-
-        // TODO: How to autogenerate chunks.components.json.ejs using the folder-chunks as well as vendor, and during that autogeneration, how to detect if any of them aren't used after all and should be omitted from the autogeneration?
+        // TODO: How to autogenerate chunks.json.ejs using the folder-chunks as well as vendor, and during that autogeneration, how to detect if any of them aren't used after all and should be omitted from the autogeneration?
         new HtmlWebpackPlugin({
             inject: false,
             hash: false,
-            template: path.join(SRC_R4X, 'chunks.components.json.ejs'),
-            filename: path.join(BUILD_R4X, 'chunks.components.json')
+            template: path.join(SRC_R4X, 'chunks.json.ejs'),
+            filename: path.join(BUILD_R4X, 'chunks.json')
         }),
     ],
 
@@ -147,6 +140,7 @@ function getCacheGroups(priorities) {
 
     //console.log("Chunkdirs: " + JSON.stringify(chunkDirs, null, 4));
     chunkDirs.forEach(dirr => {
+        console.log("Bundled chunk, add to chunks.json.ejs before building: " + dirr);
         chunks[dirr] = {
             name: dirr,
             enforce: true,
@@ -155,6 +149,5 @@ function getCacheGroups(priorities) {
             priority: (priorities || {})[dirr] || 1
         }
     })
-    console.log("Bundled chunks (as in, not _entries): " + JSON.stringify(chunks, null, 4));
     return chunks;
 }

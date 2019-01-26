@@ -25,24 +25,38 @@ const {
 
 // Entries are the non-dependency output files, i.e. react components and other js files that should be directly
 // available and runnable to both the browser and the nashorn engine.
-const entries = Object.assign({},
-    getEntries(SRC_R4X_ENTRIES, ['jsx', 'js', 'es6'], ""),
-    getEntries(SRC_SITE, ['jsx'], path.join(SITE))       // <-- Note: this is where top-level react components are included, in the enonic site structure. Only JSX files are included: in order for these to be transpiled here (and thereby become a part of the chunk structure for these static assets) and not by the transpilation of "pure XP" source code files (which should be transpiled separately, outside of the static-asset/chunk structure), take care to separate them! Here, this is done by including only .JSX files here, reserving that extension for toplevel react components, and excluding .JSX files in the babelSite task in build.gradle. Note that if the top-level components import .es6 dependencies, that separation must be done more thoroughly.
-);
+// This function builds the entries AND entries.json, which lists the first-level components that shouldn't be counted
+// as general dependencies.
+const getEntries = () => {
+    const entries = Object.assign({},
+        getEntriesFromReact4xpSubfolder(SRC_R4X_ENTRIES, ['jsx', 'js', 'es6'], ""),
+        getEntriesFromReact4xpSubfolder(SRC_SITE, ['jsx'], SITE)       // <-- Note: this is where top-level react components are included, in the enonic site structure. Only JSX files are included: in order for these to be transpiled here (and thereby become a part of the chunk structure for these static assets) and not by the transpilation of "pure XP" source code files (which should be transpiled separately, outside of the static-asset/chunk structure), take care to separate them! Here, this is done by including only .JSX files here, reserving that extension for toplevel react components, and excluding .JSX files in the babelSite task in build.gradle. Note that if the top-level components import .es6 dependencies, that separation must be done more thoroughly.
+    );
+    const entryList = Object.keys(entries);
+    const entryFile = path.join(BUILD_R4X, 'entries.json');
 
-const entryList = Object.keys(entries);
-const entryFile = path.join(BUILD_R4X, 'entries.json');
-if (!fs.existsSync(BUILD_R4X)){
-    fs.mkdirSync(BUILD_R4X);
-}
-fs.writeFileSync(entryFile, JSON.stringify(entryList));
-console.log("React4xp entries (aka component names / jsxPath) listed in: " + entryFile);
+    // TODO: What about windows slash?
+    const slash = "/";
+    const dirs = BUILD_R4X.split(slash);
+    let accum = "";
+
+    dirs.forEach(dir => {
+        accum += dir + slash;
+        if (!fs.existsSync(accum)){
+            console.log("Create: " + accum);
+            fs.mkdirSync(accum);
+        }
+    });
+    fs.writeFileSync(entryFile, JSON.stringify(entryList));
+    console.log("React4xp entries (aka component names / jsxPath) listed in: " + entryFile);
+    return entries;
+};
 
 
 module.exports = {
     mode: BUILD_ENV,
     
-    entry: entries,
+    entry: getEntries(),
 
     output: {
         path: BUILD_R4X,  // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
@@ -88,7 +102,7 @@ module.exports = {
 };
 
 // Builds entries from files found under a directory, for selected file extensions, for bein transpiled out to a target path
-function getEntries(fullDirPath, extensions, targetPath) {
+function getEntriesFromReact4xpSubfolder(fullDirPath, extensions, targetPath) {
     targetPath = (targetPath || "").trim();
     if (targetPath.startsWith("/")) {
         targetPath = targetPath.substring(1);

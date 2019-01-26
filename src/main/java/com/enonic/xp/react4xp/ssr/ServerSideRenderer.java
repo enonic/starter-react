@@ -11,7 +11,7 @@ import java.util.Set;
 
 
 public class ServerSideRenderer {
-    public final static String SCRIPTS_HOME = "/react4xp/";
+    public final static String SCRIPTS_HOME = "/react4xp";
     Set<String> componentScripts = new HashSet<>();
 
     // Examples:
@@ -25,7 +25,7 @@ public class ServerSideRenderer {
         try {
             if (!componentScripts.contains(component)) {
                 System.out.println("Initializing ServerSideRenderer component: " + component);
-                String componentScript = ResourceHandler.readResource(SCRIPTS_HOME + component + ".js");
+                String componentScript = ResourceHandler.readResource(SCRIPTS_HOME + "/" + component + ".js");
                 componentScripts.add(component);
                 script.append(componentScript);
             }

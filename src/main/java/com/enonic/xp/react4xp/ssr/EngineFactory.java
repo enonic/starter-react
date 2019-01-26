@@ -1,14 +1,14 @@
 package com.enonic.xp.react4xp.ssr;
 
+import jdk.nashorn.api.scripting.NashornScriptEngine;
+
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import jdk.nashorn.api.scripting.NashornScriptEngine;
-
 
 import static com.enonic.xp.react4xp.ssr.ServerSideRenderer.SCRIPTS_HOME;
 
@@ -27,13 +27,17 @@ public class EngineFactory {
     private final static String CHUNKFILES_HOME = "/react4xp/";
 
 
-    // Sequence matters! These engine initialization scripts are run in this order.
-    // Scripts found in chunks.json depend on the previous and must be the last!
-    // nashornPolyfills.js script is the basic dependency, and will be added at the very beginning outside of this list.
+    /** CHUNK_FILES is a list of files that describe bundle/chunk asset file names, used to generate
+      * a full list of dependency files, since the file names are hashed by webpack.
+      * Sequence matters! These engine initialization scripts are run in this order.
+      * Scripts found in chunks.json depend on the previous and must be the last!
+      * nashornPolyfills.js script is the basic dependency, and will be added at the very beginning 
+      * outside of this list. */ 
     private final static List<String> CHUNK_FILES = Arrays.asList(
             CHUNKFILES_HOME + "chunks.externals.json",
             CHUNKFILES_HOME + "chunks.json"
     );
+    private final static String ENTRIES_FILE = CHUNKFILES_HOME + "entries.json";
 
     private static NashornScriptEngine engineInstance = null;
 
@@ -47,8 +51,8 @@ public class EngineFactory {
             scripts.put("POLYFILL_BASICS", POLYFILL_BASICS);
             scriptList.add("POLYFILL_BASICS");
 
-            LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(CHUNK_FILES);
-            transpiledDependencies.addFirst("nashornPolyfills.js");
+            LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(CHUNK_FILES, ENTRIES_FILE);
+            transpiledDependencies.addFirst("/nashornPolyfills.js");
             for (String scriptFile : transpiledDependencies) {
                 String file = SCRIPTS_HOME + scriptFile;
                 scripts.put(file, ResourceHandler.readResource(file));

@@ -15,32 +15,39 @@ const BASE_PATHS = {
     page: "pages",
 };
 
+const readJson = (filename) => JSON.parse(
+    utilLib.data.forceArray(
+        ioLib.readLines(
+            ioLib.getResource(filename).getStream()
+        )
+    ).join(""));
 
+const ENTRIES = readJson(`/${R4X}/entries.json`);
+
+/** Reads and parses file names from webpack-generated JSON files that list up contenthashed bundle chunk names. */
 const buildBasicPageContributions = (chunkHashFiles) => {
     const pageContributions = {};
 
     chunkHashFiles.forEach(chunkFile => {
-        const chunks = JSON.parse(
-            utilLib.data.forceArray(
-                ioLib.readLines(
-                    ioLib.getResource(chunkFile).getStream()
-                )
-            ).join("")).chunks;
-        //log.info("chunks: " + JSON.stringify(chunks, null, 2));
+        const chunks = readJson(chunkFile);
+        Object.keys(chunks).forEach(chunkName => {
 
-        Object.keys(chunks).forEach(section => {
-            chunks[section].forEach(chunk => {
-                if ((chunk.entry || "").startsWith(R4X + '/')) {
-                    chunk.entry = chunk.entry.substring(R4X.length + 1);
+            // We're only looking for dependencies here, not entry files (components and such).
+            if (ENTRIES.indexOf(chunkName) === -1) {
+                log.info("chunkName: " + JSON.stringify(chunkName, null, 2));
+                let chunk = chunks[chunkName].js;
+                if (chunk.startsWith('/')) {
+                    chunk = chunk.substring(1);
                 }
-                pageContributions[section] = [
-                    ...(pageContributions[section] || []),
-                    `<script ${chunk.defer ? "defer " : ""}type="text/javascript" src="${SERVICES_ROOT}${R4X}/${chunk.entry}" ></script>`
+                log.info("chunk: " + JSON.stringify(chunk, null, 2));
+                pageContributions.headEnd = [
+                    ...(pageContributions.headEnd || []),
+                    `<script src="${SERVICES_ROOT}${R4X}/${chunk}" ></script>`
                 ];
-            });
+            };
         });
     });
-    //log.info("\nBuilt basic pageContributions:\n" + JSON.stringify(pageContributions, null, 2) + "\n");
+    log.info("\nBuilt basic pageContributions:\n" + JSON.stringify(pageContributions, null, 2) + "\n");
     return pageContributions;
 }
 

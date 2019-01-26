@@ -10,9 +10,9 @@
 
 const path = require('path');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Chunks2json = require('chunks-2-json-webpack-plugin');
 
-const { SRC_R4X, BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS } = require('./webpack.config.constants');
+const { SRC_R4X, BUILD_R4X, RELATIVE_BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS } = require('./webpack.config.constants');
 
 module.exports = {
     mode: BUILD_ENV,
@@ -49,12 +49,7 @@ module.exports = {
     externals: EXTERNALS,
 
     plugins: [
-        new HtmlWebpackPlugin({
-            inject: false,
-            hash: false,
-            template: path.join(SRC_R4X, 'chunks.core.json.ejs'),
-            filename: path.join(BUILD_R4X, 'chunks.core.json')
-        }),
+        new Chunks2json({ outputDir: RELATIVE_BUILD_R4X, filename: 'chunks.core.json' }),
     ],
 
 };

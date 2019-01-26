@@ -14,21 +14,35 @@
 
 const path = require('path');
 const glob = require('glob');
+const fs = require('fs');
 
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Chunks2json = require('chunks-2-json-webpack-plugin');
 
 const {
-    SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_SUB_ENTRIES, BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS
+    SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_SUB_ENTRIES, BUILD_R4X, RELATIVE_BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS
 } = require('./webpack.config.constants');
+
+
+// Entries are the non-dependency output files, i.e. react components and other js files that should be directly
+// available and runnable to both the browser and the nashorn engine.
+const entries = Object.assign({},
+    getEntries(SRC_R4X_ENTRIES, ['jsx', 'js', 'es6'], ""),
+    getEntries(SRC_SITE, ['jsx'], path.join(SITE))       // <-- Note: this is where top-level react components are included, in the enonic site structure. Only JSX files are included: in order for these to be transpiled here (and thereby become a part of the chunk structure for these static assets) and not by the transpilation of "pure XP" source code files (which should be transpiled separately, outside of the static-asset/chunk structure), take care to separate them! Here, this is done by including only .JSX files here, reserving that extension for toplevel react components, and excluding .JSX files in the babelSite task in build.gradle. Note that if the top-level components import .es6 dependencies, that separation must be done more thoroughly.
+);
+
+const entryList = Object.keys(entries);
+const entryFile = path.join(BUILD_R4X, 'entries.json');
+if (!fs.existsSync(BUILD_R4X)){
+    fs.mkdirSync(BUILD_R4X);
+}
+fs.writeFileSync(entryFile, JSON.stringify(entryList));
+console.log("React4xp entries (aka component names / jsxPath) listed in: " + entryFile);
 
 
 module.exports = {
     mode: BUILD_ENV,
     
-    entry: Object.assign({},
-        getEntries(SRC_R4X_ENTRIES, ['jsx', 'js', 'es6'], ""),
-        getEntries(SRC_SITE, ['jsx'], path.join(SITE))       // <-- Note: this is where top-level react components are included, in the enonic site structure. Only JSX files are included: in order for these to be transpiled here (and thereby become a part of the chunk structure for these static assets) and not by the transpilation of "pure XP" source code files (which should be transpiled separately, outside of the static-asset/chunk structure), take care to separate them! Here, this is done by including only .JSX files here, reserving that extension for toplevel react components, and excluding .JSX files in the babelSite task in build.gradle. Note that if the top-level components import .es6 dependencies, that separation must be done more thoroughly.
-    ),
+    entry: entries,
 
     output: {
         path: BUILD_R4X,  // <-- Sets the base url for plugins and other target dirs. Note the use of {{assetUrl}} in index.html (or index.ejs).
@@ -61,28 +75,20 @@ module.exports = {
 
     externals: EXTERNALS,
 
-    plugins: [
-        // TODO: How to autogenerate chunks.json.ejs using the folder-chunks as well as vendor, and during that autogeneration, how to detect if any of them aren't used after all and should be omitted from the autogeneration?
-        new HtmlWebpackPlugin({
-            inject: false,
-            hash: false,
-            template: path.join(SRC_R4X, 'chunks.json.ejs'),
-            filename: path.join(BUILD_R4X, 'chunks.json')
-        }),
-    ],
-
     optimization: {
         splitChunks: {
             name: false,
             cacheGroups: getCacheGroups({common: 2})
         }
-    }
+    },
+
+    plugins: [
+        new Chunks2json({ outputDir: RELATIVE_BUILD_R4X, filename: 'chunks.json' }),
+    ]
 };
 
 // Builds entries from files found under a directory, for selected file extensions, for bein transpiled out to a target path
 function getEntries(fullDirPath, extensions, targetPath) {
-    console.log("Components in " + fullDirPath + " (." + extensions.join(", .") + "):")
-
     targetPath = (targetPath || "").trim();
     if (targetPath.startsWith("/")) {
         targetPath = targetPath.substring(1);

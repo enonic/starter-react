@@ -4,43 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+/** Reads and parses file names from webpack-generated JSON files that list up contenthashed bundle chunk names. */
 public class ChunkDependencyParser {
-    private final static String CHUNKFILE_MAINKEY = "chunks";
-    private final static String CHUNKFILE_ENTRYKEY = "entry";
-    private final static List<String> CHUNK_KEYS = Arrays.asList(
-            "headBegin",
-            "headEnd",
-            "bodyBegin",
-            "bodyEnd"
-    );
-
-
-    private void addCommonChunksEntries(JSONObject commonChunks, LinkedList<String> accumulator) {
-        for (String chunkKey : CHUNK_KEYS) {
-            if (commonChunks.has(chunkKey)) {
-                Object chObjs = commonChunks.get(chunkKey);
-                if (chObjs != null) {
-                    JSONArray chunks = (JSONArray)chObjs;
-                    Iterator<Object> chunksIter = chunks.iterator();
-                    while (chunksIter.hasNext()) {
-                        Object chObj = chunksIter.next();
-                        if (chObj != null && chObj instanceof JSONObject) {
-                            JSONObject chunk = (JSONObject)chObj;
-                            if (chunk.has(CHUNKFILE_ENTRYKEY)) {
-                                accumulator.add((String)chunk.get(CHUNKFILE_ENTRYKEY));
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
+    private static LinkedList<String> entries = null;
 
     private void addDependenciesFromFile(String chunkFile, LinkedList<String> accumulator) throws IOException {
         String json = ResourceHandler.readResource(chunkFile);
@@ -48,24 +18,38 @@ public class ChunkDependencyParser {
 
         Iterator<String> keys = fileContentData.keys();
         while(keys.hasNext()) {
-            String key = keys.next();
-            if (CHUNKFILE_MAINKEY.equals(key)) {
-                Object obj = fileContentData.get(key);
-                if (obj != null && obj instanceof JSONObject) {
-                    addCommonChunksEntries((JSONObject)obj, accumulator);
-                }
+            String chunkName = keys.next();
+
+            // We're only looking for dependencies here, not entry files (components and such).
+            if (!entries.contains(chunkName)) {
+                JSONObject chunk = (JSONObject)fileContentData.get(chunkName);
+                String fileName = (String)chunk.get("js");
+                accumulator.add(fileName);
             }
         }
     }
 
-    public LinkedList<String> getScriptDependencies(List<String> chunkFiles) throws IOException {
+    private void setEntries(String entryFile) throws IOException {
+        entries = new LinkedList<>();
+
+        String json = ResourceHandler.readResource(entryFile);
+        JSONArray fileContentData = new JSONArray(json);
+        Iterator it = fileContentData.iterator();
+        while (it.hasNext()) {
+            entries.add((String)it.next());
+        }
+    }
+
+    public LinkedList<String> getScriptDependencies(List<String> chunkFiles, String entryFile) throws IOException {
+        if (entries == null) {
+            setEntries(entryFile);
+        }
 
         LinkedList<String> dependencyScripts = new LinkedList<>();
         for (String chunkFile : chunkFiles) {
             addDependenciesFromFile(chunkFile, dependencyScripts);
         }
 
-        //System.out.println("\tScripts:" + dependencyScripts);
         return dependencyScripts;
     }
 }

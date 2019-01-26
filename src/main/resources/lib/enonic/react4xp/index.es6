@@ -47,7 +47,6 @@ const buildBasicPageContributions = (chunkHashFiles) => {
             };
         });
     });
-    log.info("\nBuilt basic pageContributions:\n" + JSON.stringify(pageContributions, null, 2) + "\n");
     return pageContributions;
 }
 

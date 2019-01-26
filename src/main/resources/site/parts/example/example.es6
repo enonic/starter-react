@@ -5,6 +5,6 @@ const React4xp = require('/lib/enonic/react4xp');
 exports.get = function(request) {
     const component = portal.getComponent();
 
-    const props = { greeted: "world" };
+    const props = { greeted: component.config.greeted };
     return React4xp.render(request, { component, props });
 };

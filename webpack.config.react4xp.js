@@ -47,7 +47,7 @@ const getEntries = () => {
             fs.mkdirSync(accum);
         }
     });
-    fs.writeFileSync(entryFile, JSON.stringify(entryList));
+    fs.writeFileSync(entryFile, JSON.stringify(entryList, null, 2));
     console.log("React4xp entries (aka component names / jsxPath) listed in: " + entryFile);
     return entries;
 };
@@ -160,7 +160,6 @@ function getCacheGroups(priorities) {
 
     //console.log("Chunkdirs: " + JSON.stringify(chunkDirs, null, 4));
     chunkDirs.forEach(dirr => {
-        console.log("Bundled chunk, add to chunks.json.ejs before building: " + dirr);
         chunks[dirr] = {
             name: dirr,
             enforce: true,

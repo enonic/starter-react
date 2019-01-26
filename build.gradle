@@ -35,9 +35,6 @@ dependencies {
     include group: 'org.jdom', name: 'jdom', version: '2.0.2'
     include group: 'org.json', name: 'json', version: '20180813'
     include group: 'jaxen', name: 'jaxen', version: '1.1.6'
-
-    // Not needed as such, just for demo
-    include 'com.enonic.lib:landingpage:1.0.0'
 }
 
 repositories {

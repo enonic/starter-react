@@ -90,11 +90,14 @@ crashlytics-build.properties
 
 # Node modules
 node_modules/
+
+# Visual studio code project files
 bin/
 .vscode/
 _vscode/
 .project
 .classpath
+.settings/
 
 
 

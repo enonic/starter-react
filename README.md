@@ -24,7 +24,7 @@ export default () => <p>Hello world!</p>;
 
 Use the `React4xp` library in the part controller, give it the request and the part's component object (needs to be wrapped in a separate object), and return the rendered output directly from the controller:
 
-```ecmascript 6
+```jsx harmony
 // site/parts/example/example.es6:
 
 const portal = require('/lib/xp/portal');
@@ -164,5 +164,3 @@ class WorldGreeter expands React.Component {
 
 export default (props) => <WorldGreeter {...props} />;
 ```
-
-

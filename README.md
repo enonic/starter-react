@@ -122,7 +122,7 @@ Some other java code, HTMLInserter, is responsible for inserting HTML into other
 
 Errors on serverside are logged thoroughly for developers, and a minimal error message is returned as HTML for visible frontend output. When errors happen, the component in question is cleared from the engine's component cache.
 
-Nashorn server-side rendering is recommended in the edit mode of XP content studio, to isolate away active scripts which may interfere with the editing while still keeping a visual representation of the component. The basic `.render` part selects this automatically.
+Nashorn server-side rendering is recommended in the edit mode of XP content studio, to isolate away active scripts (which may interfere with the editing) while still keeping a visual representation of the component. The basic `.render` method selects this automatically.
 
 #### Support, versions and polyfilling
 

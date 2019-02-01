@@ -239,6 +239,19 @@ class React4xp {
     }
 
 
+    ensureAndLockBeforeRendering() {
+        this.ensureAndLockId();
+
+        if (!this.jsxPath) {
+            throw Error("Target path for JSX component, jsxPath, has not been set. Add an absolute path (or an XP component from which to derive it) in the React4XP constructor or with the setters.");
+        }
+        if (!this.react4xpId) {
+            throw Error("ID for the target container element is missing.");
+        }
+    }
+
+
+
     /** Sets the react4xpId - the HTML ID of the target container this component will be rendered into.
       * Deletes the ID if argument is omitted.
       * @returns The react4xp component itself, for builder-like telescoping pattern.
@@ -323,6 +336,30 @@ class React4xp {
     //--------------------------------------------------------------- RENDERING METHODS:
 
 
+
+    /** Generates or modifies existing enonic XP pageContributions. Adds client-side dependency chunks (core React4xp frontend,
+     * shared libs and components etc, as well as the entry component scripts.
+     * Also returns/adds small scripts that trigger the component scripts. Prevents duplicate references to dependencies.
+     *
+     * @param pageContributions PageContributions object that the new scripts will be added to. If no input, new ones
+     * are instantiated.
+     */
+    renderClientPageContributions = (pageContributions) => {
+        this.ensureAndLockBeforeRendering();
+
+        return mergePageContributions(pageContributions, {
+            headEnd: [
+                // Browser-runnable script reference for the "naked" react component:
+                `<script src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script>`,
+            ],
+            bodyEnd: [
+                // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
+                `<script defer>${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
+            ]
+        });
+    };
+
+
     /** Generates or modifies existing enonic XP pageContributions. Adds client-side dependency chunks (core React4xp frontend,
       * shared libs and components etc, as well as the entry component scripts.
       * Also returns/adds small scripts that trigger the component scripts. Prevents duplicate references to dependencies.
@@ -330,24 +367,17 @@ class React4xp {
       * @param pageContributions PageContributions object that the new scripts will be added to. If no input, new ones
       * are instantiated.
       */
-    renderClientPageContributions = (pageContributions) => {
-        this.ensureAndLockId();
-
-        if (!this.jsxPath) {
-            throw Error("Target path for JSX component, jsxPath, has not been set. Add an absolute path or a component in the React4XP constructor or with the setters.");
-        }
-        if (!this.react4xpId) {
-            throw Error("ID for the target container element, react4xpId, has not been set. And there is no component from which to derive it either. Add one of them in the constructor or with one of the setters.");
-        }
+    renderHydrationPageContributions = (pageContributions) => {
+        this.ensureAndLockBeforeRendering();
 
         return mergePageContributions(pageContributions, {
-            bodyEnd: [
-
+            headEnd: [
                 // Browser-runnable script reference for the "naked" react component:
                 `<script src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script>`,
-
+            ],
+            bodyEnd: [
                 // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
-                `<script defer>${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
+                `<script defer>${LIBRARY_NAME}.Core.hydrate(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
             ]
         });
     };
@@ -390,7 +420,7 @@ class React4xp {
       * @returns {string} adjusted or generated HTML body with rendered react component.
       */
     renderIntoBody(body) {
-        const markup = this.renderToStaticMarkup();
+        const markup = this.renderToString();
         return this.renderBody(body, markup);
     }
 
@@ -398,8 +428,8 @@ class React4xp {
       * props that have previously been added to this component. This presumably improves rendering performance,
       * although that hasn't been tested thoroughly.
       */
-    renderToStaticMarkup = (overrideProps) => {
-        return SSRreact4xp.renderToStaticMarkup(this.jsxPath, JSON.stringify(overrideProps || this.props));
+    renderToString = (overrideProps) => {
+        return SSRreact4xp.renderToString(this.jsxPath, JSON.stringify(overrideProps || this.props));
     };
 
 
@@ -474,7 +504,17 @@ class React4xp {
                 pageContributions: react4xp.renderClientPageContributions(pageContributions)
             }
     };
-}
 
+
+
+    static renderMarkupAndHydrate = (params) => {
+        const react4xp = React4xp.buildFromParams(params);
+        let {body, pageContributions} = params || {};
+        return {
+            body: react4xp.renderIntoBody(body),
+            pageContributions: react4xp.renderHydrationPageContributions(pageContributions)
+        }
+    }
+}
 
 module.exports = React4xp;

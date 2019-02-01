@@ -17,7 +17,7 @@ public class ServerSideRenderer {
     // Examples:
     // component: name of a transpiled JSX component, i.e. path under /react4xp/, e.g: "site/parts/simple-reactive/simple-reactive"
     // props: valid stringified JSON on props object, e.g. '{"insertedMessage": "this is a prop!"}'
-    public String renderToStaticMarkup(String component, String props) throws IOException, ScriptException {
+    public String renderToString(String component, String props) throws IOException, ScriptException {
 
         NashornScriptEngine engine = EngineFactory.getEngine();
 
@@ -29,7 +29,7 @@ public class ServerSideRenderer {
                 componentScripts.add(component);
                 script.append(componentScript);
             }
-            script.append("var obj = { rendered: ReactDOMServer.renderToStaticMarkup(React4xp['" + component + "'].default(" + props + ")) };");
+            script.append("var obj = { rendered: ReactDOMServer.renderToString(React4xp['" + component + "'].default(" + props + ")) };");
             script.append("obj;");
 
             ScriptObjectMirror obj = (ScriptObjectMirror)engine.eval(script.toString());
@@ -38,7 +38,7 @@ public class ServerSideRenderer {
 
         } catch (ScriptException e) {
             e.printStackTrace();
-            System.err.println("ERROR: " + ServerSideRenderer.class.getName() + ".renderToStaticMarkup:\n" +
+            System.err.println("ERROR: " + ServerSideRenderer.class.getName() + ".renderToString:\n" +
                     "Message: " + e.getMessage() + "\n" +
                     "Component: " + component + "\n" +
                     "Props: " + props + "\n" +

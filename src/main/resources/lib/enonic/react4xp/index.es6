@@ -40,8 +40,8 @@ const buildBasicPageContributions = (chunkHashFiles) => {
                     chunk = chunk.substring(1);
                 }
                 log.info("chunk: " + JSON.stringify(chunk, null, 2));
-                pageContributions.headEnd = [
-                    ...(pageContributions.headEnd || []),
+                pageContributions.bodyEnd = [
+                    ...(pageContributions.bodyEnd || []),
                     `<script src="${SERVICES_ROOT}${R4X}/${chunk}" ></script>`
                 ];
             };
@@ -348,11 +348,10 @@ class React4xp {
         this.ensureAndLockBeforeRendering();
 
         return mergePageContributions(pageContributions, {
-            headEnd: [
+            bodyEnd: [
                 // Browser-runnable script reference for the "naked" react component:
                 `<script src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script>`,
-            ],
-            bodyEnd: [
+
                 // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
                 `<script defer>${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
             ]
@@ -371,11 +370,10 @@ class React4xp {
         this.ensureAndLockBeforeRendering();
 
         return mergePageContributions(pageContributions, {
-            headEnd: [
+            bodyEnd: [
                 // Browser-runnable script reference for the "naked" react component:
                 `<script src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script>`,
-            ],
-            bodyEnd: [
+
                 // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
                 `<script defer>${LIBRARY_NAME}.Core.hydrate(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
             ]

@@ -476,7 +476,7 @@ class React4xp {
     };
 
     
-    /** All-in-one serverside renderer that afterwards activates (hydrates) the component in the client.
+    /** All-in-one serverside renderer that adds scripts that afterwards activate (hydrates) the component in the client.
      *  Returns a response object that can be directly returned from an XP controller.
      *  @param params {object} See .render for parameter details.
      */
@@ -487,12 +487,11 @@ class React4xp {
             body: react4xp.renderIntoBody(body),
             pageContributions: react4xp.renderHydrationPageContributions(pageContributions)
         }
-    }
-}
+    };
 
 
 
-/** All-in-one renderer. Returns a response object that can be directly returned from an XP controller.
+    /** All-in-one renderer. Returns a response object that can be directly returned from an XP controller.
       * @param request {object} XP request object.
       * @param params {object} must include EITHER jsxPath or component! All other parameters are optional:
       *      - component {object} XP component object (used to extrapolate component part, sufficient if JSX entry file is in the same folder and has the same name).
@@ -518,6 +517,7 @@ class React4xp {
                 pageContributions: react4xp.renderClientPageContributions(pageContributions)
             }
     };
+}
 
 
 

@@ -12,23 +12,63 @@ const SERVICE_ROOT = `/_/service/${app.name}/${R4X}/`;
 const REACT4XP_ROOT = `/${R4X}/`;
 
 
-// TODO: For content-hashed chunks, Cache-Control should be "private, max-age=31536000". For others, 3 hours?
-//          TODO: Use the commonChunks files to figure this out.
-// TODO: How to update ETag headers for non-cached, short-lived resources?
+
 
 const react4xpCache = cacheLib.newCache({
-    size: 30,
-    expire: 10800 // 3 hours
+    size: 100,
+    expire: 108000 // 30 hours
 });
 
 
-const getReact4XP = (resource) => {
+// For content-hashed chunks, Cache-Control should be "public, max-age=31536000". For others, ETag and no-cache?  Use the commonChunks files to figure this out.
+const ENTRIES = JSON.parse(
+    ioLib.readLines(
+        ioLib.getResource(REACT4XP_ROOT + "entries.json").getStream()
+    ).join(" ")
+).map(entry => `${entry}.js`);
+
+
+
+// Adjusted from https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
+const hash = (string) => {
+
+    var hash = 0, i, chr;
+    if (string.length === 0) return hash;
+    for (i = 0; i < string.length; i++) {
+        chr   = string.charCodeAt(i);
+        hash  = ((hash << 5) - hash) + chr;
+        hash |= 0; // Convert to 32bit integer
+    }
+    return (Math.abs(hash)).toString(36);
+};
+
+
+
+const getReact4xpEntry = (resource) => {
+    //const then = new Date().getTime();
+    const fileContent = utilLib.data.forceArray(ioLib.readLines(resource.getStream())).join("\n");
+    const ETag = hash(fileContent);
+    //const now = new Date().getTime();
+    //.info(`ETag '${ETag}' in ${now - then} ms.`);
+    return {
+        body: fileContent,
+        headers: {
+            'Content-Type': 'application/javascript;charset=utf-8',
+            'Cache-Control': 'no-cache',
+            'ETag': ETag,
+        }
+    };
+};
+
+
+
+const getReact4xpNonEntry = (resource) => {
     const fileContent = utilLib.data.forceArray(ioLib.readLines(resource.getStream())).join("\n");
     return {
         body: fileContent,
         headers: {
             'Content-Type': 'application/javascript;charset=utf-8',
-            'Cache-Control': 'max-age=10800' 
+            'Cache-Control': 'public, max-age=31536000'
         }
     };
 };
@@ -46,7 +86,7 @@ exports.get = function (req) {
             }
         }
 
-        //log.info("React4xp target: " + JSON.stringify(target, null, 2));
+        log.info("React4xp target: " + JSON.stringify(target, null, 2));
 
         const resource = ioLib.getResource(REACT4XP_ROOT + target);
         if (!resource || !resource.exists()) {
@@ -56,10 +96,19 @@ exports.get = function (req) {
             }
         }
 
-        return react4xpCache.get(target, function() {
-            log.info("Caching React4XP component: " + target);
-            return getReact4XP(resource);
-        });
+        if (ENTRIES.indexOf(target) === -1) {
+            return react4xpCache.get(target, function() {
+                log.info("Caching React4XP component: " + target);
+                return getReact4xpNonEntry(resource);
+            });
+
+        } else {
+            return react4xpCache.get(target, function() {
+                log.info("Caching React4XP entry: " + target);
+                return getReact4xpEntry(resource);
+            });
+        }
+
 
     } else {
         return {

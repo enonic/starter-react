@@ -12,7 +12,6 @@
 // - ...and in the XP structure under src/main/resources/site: Here, JSX files are more tightly bound to their corresponding
 // XP component (part, page, etc) but can still use the second-level dependency chunks mentioned above.
 
-const Chunks2json = require('chunks-2-json-webpack-plugin');
 const React4xpEntriesAndChunks = require('./webpack.config.react4xp_entriesAndChunks');
 
 const {
@@ -88,7 +87,6 @@ module.exports = {
     },
 
     plugins: [
-        new Chunks2json({ outputDir: RELATIVE_BUILD_R4X, filename: 'chunks.json' }),
+        React4xpEntriesAndChunks.getChunksPlugin(RELATIVE_BUILD_R4X)
     ]
 };
-

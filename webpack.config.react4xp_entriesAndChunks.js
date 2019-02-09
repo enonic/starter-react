@@ -2,7 +2,6 @@
 
 const path = require('path');
 const glob = require('glob');
-const fs = require('fs');
 
 const SLASH = (process.platform === "win32") ? "\\" : "/";
 
@@ -54,6 +53,8 @@ exports.getEntries = (outputPath, entrySets, verbose) => {
         (accumulator, entrySet) => Object.assign(accumulator, buildEntriesToReact4xpSubfolder(entrySet, verbose)),
         {}
     );
+
+    const fs = require('fs');
 
     const entryList = Object.keys(entries);
     const entryFile = path.join(outputPath, 'entries.json');
@@ -122,5 +123,9 @@ exports.getCacheGroups = (sourcePath, subfoldersToIgnore, priorities, verbose) =
     }
 
     return chunks;
-}
+};
 
+exports.getChunksPlugin = (outputDir) => {
+    const Chunks2json = require('chunks-2-json-webpack-plugin');
+    return new Chunks2json({ outputDir, filename: 'chunks.json' });
+};

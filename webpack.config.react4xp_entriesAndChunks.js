@@ -86,6 +86,7 @@ exports.getEntries = (outputPath, entrySets, verbose) => {
 // into layers of dependency chunks:
 // - vendors is third level / third party libs under /node_modules/
 // - subfolder names is second level, below the top-level entry components
+// TODO: It would be nice to be able to generate a map of each component's specific chunk dependencies so not all chunks would always need to be loaded!
 exports.getCacheGroups = (sourcePath, subfoldersToIgnore, priorities, verbose) => {
     const chunks = {
         vendors: {

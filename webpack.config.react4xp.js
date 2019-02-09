@@ -80,7 +80,7 @@ module.exports = {
             cacheGroups: React4xpEntriesAndChunks.getCacheGroups(
                 SRC_R4X,
                 [R4X_ENTRY_SUBFOLDER],
-                {common: 2},
+                {sharedComps: 2},
                 DEVMODE
             )
         }

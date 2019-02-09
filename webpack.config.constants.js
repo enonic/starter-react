@@ -44,7 +44,7 @@ const JSON_CONSTANTS = JSON.parse(fs.readFileSync('webpack.config.constants.json
 */
 const EXTERNALS = JSON_CONSTANTS.EXTERNALS;
 
-const BUILD_ENV = 'production'; /*/ 'development'; //*/
+const BUILD_ENV = /*'production'; /*/ 'development'; //*/
 
 module.exports = {
     SITE,

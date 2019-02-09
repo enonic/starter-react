@@ -13,10 +13,10 @@
 // XP component (part, page, etc) but can still use the second-level dependency chunks mentioned above.
 
 const Chunks2json = require('chunks-2-json-webpack-plugin');
-const entriesAndChunks = require('./webpack.config.react4xp_entriesAndChunks');
+const React4xpEntriesAndChunks = require('./webpack.config.react4xp_entriesAndChunks');
 
 const {
-    SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_SUB_ENTRIES, BUILD_R4X, RELATIVE_BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS
+    SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_ENTRY_SUBFOLDER, BUILD_R4X, RELATIVE_BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS
 } = require('./webpack.config.constants');
 
 
@@ -26,7 +26,7 @@ const DEVMODE = (BUILD_ENV !== 'production');
 module.exports = {
     mode: BUILD_ENV,
     
-    entry: entriesAndChunks.getEntries(
+    entry: React4xpEntriesAndChunks.getEntries(
         BUILD_R4X,
         [
             {
@@ -78,9 +78,9 @@ module.exports = {
     optimization: {
         splitChunks: {
             name: false,
-            cacheGroups: entriesAndChunks.getCacheGroups(
+            cacheGroups: React4xpEntriesAndChunks.getCacheGroups(
                 SRC_R4X,
-                [R4X_SUB_ENTRIES],
+                [R4X_ENTRY_SUBFOLDER],
                 {common: 2},
                 DEVMODE
             )

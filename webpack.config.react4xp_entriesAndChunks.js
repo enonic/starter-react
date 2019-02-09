@@ -15,7 +15,6 @@ function buildEntriesToReact4xpSubfolder(params, verbose) {
     const sourcePath = params.sourcePath;
     const extensions = params.sourceExtensions;
     let targetPath = (params.targetSubDir || "").trim();
-
     if (targetPath.startsWith("/")) {
         targetPath = targetPath.substring(1);
     }
@@ -50,7 +49,7 @@ function buildEntriesToReact4xpSubfolder(params, verbose) {
 // available and runnable to both the browser and the nashorn engine.
 // This function builds the entries AND entries.json, which lists the first-level components that shouldn't be counted
 // as general dependencies.
-const getEntries = (outputPath, entrySets, verbose) => {
+exports.getEntries = (outputPath, entrySets, verbose) => {
     const entries = (entrySets || []).reduce(
         (accumulator, entrySet) => Object.assign(accumulator, buildEntriesToReact4xpSubfolder(entrySet, verbose)),
         {}
@@ -65,7 +64,7 @@ const getEntries = (outputPath, entrySets, verbose) => {
         accum += dir + SLASH;
         if (!fs.existsSync(accum)){
             if (verbose) {
-                console.log("Create: " + accum);
+                console.log("\tCreate: " + accum);
             }
             fs.mkdirSync(accum);
         }
@@ -86,7 +85,7 @@ const getEntries = (outputPath, entrySets, verbose) => {
 // into layers of dependency chunks:
 // - vendors is third level / third party libs under /node_modules/
 // - subfolder names is second level, below the top-level entry components
-function getCacheGroups(sourcePath, foldersToIgnore, priorities, verbose) {
+exports.getCacheGroups = (sourcePath, subfoldersToIgnore, priorities, verbose) => {
     const chunks = {
         vendors: {
             name: 'vendors',
@@ -104,7 +103,7 @@ function getCacheGroups(sourcePath, foldersToIgnore, priorities, verbose) {
         .filter(dirr =>
             !!dirr && dirr.dir === "/" &&
             dirr.name !== "" &&
-            (foldersToIgnore || []).indexOf(dirr.name) === -1
+            (subfoldersToIgnore || []).indexOf(dirr.name) === -1
         )
         .map(dirr => dirr.name);
 
@@ -125,5 +124,3 @@ function getCacheGroups(sourcePath, foldersToIgnore, priorities, verbose) {
     return chunks;
 }
 
-exports.getCacheGroups = getCacheGroups;
-exports.getEntries = getEntries;

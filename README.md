@@ -165,3 +165,7 @@ class WorldGreeter expands React.Component {
 
 export default (props) => <WorldGreeter {...props} />;
 ```
+
+## More examples
+
+See the examples branches.

@@ -1,8 +1,9 @@
 // Transpiles nashorn polyfill from among other things, npm libraries.
 
 const path = require('path');
+const React4xpConstants = require('./webpack.config.constants');
 
-const { SRC_R4X, BUILD_R4X, BUILD_ENV } = require('./webpack.config.constants');
+const { SRC_R4X, BUILD_R4X, BUILD_ENV } = React4xpConstants(__dirname);
 
 module.exports = {
     mode: BUILD_ENV,

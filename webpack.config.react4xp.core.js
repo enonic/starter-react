@@ -11,8 +11,9 @@
 const path = require('path');
 
 const Chunks2json = require('chunks-2-json-webpack-plugin');
+const React4xpConstants = require('./webpack.config.constants');
 
-const { SRC_R4X, BUILD_R4X, RELATIVE_BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS } = require('./webpack.config.constants');
+const { SRC_R4X, BUILD_R4X, RELATIVE_BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS } = React4xpConstants(__dirname);
 
 module.exports = {
     mode: BUILD_ENV,

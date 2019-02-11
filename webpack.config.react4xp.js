@@ -12,12 +12,16 @@
 // - ...and in the XP structure under src/main/resources/site: Here, JSX files are more tightly bound to their corresponding
 // XP component (part, page, etc) but can still use the second-level dependency chunks mentioned above.
 
+const path = require('path');
+
 const React4xpEntriesAndChunks = require('./webpack.config.react4xp_entriesAndChunks');
-const React4xpConstants = require('./webpack.config.constants');
+const React4xpConstants = require('react4xp-buildconstants');
+
+console.log("React4xpConstants: " + JSON.stringify(Object.keys(React4xpConstants), null, 2));
 
 const {
     SITE, SRC_R4X, SRC_SITE, SRC_R4X_ENTRIES, R4X_ENTRY_SUBFOLDER, BUILD_R4X, RELATIVE_BUILD_R4X, BUILD_ENV, LIBRARY_NAME, EXTERNALS
-} = React4xpConstants(__dirname);
+} = React4xpConstants(__dirname, {JSON_CONSTANTS_FILE: path.join(__dirname, "webpack.config.constants.json")});
 
 
 

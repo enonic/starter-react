@@ -4,7 +4,10 @@ const path = require('path');
 
 const React4xpConstants = require('react4xp-buildconstants');
 
-const { SRC_R4X, BUILD_R4X, BUILD_ENV } = React4xpConstants(__dirname, {JSON_CONSTANTS_FILE: path.join(__dirname, "webpack.config.constants.json")});
+const { SRC_R4X, BUILD_R4X, BUILD_ENV } = React4xpConstants(
+    __dirname,
+    {JSON_CONSTANTS_FILE: path.join(__dirname, "webpack.config.constants.json")}
+);
 
 module.exports = {
     mode: BUILD_ENV,

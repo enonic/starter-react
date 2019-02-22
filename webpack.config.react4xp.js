@@ -14,6 +14,7 @@
 
 const path = require('path');
 
+const Chunks2json = require('chunks-2-json-webpack-plugin');
 const React4xpEntriesAndChunks = require('react4xp-build-entriesandchunks');
 
 const React4xpConstants = require('react4xp-buildconstants');
@@ -107,6 +108,6 @@ module.exports = {
     },
 
     plugins: [
-        chunksPlugin
+        new Chunks2json({ outputDir: RELATIVE_BUILD_R4X, filename: 'chunks.json' }),
     ]
 };

@@ -1,6 +1,6 @@
 {
     "name": "react4xp",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "description": "React starter for Enonic XP Platform",
     "scripts": {
         "rm": "node_modules/rimraf/bin.js build",
@@ -53,7 +53,7 @@
         "es6-set-and-map": "^1.0.5",
         "less-loader": "^4.1.0",
         "react4xp-build-entriesandchunks": "0.0.1",
-        "react4xp-buildconstants": "^1.0.5",
+        "react4xp-buildconstants": "^3.2.2",
         "rimraf": "^2.6.3",
         "style-loader": "^0.21.0",
         "webpack": "^4.28.2",

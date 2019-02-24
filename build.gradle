@@ -1,5 +1,7 @@
 import groovy.json.JsonSlurper
 
+import java.nio.file.Files
+
 plugins {
     id 'com.enonic.xp.app' version '1.0.17'
     id "com.moowork.node" version "1.1.1"
@@ -88,23 +90,34 @@ task config_react4xp(type: NodeTask) {
         REACT4XP_OVERRIDES
     ]
 
+    // After the script has run and created the config JSON file, some finalizing operations:
     doLast {
-        def configJson = new File(REACT4XP_CONFIG_FILE).text
-        REACT4XP_CONFIG = new JsonSlurper().parseText(configJson)
+        // Read the file content into an object
+        def configFile = new File(REACT4XP_CONFIG_FILE)
+        REACT4XP_CONFIG = new JsonSlurper().parseText(configFile.text)
+        //print("Config from "+ REACT4XP_CONFIG_FILE)
+        //print(REACT4XP_CONFIG)
 
-        print("Config from "+ REACT4XP_CONFIG_FILE)
-        print(REACT4XP_CONFIG)
-
+        // Update the configuration of the next tasks, using the constructed values from the config file:
         tasks['webpack_react4xp_core'].configure {
             inputs.dir(REACT4XP_CONFIG.SRC_R4X)
             outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
         }
-
         tasks['webpack_react4xp_components'].configure {
             inputs.dir(REACT4XP_CONFIG.SRC_SITE)
             inputs.dir(REACT4XP_CONFIG.SRC_R4X)
             outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
         }
+
+        /*
+        // Copy the config file itself into the target react4xp build folder, as defined in the config file:
+        def fileName = configFile.getName();
+        File directory = new File(REACT4XP_CONFIG.BUILD_R4X);
+        if (! directory.exists()) {
+            directory.mkdir();
+        }
+        new File(REACT4XP_CONFIG.BUILD_R4X + "/" + fileName) << configFile.text
+        //*/
     }
 }
 config_react4xp.dependsOn += 'npmInstall'

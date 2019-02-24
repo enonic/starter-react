@@ -3,10 +3,10 @@ const utilLib = require('/lib/enonic/util');
 const HTMLinserter = __.newBean('com.enonic.xp.react4xp.HtmlInserter');
 const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.ssr.ServerSideRenderer');
 
-const CONFIG = require('../../../../../react4xp_constants.json');
+// REACT4XP_CONFIG_FILE is expected to be an inserted variable
+const CONFIG = require(REACT4XP_CONFIG_FILE);
 
-// TODO: Expose R4X from react4xp-buildconstants and get from CONFIG
-const R4X = 'react4xp';
+const R4X = CONFIG.R4X_TARGETSUBDIR;
 const LIBRARY_NAME = CONFIG.LIBRARY_NAME;
 
 const SERVICES_ROOT = `/_/service/${app.name}/`;

@@ -5,9 +5,10 @@ var ioLib = require('/lib/xp/io');
 var utilLib = require('/lib/enonic/util');
 var cacheLib = require('/lib/cache');
 
-// TODO: centralize this even more? Along with other strings that must match?
+// TODO: centralize R4X even more? Along with other strings that must match?
 const R4X = 'react4xp';
 
+// TODO: Are these R4Xes equivalent or semantically different?
 const SERVICE_ROOT = `/_/service/${app.name}/${R4X}/`;
 const REACT4XP_ROOT = `/${R4X}/`;
 

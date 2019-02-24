@@ -1,5 +1,7 @@
 import ReactDOM from 'react-dom';
 
+// TODO: LIBRARY_NAME from CONFIG here
+
 const getContainer = (targetId) => {
     let container = null;
     try {

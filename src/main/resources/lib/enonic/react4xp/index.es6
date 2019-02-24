@@ -3,11 +3,11 @@ const utilLib = require('/lib/enonic/util');
 const HTMLinserter = __.newBean('com.enonic.xp.react4xp.HtmlInserter');
 const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.ssr.ServerSideRenderer');
 
+const CONFIG = require('../../../../../react4xp_constants.json');
 
-
-// TODO: centralize these even more? Along with other strings that must match?
+// TODO: Expose R4X from react4xp-buildconstants and get from CONFIG
 const R4X = 'react4xp';
-const LIBRARY_NAME = 'React4xp';
+const LIBRARY_NAME = CONFIG.LIBRARY_NAME;
 
 const SERVICES_ROOT = `/_/service/${app.name}/`;
 const BASE_PATHS = {

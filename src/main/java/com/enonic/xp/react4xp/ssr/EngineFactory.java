@@ -24,6 +24,7 @@ public class EngineFactory {
             "console.warn = print;\n" +
             "console.error = print;";
 
+    // TODO: Expose from react4xp-buildconstants and fetch from ../../../../../../../react4xp_constants.json
     private final static String CHUNKFILES_HOME = "/react4xp/";
 
 

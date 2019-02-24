@@ -11,7 +11,11 @@ import java.util.Set;
 
 
 public class ServerSideRenderer {
+
+    // TODO: Expose from react4xp-buildconstants and fetch from ../../../../../../../react4xp_constants.json
     public final static String SCRIPTS_HOME = "/react4xp";
+    public final static String LIBRARY_NAME = "React4xp";
+
     Set<String> componentScripts = new HashSet<>();
 
     // Examples:
@@ -29,7 +33,7 @@ public class ServerSideRenderer {
                 componentScripts.add(component);
                 script.append(componentScript);
             }
-            script.append("var obj = { rendered: ReactDOMServer.renderToString(React4xp['" + component + "'].default(" + props + ")) };");
+            script.append("var obj = { rendered: ReactDOMServer.renderToString(" + LIBRARY_NAME + "['" + component + "'].default(" + props + ")) };");
             script.append("obj;");
 
             ScriptObjectMirror obj = (ScriptObjectMirror)engine.eval(script.toString());

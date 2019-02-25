@@ -9,40 +9,44 @@ const CONFIG = require('./react4xp_constants.json');
 const R4X = CONFIG.R4X_TARGETSUBDIR;
 const LIBRARY_NAME = CONFIG.LIBRARY_NAME;
 
-const SERVICES_ROOT = `/_/service/${app.name}/`;
+const SERVICES_ROOT = `/_/service/${app.name}/react4xp/`;
 const BASE_PATHS = {
     part: "parts",
     page: "pages",
 };
 
-const readJson = (filename) => JSON.parse(
-    utilLib.data.forceArray(
-        ioLib.readLines(
-            ioLib.getResource(filename).getStream()
-        )
-    ).join(""));
-
-const ENTRIES = readJson(`/${R4X}/entries.json`);
+const ENTRIES = require(`/${R4X}/entries.json`);
 
 /** Reads and parses file names from webpack-generated JSON files that list up contenthashed bundle chunk names. */
 const buildBasicPageContributions = (chunkHashFiles) => {
     const pageContributions = {};
 
     chunkHashFiles.forEach(chunkFile => {
-        const chunks = readJson(chunkFile);
+        const chunks = require(chunkFile);
+        //log.info("chunks: " + JSON.stringify(chunks, null, 2));
         Object.keys(chunks).forEach(chunkName => {
 
             // We're only looking for dependencies here, not entry files (components and such).
             if (ENTRIES.indexOf(chunkName) === -1) {
-                log.info("chunkName: " + JSON.stringify(chunkName, null, 2));
+                //log.info("chunkName: " + JSON.stringify(chunkName, null, 2));
                 let chunk = chunks[chunkName].js;
+                //log.info("chunk: " + JSON.stringify(chunk, null, 2));
+
+                while (Array.isArray(chunk)) {
+                    if (chunk.length > 1) {
+                        throw Error(`Unexpected value in ${chunkFile}: [${chunkName}].js is an array with more than 1 array: ${JSON.stringify(chunk, null, 2)}`);
+                    }
+                    chunk = chunk[0];
+                }
+
                 if (chunk.startsWith('/')) {
                     chunk = chunk.substring(1);
                 }
-                log.info("chunk: " + JSON.stringify(chunk, null, 2));
+                //log.info("chunk: " + JSON.stringify(chunk, null, 2));
+
                 pageContributions.bodyEnd = [
                     ...(pageContributions.bodyEnd || []),
-                    `<script src="${SERVICES_ROOT}${R4X}/${chunk}" ></script>`
+                    `<script src="${SERVICES_ROOT}${chunk}" ></script>`
                 ];
             };
         });
@@ -350,7 +354,7 @@ class React4xp {
         return mergePageContributions(pageContributions, {
             bodyEnd: [
                 // Browser-runnable script reference for the "naked" react component:
-                `<script src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script>`,
+                `<script src="${SERVICES_ROOT}${this.jsxPath}.js"></script>`,
 
                 // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
                 `<script defer>${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
@@ -372,7 +376,7 @@ class React4xp {
         return mergePageContributions(pageContributions, {
             bodyEnd: [
                 // Browser-runnable script reference for the "naked" react component:
-                `<script src="${SERVICES_ROOT}${R4X}/${this.jsxPath}.js"></script>`,
+                `<script src="${SERVICES_ROOT}${this.jsxPath}.js"></script>`,
 
                 // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
                 `<script defer>${LIBRARY_NAME}.Core.hydrate(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`

@@ -69,6 +69,7 @@ def REACT4XP_CONFIG_FILE = "src/react4xp_constants.json"
 def REACT4XP_OVERRIDES = '{"R4X_TARGETSUBDIR":"react4xp_testcustombuildtarget", "overwriteConstantsFile":true}' //''{"verbose": true}'
 
 
+
 task config_react4xp(type: NodeTask) {
     script = file('node_modules/react4xp-buildconstants/lib/cli.js')
     args = [
@@ -87,10 +88,8 @@ task config_react4xp(type: NodeTask) {
 
         // Update the configuration of the next tasks, using the constructed values from the config file:
         tasks['babelXP'].configure {
-            outputs.dir(REACT4XP_CONFIG.BUILD_MAIN)
             args = ["src/main/resources", "--out-dir", REACT4XP_CONFIG.BUILD_MAIN, "--ignore", "**/*.jsx"]
-
-
+            outputs.dir(REACT4XP_CONFIG.BUILD_MAIN)
         }
         tasks['webpack_react4xp_core'].configure {
             inputs.dir(REACT4XP_CONFIG.SRC_R4X)
@@ -101,13 +100,10 @@ task config_react4xp(type: NodeTask) {
             inputs.dir(REACT4XP_CONFIG.SRC_R4X)
             outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
         }
-
-
-
-        //*/
     }
 }
 config_react4xp.dependsOn += 'npmInstall'
+
 
 
 // Transpile .js and .es6 files under src/main/resources.
@@ -130,13 +126,19 @@ task babelXP(type: NodeTask) {
         def fileName = configFile.getName();
         File directory = new File(REACT4XP_CONFIG.BUILD_R4X);
         if (! directory.exists()) {
-            directory.mkdir();
+            directory.mkdir()
         }
-        new File(REACT4XP_CONFIG.BUILD_MAIN + "/lib/enonic/react4xp/" + fileName) << configFile.text
+        def targetFileName = REACT4XP_CONFIG.BUILD_MAIN + "/lib/enonic/react4xp/" + fileName
+        def targetFile = new File(targetFileName)
+        if (targetFile.exists()) {
+            targetFile.delete()
+        }
+        new File(targetFileName) << configFile.text
     }
 }
 babelXP.dependsOn += 'config_react4xp'
 babelXP.dependsOn += 'processResources'
+
 
 
 // TODO: the webpack scripts below can maybe now be put into NPM and run directly from i.e. "node_modules/reac4xp/"?
@@ -160,6 +162,7 @@ task webpack_react4xp_core(type: NodeTask) {
 webpack_react4xp_core.dependsOn += 'config_react4xp'
 
 
+
 task webpack_react4xp_components(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = [
@@ -180,8 +183,11 @@ task webpack_react4xp_components(type: NodeTask) {
 }
 webpack_react4xp_components.dependsOn += 'config_react4xp'
 
+
+
 jar.dependsOn += 'webpack_react4xp_core'
 jar.dependsOn += 'webpack_react4xp_components'
+
 
 
 // processes your package.json before running webpack

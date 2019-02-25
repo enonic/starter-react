@@ -1,5 +1,4 @@
 // React4xp static-asset file server, with specified cache control headers
-// TODO: This should probably be a controller-mapping instead of a service. Then it can be put in better places too.
 
 var ioLib = require('/lib/xp/io');
 var utilLib = require('/lib/enonic/util');
@@ -12,6 +11,7 @@ const R4X = CONFIG.R4X_TARGETSUBDIR;
 
 // react4xp is correct to hardcode here instead of reading from the constants file.
 const SERVICE_ROOT = `/_/service/${app.name}/react4xp/`;
+log.info("SERVICE_ROOT: " + JSON.stringify(SERVICE_ROOT, null, 2));
 const REACT4XP_ROOT = `/${R4X}/`;
 
 
@@ -34,7 +34,6 @@ const ENTRIES = JSON.parse(
 
 // Adjusted from https://werxltd.com/wp/2010/05/13/javascript-implementation-of-javas-string-hashcode-method/
 const hash = (string) => {
-
     var hash = 0, i, chr;
     if (string.length === 0) return hash;
     for (i = 0; i < string.length; i++) {
@@ -58,7 +57,7 @@ const getReact4xpEntry = (resource) => {
         headers: {
             'Content-Type': 'application/javascript;charset=utf-8',
             'Cache-Control': 'no-cache',
-            'ETag': ETag,
+            ETag,
         }
     };
 };

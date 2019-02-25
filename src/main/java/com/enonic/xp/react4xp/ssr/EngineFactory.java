@@ -10,8 +10,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import static com.enonic.xp.react4xp.ssr.ServerSideRenderer.SCRIPTS_HOME;
-
 public class EngineFactory {
     private final static String POLYFILL_BASICS = "" +
             "if (typeof exports === 'undefined') { var exports = {}; }\n" +
@@ -24,35 +22,39 @@ public class EngineFactory {
             "console.warn = print;\n" +
             "console.error = print;";
 
-    // TODO: Expose from react4xp-buildconstants and fetch from ../../../../../../../react4xp_constants.json
-    private final static String CHUNKFILES_HOME = "/react4xp/";
-
-
-    /** CHUNK_FILES is a list of files that describe bundle/chunk asset file names, used to generate
-      * a full list of dependency files, since the file names are hashed by webpack.
-      * Sequence matters! These engine initialization scripts are run in this order.
-      * Scripts found in chunks.json depend on the previous and must be the last!
-      * nashornPolyfills.js script is the basic dependency, and will be added at the very beginning 
-      * outside of this list. */ 
-    private final static List<String> CHUNK_FILES = Arrays.asList(
-            CHUNKFILES_HOME + "chunks.externals.json",
-            CHUNKFILES_HOME + "chunks.json"
-    );
-    private final static String ENTRIES_FILE = CHUNKFILES_HOME + "entries.json";
+    private static List<String> CHUNK_FILES = null;
+    private static String ENTRIES_FILE = null;
 
     private static NashornScriptEngine engineInstance = null;
 
-    public static NashornScriptEngine getEngine() throws IOException, ScriptException {
+    private static void setConfig(String CHUNKFILES_HOME) {
+        EngineFactory.ENTRIES_FILE = CHUNKFILES_HOME + "entries.json";
+
+        /** CHUNK_FILES is a list of files that describe bundle/chunk asset file names, used to generate
+         * a full list of dependency files, since the file names are hashed by webpack.
+         * Sequence matters! These engine initialization scripts are run in this order.
+         * Scripts found in chunks.json depend on the previous and must be the last!
+         * nashornPolyfills.js script is the basic dependency, and will be added at the very beginning
+         * outside of this list. */
+        EngineFactory.CHUNK_FILES = Arrays.asList(
+                CHUNKFILES_HOME + "chunks.externals.json",
+                CHUNKFILES_HOME + "chunks.json"
+        );
+    }
+
+
+    public static NashornScriptEngine getEngine(String SCRIPTS_HOME, String CHUNKFILES_HOME) throws IOException, ScriptException {
         if (engineInstance == null) {
+            setConfig(CHUNKFILES_HOME);
 
             // Sequence matters! Use ordered collection for iteration! Hashmaps are not ordered!
             LinkedList<String> scriptList = new LinkedList<>();
             HashMap<String, String> scripts = new HashMap<>();
 
-            scripts.put("POLYFILL_BASICS", POLYFILL_BASICS);
+            scripts.put("POLYFILL_BASICS", EngineFactory.POLYFILL_BASICS);
             scriptList.add("POLYFILL_BASICS");
 
-            LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(CHUNK_FILES, ENTRIES_FILE);
+            LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(EngineFactory.CHUNK_FILES, EngineFactory.ENTRIES_FILE);
             transpiledDependencies.addFirst("/nashornPolyfills.js");
             for (String scriptFile : transpiledDependencies) {
                 String file = SCRIPTS_HOME + scriptFile;

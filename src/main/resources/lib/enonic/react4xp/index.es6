@@ -1,4 +1,3 @@
-const ioLib = require('/lib/xp/io');
 const utilLib = require('/lib/enonic/util');
 const HTMLinserter = __.newBean('com.enonic.xp.react4xp.HtmlInserter');
 const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.ssr.ServerSideRenderer');
@@ -9,6 +8,10 @@ const CONFIG = require('./react4xp_constants.json');
 const R4X = CONFIG.R4X_TARGETSUBDIR;
 const LIBRARY_NAME = CONFIG.LIBRARY_NAME;
 
+log.info("CONFIG: " + JSON.stringify(CONFIG, null, 2));
+log.info("R4X: " + JSON.stringify(R4X, null, 2));
+log.info("LIBRARY_NAME: " + JSON.stringify(LIBRARY_NAME, null, 2));
+
 const SERVICES_ROOT = `/_/service/${app.name}/react4xp/`;
 const BASE_PATHS = {
     part: "parts",
@@ -16,6 +19,8 @@ const BASE_PATHS = {
 };
 
 const ENTRIES = require(`/${R4X}/entries.json`);
+
+
 
 /** Reads and parses file names from webpack-generated JSON files that list up contenthashed bundle chunk names. */
 const buildBasicPageContributions = (chunkHashFiles) => {
@@ -63,6 +68,8 @@ const PAGE_CONTRIBUTIONS = buildBasicPageContributions([
     `/${R4X}/chunks.core.json`,
     `/${R4X}/chunks.json`
 ]);
+
+SSRreact4xp.setConfig(`/${R4X}`, LIBRARY_NAME, `/${R4X}/`);
 
 
 
@@ -337,9 +344,7 @@ class React4xp {
 
 
 
-    //--------------------------------------------------------------- RENDERING METHODS:
-
-
+    //----------------------------------------------------------  RENDERING METHODS:
 
     /** Generates or modifies existing enonic XP pageContributions. Adds client-side dependency chunks (core React4xp frontend,
      * shared libs and components etc, as well as the entry component scripts.
@@ -522,7 +527,5 @@ class React4xp {
             }
     };
 }
-
-
 
 module.exports = React4xp;

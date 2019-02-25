@@ -5,13 +5,13 @@ var ioLib = require('/lib/xp/io');
 var utilLib = require('/lib/enonic/util');
 var cacheLib = require('/lib/cache');
 
-// REACT4XP_CONFIG_FILE is expected to be an inserted variable from webpack.DefinePlugin
-const CONFIG = require(REACT4XP_CONFIG_FILE);
+// expected to be copied to the correct build folder by e.g. gradle. Must match the file name of the generated file.
+const CONFIG = require('/lib/enonic/react4xp/react4xp_constants.json');
 
 const R4X = CONFIG.R4X_TARGETSUBDIR;
 
-// TODO: Are these R4Xes equivalent or semantically different?
-const SERVICE_ROOT = `/_/service/${app.name}/${R4X}/`;
+// react4xp is correct to hardcode here instead of reading from the constants file.
+const SERVICE_ROOT = `/_/service/${app.name}/react4xp/`;
 const REACT4XP_ROOT = `/${R4X}/`;
 
 

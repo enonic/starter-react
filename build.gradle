@@ -2,6 +2,7 @@ import groovy.json.JsonSlurper
 
 import java.nio.file.Files
 
+
 plugins {
     id 'com.enonic.xp.app' version '1.0.17'
     id "com.moowork.node" version "1.1.1"
@@ -57,20 +58,6 @@ npmInstall.inputs.file("package-lock.json")
 npmInstall.outputs.dir("node_modules")
 
 
-// Transpile .js and .es6 files under src/main/resources.
-// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below.
-// This is currently done by reserving .es6 and .js files below src/main/resources/ for this task,
-// while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackReact4xp task.
-task babelXP(type: NodeTask) {
-    script = file('node_modules/babel-cli/bin/babel.js')
-    args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]
-
-    inputs.dir 'src/main/resources'
-    outputs.dir("build/resources/main")
-}
-babelXP.dependsOn += 'npmInstall'
-babelXP.dependsOn += 'processResources'
-
 def ROOT = new File(".").absolutePath
 
 // Necessary placeholders, will be filled during
@@ -85,9 +72,9 @@ def REACT4XP_OVERRIDES = '{"R4X_TARGETSUBDIR":"react4xp_testcustombuildtarget", 
 task config_react4xp(type: NodeTask) {
     script = file('node_modules/react4xp-buildconstants/lib/cli.js')
     args = [
-        ROOT,
-        ROOT + "/" + REACT4XP_CONFIG_FILE,
-        REACT4XP_OVERRIDES
+            ROOT,
+            ROOT + "/" + REACT4XP_CONFIG_FILE,
+            REACT4XP_OVERRIDES
     ]
 
     // After the script has run and created the config JSON file, some finalizing operations:
@@ -99,6 +86,12 @@ task config_react4xp(type: NodeTask) {
         //print(REACT4XP_CONFIG)
 
         // Update the configuration of the next tasks, using the constructed values from the config file:
+        tasks['babelXP'].configure {
+            outputs.dir(REACT4XP_CONFIG.BUILD_MAIN)
+            args = ["src/main/resources", "--out-dir", REACT4XP_CONFIG.BUILD_MAIN, "--ignore", "**/*.jsx"]
+
+
+        }
         tasks['webpack_react4xp_core'].configure {
             inputs.dir(REACT4XP_CONFIG.SRC_R4X)
             outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
@@ -109,18 +102,41 @@ task config_react4xp(type: NodeTask) {
             outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
         }
 
-        /*
+
+
+        //*/
+    }
+}
+config_react4xp.dependsOn += 'npmInstall'
+
+
+// Transpile .js and .es6 files under src/main/resources.
+// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below.
+// This is currently done by reserving .es6 and .js files below src/main/resources/ for this task,
+// while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackReact4xp task.
+task babelXP(type: NodeTask) {
+    script = file('node_modules/babel-cli/bin/babel.js')
+    args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]
+
+    inputs.dir 'src/main/resources'
+    outputs.dir("build/resources/main")
+
+    doLast {
+        // Read the file content into an object
+        def configFile = new File(REACT4XP_CONFIG_FILE)
+        REACT4XP_CONFIG = new JsonSlurper().parseText(configFile.text)
+
         // Copy the config file itself into the target react4xp build folder, as defined in the config file:
         def fileName = configFile.getName();
         File directory = new File(REACT4XP_CONFIG.BUILD_R4X);
         if (! directory.exists()) {
             directory.mkdir();
         }
-        new File(REACT4XP_CONFIG.BUILD_R4X + "/" + fileName) << configFile.text
-        //*/
+        new File(REACT4XP_CONFIG.BUILD_MAIN + "/lib/enonic/react4xp/" + fileName) << configFile.text
     }
 }
-config_react4xp.dependsOn += 'npmInstall'
+babelXP.dependsOn += 'config_react4xp'
+babelXP.dependsOn += 'processResources'
 
 
 // TODO: the webpack scripts below can maybe now be put into NPM and run directly from i.e. "node_modules/reac4xp/"?

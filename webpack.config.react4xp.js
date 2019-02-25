@@ -13,7 +13,6 @@
 // XP component (part, page, etc) but can still use the second-level dependency chunks mentioned above.
 const Chunks2json = require('chunks-2-json-webpack-plugin');
 const React4xpEntriesAndChunks = require('react4xp-build-entriesandchunks');
-const webpack = require('webpack');
 
 module.exports = env => {
     const {
@@ -87,10 +86,6 @@ module.exports = env => {
 
         plugins: [
             new Chunks2json({outputDir: RELATIVE_BUILD_R4X, filename: 'chunks.json'}),
-            new webpack.DefinePlugin({
-                BUILD_ENV,
-                REACT4XP_CONFIG_FILE: env.REACT4XP_CONFIG_FILE
-            })
         ]
     };
 };

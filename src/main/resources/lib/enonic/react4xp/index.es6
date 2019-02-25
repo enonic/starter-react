@@ -3,8 +3,8 @@ const utilLib = require('/lib/enonic/util');
 const HTMLinserter = __.newBean('com.enonic.xp.react4xp.HtmlInserter');
 const SSRreact4xp = __.newBean('com.enonic.xp.react4xp.ssr.ServerSideRenderer');
 
-// REACT4XP_CONFIG_FILE is expected to be an inserted variable
-const CONFIG = require(REACT4XP_CONFIG_FILE);
+// expected to be copied to the correct build folder by e.g. gradle
+const CONFIG = require('./react4xp_constants.json');
 
 const R4X = CONFIG.R4X_TARGETSUBDIR;
 const LIBRARY_NAME = CONFIG.LIBRARY_NAME;

@@ -8,10 +8,6 @@ const CONFIG = require('./react4xp_constants.json');
 const R4X = CONFIG.R4X_TARGETSUBDIR;
 const LIBRARY_NAME = CONFIG.LIBRARY_NAME;
 
-log.info("CONFIG: " + JSON.stringify(CONFIG, null, 2));
-log.info("R4X: " + JSON.stringify(R4X, null, 2));
-log.info("LIBRARY_NAME: " + JSON.stringify(LIBRARY_NAME, null, 2));
-
 const SERVICES_ROOT = `/_/service/${app.name}/react4xp/`;
 const BASE_PATHS = {
     part: "parts",
@@ -69,7 +65,17 @@ const PAGE_CONTRIBUTIONS = buildBasicPageContributions([
     `/${R4X}/chunks.json`
 ]);
 
-SSRreact4xp.setConfig(`/${R4X}`, LIBRARY_NAME, `/${R4X}/`);
+const SCRIPTS_HOME = `/${R4X}`;
+const CHUNKFILES_HOME = `/${R4X}/`;
+
+/*
+log.info("CONFIG (" + typeof CONFIG + "): " + JSON.stringify(CONFIG, null, 2));
+log.info("R4X (" + typeof R4X + "): " + JSON.stringify(R4X, null, 2));
+log.info("SCRIPTS_HOME (" + typeof SCRIPTS_HOME + "): " + JSON.stringify(SCRIPTS_HOME, null, 2));
+log.info("LIBRARY_NAME (" + typeof LIBRARY_NAME + "): " + JSON.stringify(LIBRARY_NAME, null, 2));
+log.info("CHUNKFILES_HOME (" + typeof CHUNKFILES_HOME + "): " + JSON.stringify(CHUNKFILES_HOME, null, 2));
+//*/
+SSRreact4xp.setConfig(SCRIPTS_HOME, LIBRARY_NAME, CHUNKFILES_HOME);
 
 
 

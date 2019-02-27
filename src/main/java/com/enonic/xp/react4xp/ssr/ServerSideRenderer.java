@@ -25,7 +25,7 @@ public class ServerSideRenderer {
         ServerSideRenderer.CHUNKFILES_HOME = CHUNKFILES_HOME;   // "/react4xp/"
 
         // Init the engine too
-        EngineFactory.getEngine(SCRIPTS_HOME, CHUNKFILES_HOME);
+        EngineFactory.getEngine(CHUNKFILES_HOME);
     }
 
 
@@ -34,7 +34,7 @@ public class ServerSideRenderer {
     // props: valid stringified JSON on props object, e.g. '{"insertedMessage": "this is a prop!"}'
     public String renderToString(String component, String props) throws IOException, ScriptException {
 
-        NashornScriptEngine engine = EngineFactory.getEngine(SCRIPTS_HOME, CHUNKFILES_HOME);
+        NashornScriptEngine engine = EngineFactory.getEngine(CHUNKFILES_HOME);
 
         StringBuilder script = new StringBuilder();
         try {

@@ -43,8 +43,9 @@ public class EngineFactory {
     }
 
 
-    public static NashornScriptEngine getEngine(String SCRIPTS_HOME, String CHUNKFILES_HOME) throws IOException, ScriptException {
+    public static NashornScriptEngine getEngine(String CHUNKFILES_HOME) throws IOException, ScriptException {
         if (engineInstance == null) {
+
             setConfig(CHUNKFILES_HOME);
 
             // Sequence matters! Use ordered collection for iteration! Hashmaps are not ordered!
@@ -55,9 +56,9 @@ public class EngineFactory {
             scriptList.add("POLYFILL_BASICS");
 
             LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(EngineFactory.CHUNK_FILES, EngineFactory.ENTRIES_FILE);
-            transpiledDependencies.addFirst("/nashornPolyfills.js");
+            transpiledDependencies.addFirst("nashornPolyfills.js");
             for (String scriptFile : transpiledDependencies) {
-                String file = SCRIPTS_HOME + scriptFile;
+                String file = CHUNKFILES_HOME + scriptFile;
                 scripts.put(file, ResourceHandler.readResource(file));
                 scriptList.add(file);
             }

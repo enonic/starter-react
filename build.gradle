@@ -63,7 +63,7 @@ def ROOT = new File(".").absolutePath
 // Necessary placeholders, will be filled during
 def REACT4XP_CONFIG = {}
 
-def REACT4XP_CONFIG_FILE = "src/react4xp_constants.json"
+def REACT4XP_CONFIG_FILE = "build/react4xp_constants.json"
 
 // Add override values to taste:
 def REACT4XP_OVERRIDES = '{"R4X_TARGETSUBDIR":"react4xp_testcustombuildtarget", "overwriteConstantsFile":true}' //''{"verbose": true}'

@@ -6,35 +6,45 @@ import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.script.ScriptException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 
 public class ServerSideRenderer {
 
-    // TODO: Expose from react4xp-buildconstants and fetch from ../../../../../../../react4xp_constants.json
-    public static String SCRIPTS_HOME = null;
-    public static String LIBRARY_NAME = null;
-    public static String CHUNKFILES_HOME = null;
+    private static String SCRIPTS_HOME = null;
+    private static String LIBRARY_NAME = null;
+    private static String CHUNKFILES_HOME = null;
+    private static String NASHORNPOLYFILLS_FILENAME = null;
+    private static String ENTRIESSOURCE = null;
 
     Set<String> componentScripts = new HashSet<>();
 
-    public void setConfig(String SCRIPTS_HOME, String LIBRARY_NAME, String CHUNKFILES_HOME) throws IOException, ScriptException {
-        ServerSideRenderer.SCRIPTS_HOME = SCRIPTS_HOME;         // "/react4xp"
-        ServerSideRenderer.LIBRARY_NAME = LIBRARY_NAME;         // "React4xp"
-        ServerSideRenderer.CHUNKFILES_HOME = CHUNKFILES_HOME;   // "/react4xp/"
+    private static final ArrayList<String> CHUNKSSOURCES = new ArrayList<>();
+
+
+    public void setConfig(String SCRIPTS_HOME, String LIBRARY_NAME, String CHUNKFILES_HOME, String NASHORNPOLYFILLS_FILENAME, String ENTRIESSOURCE, String EXTERNALS_CHUNKS_FILENAME, String COMPONENT_CHUNKS_FILENAME) throws IOException, ScriptException {
+        ServerSideRenderer.NASHORNPOLYFILLS_FILENAME = NASHORNPOLYFILLS_FILENAME;   // "nashornPolyfills.js";
+        ServerSideRenderer.ENTRIESSOURCE = ENTRIESSOURCE;                           // "entries.json";
+        ServerSideRenderer.SCRIPTS_HOME = SCRIPTS_HOME;                             // "/react4xp"
+        ServerSideRenderer.LIBRARY_NAME = LIBRARY_NAME;                             // "React4xp"
+        ServerSideRenderer.CHUNKFILES_HOME = CHUNKFILES_HOME;                       // "/react4xp/"
+
+        // Component chunks
+        ServerSideRenderer.CHUNKSSOURCES.add(EXTERNALS_CHUNKS_FILENAME);            // "chunks.externals.json"
+        ServerSideRenderer.CHUNKSSOURCES.add(COMPONENT_CHUNKS_FILENAME);            // "chunks.json"
 
         // Init the engine too
-        EngineFactory.getEngine(CHUNKFILES_HOME);
+        EngineFactory.getEngine(CHUNKFILES_HOME, NASHORNPOLYFILLS_FILENAME, ENTRIESSOURCE, CHUNKSSOURCES);
     }
-
 
     // Examples:
     // component: name of a transpiled JSX component, i.e. path under /react4xp/, e.g: "site/parts/simple-reactive/simple-reactive"
     // props: valid stringified JSON on props object, e.g. '{"insertedMessage": "this is a prop!"}'
     public String renderToString(String component, String props) throws IOException, ScriptException {
 
-        NashornScriptEngine engine = EngineFactory.getEngine(CHUNKFILES_HOME);
+        NashornScriptEngine engine = EngineFactory.getEngine(CHUNKFILES_HOME, NASHORNPOLYFILLS_FILENAME, ENTRIESSOURCE, CHUNKSSOURCES);
 
         StringBuilder script = new StringBuilder();
         try {

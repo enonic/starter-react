@@ -5,12 +5,13 @@ import jdk.nashorn.api.scripting.NashornScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 
 public class EngineFactory {
+
+    // Basic-level polyfills. For some reason, this must be run from here, not from nashornPolyfills.js.
     private final static String POLYFILL_BASICS = "" +
             "if (typeof exports === 'undefined') { var exports = {}; }\n" +
             "if (typeof global === 'undefined') { var global = this; }\n" +
@@ -22,41 +23,40 @@ public class EngineFactory {
             "console.warn = print;\n" +
             "console.error = print;";
 
-    private static List<String> CHUNK_FILES = null;
-    private static String ENTRIES_FILE = null;
+    private static ArrayList<String> CHUNKS_SOURCES = null;
+    private static String ENTRIES_SOURCE = null;
 
     private static NashornScriptEngine engineInstance = null;
 
-    private static void setConfig(String CHUNKFILES_HOME) {
-        EngineFactory.ENTRIES_FILE = CHUNKFILES_HOME + "entries.json";
-
-        /** CHUNK_FILES is a list of files that describe bundle/chunk asset file names, used to generate
-         * a full list of dependency files, since the file names are hashed by webpack.
-         * Sequence matters! These engine initialization scripts are run in this order.
-         * Scripts found in chunks.json depend on the previous and must be the last!
-         * nashornPolyfills.js script is the basic dependency, and will be added at the very beginning
-         * outside of this list. */
-        EngineFactory.CHUNK_FILES = Arrays.asList(
-                CHUNKFILES_HOME + "chunks.externals.json",
-                CHUNKFILES_HOME + "chunks.json"
-        );
+    private static void setConfig(String CHUNKFILES_HOME, String ENTRIES_SOURCEFILENAME, ArrayList<String> CHUNK_SOURCEFILENAMES) {
+        ENTRIES_SOURCE = CHUNKFILES_HOME + ENTRIES_SOURCEFILENAME;
+        CHUNKS_SOURCES = new ArrayList<>();
+        for (String chunkFileName : CHUNK_SOURCEFILENAMES) {
+            CHUNKS_SOURCES.add(CHUNKFILES_HOME + chunkFileName);
+        }
     }
 
-
-    public static NashornScriptEngine getEngine(String CHUNKFILES_HOME) throws IOException, ScriptException {
+    /** CHUNK_SOURCEFILES is a list of files (filename only, expected to be found in CHUNKFILES_HOME alongside the entries file)
+     * that each describe one or several bundle/chunk asset file names, used to generate
+     * a full list of dependency files, since the file names are hashed by webpack.
+     * Sequence matters! These engine initialization scripts are run in this order.
+     * Scripts found in chunks.json depend on the previous and must be the last!
+     * nashornPolyfills.js script is the basic dependency, and will be added at the very beginning
+     * outside of this list. */
+    public static NashornScriptEngine getEngine(String CHUNKFILES_HOME, String NASHORNPOLYFILLS_FILENAME, String ENTRIES_SOURCEFILENAME, ArrayList<String> CHUNK_SOURCEFILENAMES) throws IOException, ScriptException {
         if (engineInstance == null) {
 
-            setConfig(CHUNKFILES_HOME);
+            setConfig(CHUNKFILES_HOME, ENTRIES_SOURCEFILENAME, CHUNK_SOURCEFILENAMES);
 
             // Sequence matters! Use ordered collection for iteration! Hashmaps are not ordered!
             LinkedList<String> scriptList = new LinkedList<>();
             HashMap<String, String> scripts = new HashMap<>();
 
-            scripts.put("POLYFILL_BASICS", EngineFactory.POLYFILL_BASICS);
+            scripts.put("POLYFILL_BASICS", POLYFILL_BASICS);
             scriptList.add("POLYFILL_BASICS");
 
-            LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(EngineFactory.CHUNK_FILES, EngineFactory.ENTRIES_FILE);
-            transpiledDependencies.addFirst("nashornPolyfills.js");
+            LinkedList<String> transpiledDependencies = new ChunkDependencyParser().getScriptDependencies(CHUNKS_SOURCES, ENTRIES_SOURCE);
+            transpiledDependencies.addFirst(NASHORNPOLYFILLS_FILENAME);
             for (String scriptFile : transpiledDependencies) {
                 String file = CHUNKFILES_HOME + scriptFile;
                 scripts.put(file, ResourceHandler.readResource(file));

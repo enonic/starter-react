@@ -12,9 +12,17 @@ const SERVICES_ROOT = `/_/service/${app.name}/react4xp/`;
 const BASE_PATHS = {
     part: "parts",
     page: "pages",
+    layout: "layouts",
 };
 
-const ENTRIES = require(`/${R4X}/entries.json`);
+// TODO: Should come from the config file, right?
+const NASHORNPOLYFILLS_FILENAME = "nashornPolyfills.js";
+const FRONTENDCHUNKS_FILENAME = "chunks.core.json";
+const EXTERNALS_CHUNKS_FILENAME = "chunks.externals.json";
+const ENTRIESSOURCE = "entries.json";
+const COMPONENT_CHUNKS_FILENAME = "chunks.json";
+
+const ENTRIES = require(`/${R4X}/${ENTRIESSOURCE}`);
 
 
 
@@ -53,17 +61,21 @@ const buildBasicPageContributions = (chunkHashFiles) => {
         });
     });
     return pageContributions;
-}
+};
 
 
 
 // Use the json files built by webpack to fetch the contenthashed filenames for commonChunks.
 // Then use those to build a set of basic page contributions common to all components:
-const PAGE_CONTRIBUTIONS = buildBasicPageContributions([
-    `/${R4X}/chunks.externals.json`,
-    `/${R4X}/chunks.core.json`,
-    `/${R4X}/chunks.json`
-]);
+const PAGE_CONTRIBUTIONS = buildBasicPageContributions(
+    [
+        EXTERNALS_CHUNKS_FILENAME,
+        FRONTENDCHUNKS_FILENAME,
+        COMPONENT_CHUNKS_FILENAME
+    ].map(
+    fileName => `/${R4X}/${fileName}`
+    )
+);
 
 const SCRIPTS_HOME = `/${R4X}`;
 const CHUNKFILES_HOME = `/${R4X}/`;
@@ -75,7 +87,8 @@ log.info("SCRIPTS_HOME (" + typeof SCRIPTS_HOME + "): " + JSON.stringify(SCRIPTS
 log.info("LIBRARY_NAME (" + typeof LIBRARY_NAME + "): " + JSON.stringify(LIBRARY_NAME, null, 2));
 log.info("CHUNKFILES_HOME (" + typeof CHUNKFILES_HOME + "): " + JSON.stringify(CHUNKFILES_HOME, null, 2));
 //*/
-SSRreact4xp.setConfig(SCRIPTS_HOME, LIBRARY_NAME, CHUNKFILES_HOME);
+SSRreact4xp.setConfig(SCRIPTS_HOME, LIBRARY_NAME, CHUNKFILES_HOME, NASHORNPOLYFILLS_FILENAME, ENTRIESSOURCE, EXTERNALS_CHUNKS_FILENAME, COMPONENT_CHUNKS_FILENAME);
+
 
 
 

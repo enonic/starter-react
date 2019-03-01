@@ -165,7 +165,7 @@ task webpack_react4xp_nashornpolyfill(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = [
             '--config', 'node_modules/react4xp-runtime-nashornpolyfills/lib/webpack.config.js',
-            '--env.REACT4XP_CONFIG_FILE=' + REACT4XP_CONFIG_FILE,
+            '--env.REACT4XP_CONFIG_FILE=' + ROOT + '/' + REACT4XP_CONFIG_FILE,
             '--progress', '--color'
     ]
     inputs.file(REACT4XP_CONFIG_FILE)
@@ -200,6 +200,7 @@ webpack_react4xp_components.dependsOn += 'config_react4xp'
 
 jar.dependsOn += 'webpack_react4xp_core'
 jar.dependsOn += 'webpack_react4xp_components'
+jar.dependsOn += 'webpack_react4xp_nashornpolyfill'
 
 
 

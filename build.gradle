@@ -145,14 +145,12 @@ babelXP.dependsOn += 'processResources'
 task webpack_react4xp_core(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = [
-        '--config', 'webpack.config.react4xp.externals.js', 
-        '--config', 'webpack.config.react4xp.nashornPolyfills.js', 
+        '--config', 'webpack.config.react4xp.externals.js',
         '--config', 'webpack.config.react4xp.core.js',
         '--env.REACT4XP_CONFIG_FILE=' + ROOT + '/' + REACT4XP_CONFIG_FILE,
         '--progress', '--color'
     ]
     inputs.file("webpack.config.react4xp.externals.js")
-    inputs.file("webpack.config.react4xp.nashornPolyfills.js")
     inputs.file("webpack.config.react4xp.core.js")
 
     inputs.file(REACT4XP_CONFIG_FILE)
@@ -160,6 +158,21 @@ task webpack_react4xp_core(type: NodeTask) {
     inputs.file("package-lock.json")
 }
 webpack_react4xp_core.dependsOn += 'config_react4xp'
+
+
+
+task webpack_react4xp_nashornpolyfill(type: NodeTask) {
+    script = file('node_modules/webpack/bin/webpack.js')
+    args = [
+            '--config', 'node_modules/react4xp-runtime-nashornpolyfills/lib/webpack.config.js',
+            '--env.REACT4XP_CONFIG_FILE=' + REACT4XP_CONFIG_FILE,
+            '--progress', '--color'
+    ]
+    inputs.file(REACT4XP_CONFIG_FILE)
+    inputs.file("package.json")
+    inputs.file("package-lock.json")
+}
+webpack_react4xp_nashornpolyfill.dependsOn += 'config_react4xp'
 
 
 

@@ -78,7 +78,9 @@ task config_react4xp(type: NodeTask) {
             REACT4XP_OVERRIDES
     ]
 
-    // After the script has run and created the config JSON file, some finalizing operations:
+    // TODO: Maybe the buildconstants script should also copy the produced config file to BUILD_R4X instead of having the babelXP task do it? Makes sense, since the runtime should become a lib
+
+    // After the script has run and created the config JSON file, update the configuration of the next tasks, using the constructed values from the config file:
     doLast {
         // Read the file content into an object
         def configFile = new File(REACT4XP_CONFIG_FILE)

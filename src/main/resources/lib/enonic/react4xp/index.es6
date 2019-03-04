@@ -17,7 +17,7 @@ const BASE_PATHS = {
 
 // TODO: Should come from the config file, right?
 const NASHORNPOLYFILLS_FILENAME = "nashornPolyfills.js";
-const FRONTENDCHUNKS_FILENAME = "chunks.core.json";
+const FRONTENDCHUNKS_FILENAME = "chunks.client.json";
 const EXTERNALS_CHUNKS_FILENAME = "chunks.externals.json";
 const ENTRIESSOURCE = "entries.json";
 const COMPONENT_CHUNKS_FILENAME = "chunks.json";
@@ -380,8 +380,8 @@ class React4xp {
                 // Browser-runnable script reference for the "naked" react component:
                 `<script src="${SERVICES_ROOT}${this.jsxPath}.js"></script>`,
 
-                // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
-                `<script defer>${LIBRARY_NAME}.Core.render(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
+                // That script will expose to the browser an element or function that can be handled by React4Xp._CLIENT_.render. Trigger that, along with the target container ID, and props, if any:
+                `<script defer>${LIBRARY_NAME}._CLIENT_.render(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
             ]
         });
     };
@@ -402,8 +402,8 @@ class React4xp {
                 // Browser-runnable script reference for the "naked" react component:
                 `<script src="${SERVICES_ROOT}${this.jsxPath}.js"></script>`,
 
-                // That script will expose to the browser an element or function that can be handled by React4Xp.Core.render. Trigger that, along with the target container ID, and props, if any:
-                `<script defer>${LIBRARY_NAME}.Core.hydrate(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
+                // That script will expose to the browser an element or function that can be handled by React4Xp._CLIENT_.render. Trigger that, along with the target container ID, and props, if any:
+                `<script defer>${LIBRARY_NAME}._CLIENT_.hydrate(${LIBRARY_NAME}['${this.jsxPath}'].default, ${JSON.stringify(this.react4xpId)} ${this.props ? ', ' + JSON.stringify(this.props) : ''});</script>`
             ]
         });
     };

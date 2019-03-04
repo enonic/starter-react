@@ -91,12 +91,8 @@ task config_react4xp(type: NodeTask) {
             args = ["src/main/resources", "--out-dir", REACT4XP_CONFIG.BUILD_MAIN, "--ignore", "**/*.jsx"]
             outputs.dir(REACT4XP_CONFIG.BUILD_MAIN)
         }
-        tasks['webpack_react4xp_core'].configure {
-            inputs.dir(REACT4XP_CONFIG.SRC_R4X)
-            outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
-        }
-        tasks['webpack_react4xp_components'].configure {
-            inputs.dir(REACT4XP_CONFIG.SRC_SITE)
+        tasks['webpack_react4xp'].configure {
+            inputs.dir(REACT4XP_CONFIG.SRC_SITE)        // <-- Only needed for react4xp-build-components, but this is a big one during development since it surveils the entire XP structure. To streamline the build, separate react4xp-build-components out to its own task, and only use this line in that task.
             inputs.dir(REACT4XP_CONFIG.SRC_R4X)
             outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
         }
@@ -141,50 +137,26 @@ babelXP.dependsOn += 'processResources'
 
 
 
-task webpack_react4xp_core(type: NodeTask) {
+task webpack_react4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = [
-        '--config', 'webpack.config.react4xp.core.js',
+        '--config', 'node_modules/react4xp-runtime-client/webpack.config.js',
         '--config', 'node_modules/react4xp-runtime-nashornpolyfills/webpack.config.js',
         '--config', 'node_modules/react4xp-runtime-externals/webpack.config.js',
+        '--config', 'node_modules/react4xp-build-components/webpack.config.js',
         '--env.REACT4XP_CONFIG_FILE=' + ROOT + '/' + REACT4XP_CONFIG_FILE,
         '--progress', '--color'
     ]
-    inputs.file("webpack.config.react4xp.externals.js")
-    inputs.file("webpack.config.react4xp.core.js")
 
     inputs.file(REACT4XP_CONFIG_FILE)
     inputs.file("package.json")
     inputs.file("package-lock.json")
 }
-webpack_react4xp_core.dependsOn += 'config_react4xp'
+webpack_react4xp.dependsOn += 'config_react4xp'
 
 
 
-task webpack_react4xp_components(type: NodeTask) {
-    script = file('node_modules/webpack/bin/webpack.js')
-    args = [
-        '--config', 'webpack.config.react4xp.js',
-        '--env.REACT4XP_CONFIG_FILE=' + ROOT + '/' + REACT4XP_CONFIG_FILE,
-        '--progress', '--color'
-    ]
-
-    inputs.file("webpack.config.react4xp.js")
-
-    inputs.file(REACT4XP_CONFIG_FILE)
-    inputs.file("package.json")
-    inputs.file("package-lock.json")
-
-    /*doLast {
-         file("build/resources/main/assets/index.html").renameTo(file("build/resources/main/index.html"))
-    }*/
-}
-webpack_react4xp_components.dependsOn += 'config_react4xp'
-
-
-
-jar.dependsOn += 'webpack_react4xp_core'
-jar.dependsOn += 'webpack_react4xp_components'
+jar.dependsOn += 'webpack_react4xp'
 
 
 

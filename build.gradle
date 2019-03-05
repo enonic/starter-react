@@ -66,19 +66,20 @@ def REACT4XP_CONFIG = {}
 def REACT4XP_CONFIG_FILE = "build/react4xp_constants.json"
 
 // Add override values to taste:
-def REACT4XP_OVERRIDES = '{"R4X_TARGETSUBDIR":"react4xp_testcustombuildtarget", "overwriteConstantsFile":true}' //''{"verbose": true}'
+def REACT4XP_OVERRIDES = '{' +
+        '"overwriteConstantsFile":true, ' +
+        '"verbose": true' +
+    '}'
 
 
 
 task config_react4xp(type: NodeTask) {
-    script = file('node_modules/react4xp-buildconstants/lib/cli.js')
+    script = file('node_modules/react4xp-buildconstants/cli.js')
     args = [
             ROOT,
             ROOT + "/" + REACT4XP_CONFIG_FILE,
             REACT4XP_OVERRIDES
     ]
-
-    // TODO: Maybe the buildconstants script should also copy the produced config file to BUILD_R4X instead of having the babelXP task do it? Makes sense, since the runtime should become a lib
 
     // After the script has run and created the config JSON file, update the configuration of the next tasks, using the constructed values from the config file:
     doLast {
@@ -114,25 +115,6 @@ task babelXP(type: NodeTask) {
 
     inputs.dir 'src/main/resources'
     outputs.dir("build/resources/main")
-
-    doLast {
-        // Read the file content into an object
-        def configFile = new File(REACT4XP_CONFIG_FILE)
-        REACT4XP_CONFIG = new JsonSlurper().parseText(configFile.text)
-
-        // Copy the config file itself into the target react4xp build folder, as defined in the config file:
-        def fileName = configFile.getName();
-        File directory = new File(REACT4XP_CONFIG.BUILD_R4X);
-        if (! directory.exists()) {
-            directory.mkdir()
-        }
-        def targetFileName = REACT4XP_CONFIG.BUILD_MAIN + "/lib/enonic/react4xp/" + fileName
-        def targetFile = new File(targetFileName)
-        if (targetFile.exists()) {
-            targetFile.delete()
-        }
-        new File(targetFileName) << configFile.text
-    }
 }
 babelXP.dependsOn += 'config_react4xp'
 babelXP.dependsOn += 'processResources'

@@ -1,8 +1,5 @@
 import groovy.json.JsonSlurper
 
-import java.nio.file.Files
-
-
 plugins {
     id 'com.enonic.xp.app' version '1.0.17'
     id "com.moowork.node" version "1.1.1"
@@ -34,12 +31,11 @@ dependencies {
     include "com.enonic.xp:lib-thymeleaf:${xpVersion}"
 
     include "com.enonic.lib:lib-router:1.0.1"
-    include 'com.enonic.lib:util:1.3.0'
-    include 'com.enonic.lib:lib-cache:1.1.0'
 
-    include group: 'org.jdom', name: 'jdom', version: '2.0.2'
-    include group: 'org.json', name: 'json', version: '20180813'
-    include group: 'jaxen', name: 'jaxen', version: '1.1.6'
+    // REACT4XP RUNTIME:
+    include 'com.enonic.lib:lib_react4xp_runtime:0.0.1-SNAPSHOT'
+
+
 }
 
 repositories {
@@ -58,14 +54,39 @@ npmInstall.inputs.file("package-lock.json")
 npmInstall.outputs.dir("node_modules")
 
 
+// ------ Not react4xp-specific, but integrated in the react4xp build flow, by making the task dependent on config_react4xp. The task config is
+// also adjusted during config_react4xp, with updated args and outputs depending on the build config constants.
+//
+// Transpile .js and .es6 files under src/main/resources.
+// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below.
+// This is currently done by reserving .es6 and .js files below src/main/resources/ for this task,
+// while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackReact4xp task.
+task babelXP(type: NodeTask) {
+    script = file('node_modules/babel-cli/bin/babel.js')
+    args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]      // Ignoring JSX in the XP structure is important
+
+    inputs.dir 'src/main/resources'
+    outputs.dir("build/resources/main")
+}
+babelXP.dependsOn += 'config_react4xp'
+babelXP.dependsOn += 'processResources'
+
+
+
+
+// --------------------------------------------------- REACT4XP-SPECIFIC:
+
 def ROOT = new File(".").absolutePath
 
-// Necessary placeholders, will be filled during
+// Necessary placeholder, will be filled during build
 def REACT4XP_CONFIG = {}
 
+// node_modules/react4xp-buildconstants will generate this config file that defines the whole React4xp project.
+// This particular file will be used during build. However react4xp-buildconstants will also make a copy of it
+// in the predicted folder of the react4xp lib, according to its own constants.
 def REACT4XP_CONFIG_FILE = "build/react4xp_constants.json"
 
-// Add override values to taste:
+// Override config values to taste:
 def REACT4XP_OVERRIDES = '{' +
         '"overwriteConstantsFile":true, ' +
         '"verbose": true' +
@@ -86,12 +107,10 @@ task config_react4xp(type: NodeTask) {
         // Read the file content into an object
         def configFile = new File(REACT4XP_CONFIG_FILE)
         REACT4XP_CONFIG = new JsonSlurper().parseText(configFile.text)
-        //print("Config from "+ REACT4XP_CONFIG_FILE)
-        //print(REACT4XP_CONFIG)
 
         // Update the configuration of the next tasks, using the constructed values from the config file:
         tasks['babelXP'].configure {
-            args = ["src/main/resources", "--out-dir", REACT4XP_CONFIG.BUILD_MAIN, "--ignore", "**/*.jsx"]
+            args = ["src/main/resources", "--out-dir", REACT4XP_CONFIG.BUILD_MAIN, "--ignore", "**/*.jsx"]  // Still ignoring JSX in the XP structure
             outputs.dir(REACT4XP_CONFIG.BUILD_MAIN)
         }
         tasks['webpack_react4xp'].configure {
@@ -104,30 +123,13 @@ task config_react4xp(type: NodeTask) {
 config_react4xp.dependsOn += 'npmInstall'
 
 
-
-// Transpile .js and .es6 files under src/main/resources.
-// These are "pure XP" source code files, not JS (and react) assets. Those must be transpiled separately, by the webpackReact4xp task below.
-// This is currently done by reserving .es6 and .js files below src/main/resources/ for this task,
-// while reserving .JSX files under that, and all relevant extensions in other locations, for the webpackReact4xp task.
-task babelXP(type: NodeTask) {
-    script = file('node_modules/babel-cli/bin/babel.js')
-    args = ["src/main/resources", "--out-dir", "build/resources/main", "--ignore", "**/*.jsx"]
-
-    inputs.dir 'src/main/resources'
-    outputs.dir("build/resources/main")
-}
-babelXP.dependsOn += 'config_react4xp'
-babelXP.dependsOn += 'processResources'
-
-
-
 task webpack_react4xp(type: NodeTask) {
     script = file('node_modules/webpack/bin/webpack.js')
     args = [
+        '--config', 'node_modules/react4xp-build-components/webpack.config.js',
         '--config', 'node_modules/react4xp-runtime-client/webpack.config.js',
         '--config', 'node_modules/react4xp-runtime-nashornpolyfills/webpack.config.js',
         '--config', 'node_modules/react4xp-runtime-externals/webpack.config.js',
-        '--config', 'node_modules/react4xp-build-components/webpack.config.js',
         '--env.REACT4XP_CONFIG_FILE=' + ROOT + '/' + REACT4XP_CONFIG_FILE,
         '--progress', '--color'
     ]
@@ -138,13 +140,12 @@ task webpack_react4xp(type: NodeTask) {
 }
 webpack_react4xp.dependsOn += 'config_react4xp'
 
+// ------------------------------------------------------  ...END OF REACT4XP-SPECIFIC.
+
+
 
 
 jar.dependsOn += 'webpack_react4xp'
-
-
-
-// processes your package.json before running webpack
-jar.dependsOn babelXP
+jar.dependsOn += 'babelXP'
 
 jar.outputs.dir('build/libs')

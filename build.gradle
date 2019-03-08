@@ -88,6 +88,8 @@ def REACT4XP_CONFIG_FILE = "build/react4xp_constants.json"
 
 // Override config values to taste:
 def REACT4XP_OVERRIDES = '{' +
+        '"outputFileName": "' + ROOT + "/" + REACT4XP_CONFIG_FILE + '",' +
+
         '"overwriteConstantsFile":true, ' +
         '"verbose": true' +
     '}'
@@ -98,7 +100,6 @@ task config_react4xp(type: NodeTask) {
     script = file('node_modules/react4xp-buildconstants/cli.js')
     args = [
             ROOT,
-            ROOT + "/" + REACT4XP_CONFIG_FILE,
             REACT4XP_OVERRIDES
     ]
 

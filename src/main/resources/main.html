@@ -2,8 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DETTE ER EN TEST</title>
+    <title>React4xp standalone page</title>
 
+    <!-- You can get React and ReactDOM from CDN like this, if you want to skip the react4xp-runtime-externals step in build.gradle:
+        <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+        <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    -->
 </head>
 <body>
     <h1>TESTING... TESTING...</h1>
@@ -12,8 +16,6 @@
     <div id="target"></div>
 
     <!-- import React4xp and its frontend-core _CLIENT_ (from the react4xp-client) and all its dependency chunks: -->
-    <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     <th:block data-th-utext="${PAGE_CONTRIBUTIONS_HTML}"></th:block>
 
     <!-- import the SimpleGreeter component into React4xp: -->

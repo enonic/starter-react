@@ -9,11 +9,11 @@ export default (props) => {
     const store = getStore({});
 
     store.dispatch(greetingsAC.init(
-        props.id,
+        props.react4xpId,
         props.greetings
     ));
 
     return <Provider store={store}>
-        <ReduxWorldGreeter {...props} />
+        <ReduxWorldGreeter id={props.react4xpId} />
     </Provider>;
 };

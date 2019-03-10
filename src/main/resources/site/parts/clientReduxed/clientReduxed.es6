@@ -3,6 +3,7 @@ const React4xp = require('/lib/enonic/react4xp');
 
 // Handle the GET request
 exports.get = function(request) {
+
     const component = portal.getComponent();
 
     const reduxComponent = new React4xp(component)
@@ -19,10 +20,13 @@ exports.get = function(request) {
         },
     });
 
-    return {
-        body: reduxComponent.renderBody(),
-        pageContributions: (request.mode === "edit") ?
-            {} :
-            reduxComponent.renderClientPageContributions()
-    };
+    // Pure client-side rendering, but with a hydration-free SSR visualization in edit mode. Note the difference from site/parts/hydrateReduxed/hydrateReduxed.es6
+    return (request.mode === "edit") ?
+        {
+            body: reduxComponent.renderIntoBody(),
+        } :
+        {
+            body: reduxComponent.renderBody(),
+            pageContributions: reduxComponent.renderClientPageContributions()
+        }
 };

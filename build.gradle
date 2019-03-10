@@ -76,10 +76,10 @@ babelXP.dependsOn += 'processResources'
 
 // --------------------------------------------------- REACT4XP-SPECIFIC:
 
-def ROOT = new File(".").absolutePath
+def ROOT = new File("").absolutePath
 
 // Necessary placeholder, will be filled during build
-def REACT4XP_CONFIG = {}
+def CONFIG = {}
 
 // node_modules/react4xp-buildconstants will generate this config file that defines the whole React4xp project.
 // This particular file will be used during build. However react4xp-buildconstants will also make a copy of it
@@ -90,6 +90,7 @@ def REACT4XP_CONFIG_FILE = "build/react4xp_constants.json"
 def REACT4XP_OVERRIDES = '{' +
         '"outputFileName": "' + ROOT + "/" + REACT4XP_CONFIG_FILE + '",' +
 
+        '"BUILD_ENV": "production",' +
         '"overwriteConstantsFile":true, ' +
         '"verbose": true' +
     '}'
@@ -98,26 +99,23 @@ def REACT4XP_OVERRIDES = '{' +
 
 task config_react4xp(type: NodeTask) {
     script = file('node_modules/react4xp-buildconstants/cli.js')
-    args = [
-            ROOT,
-            REACT4XP_OVERRIDES
-    ]
+    args = [ ROOT, REACT4XP_OVERRIDES ]
 
     // After the script has run and created the config JSON file, update the configuration of the next tasks, using the constructed values from the config file:
     doLast {
         // Read the file content into an object
         def configFile = new File(REACT4XP_CONFIG_FILE)
-        REACT4XP_CONFIG = new JsonSlurper().parseText(configFile.text)
+        CONFIG = new JsonSlurper().parseText(configFile.text)
 
         // Update the configuration of the next tasks, using the constructed values from the config file:
         tasks['babelXP'].configure {
-            args = ["src/main/resources", "--out-dir", REACT4XP_CONFIG.BUILD_MAIN, "--ignore", "**/*.jsx"]  // Still ignoring JSX in the XP structure
-            outputs.dir(REACT4XP_CONFIG.BUILD_MAIN)
+            args = ["src/main/resources", "--out-dir", CONFIG.BUILD_MAIN, "--ignore", "**/*.jsx"]  // Still ignoring JSX in the XP structure
+            outputs.dir(CONFIG.BUILD_MAIN)
         }
         tasks['webpack_react4xp'].configure {
-            inputs.dir(REACT4XP_CONFIG.SRC_SITE)        // <-- Only needed for react4xp-build-components, but this is a big one during development since it surveils the entire XP structure. To streamline the build, separate react4xp-build-components out to its own task, and only use this line in that task.
-            inputs.dir(REACT4XP_CONFIG.SRC_R4X)
-            outputs.dir(REACT4XP_CONFIG.BUILD_R4X)
+            inputs.dir(CONFIG.SRC_SITE)        // <-- Only needed for react4xp-build-components, but this is a big one during development since it surveils the entire XP structure. To streamline the build, separate react4xp-build-components out to its own task, and only use this line in that task.
+            inputs.dir(CONFIG.SRC_R4X)
+            outputs.dir(CONFIG.BUILD_R4X)
         }
     }
 }
@@ -129,7 +127,7 @@ task webpack_react4xp(type: NodeTask) {
     args = [
         '--config', 'node_modules/react4xp-build-components/webpack.config.js',
         '--config', 'node_modules/react4xp-runtime-client/webpack.config.js',
-        '--config', 'node_modules/react4xp-runtime-nashornpolyfills/webpack.config.js',
+        //'--config', 'node_modules/react4xp-runtime-nashornpolyfills/webpack.config.js',
         '--config', 'node_modules/react4xp-runtime-externals/webpack.config.js',
         '--env.REACT4XP_CONFIG_FILE=' + ROOT + '/' + REACT4XP_CONFIG_FILE,
         '--progress', '--color'

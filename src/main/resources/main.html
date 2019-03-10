@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DETTE ER EN TEST</title>
+</head>
+<body>
+    <h1>TESTING... TESTING...</h1>
+    <p>Is this thing on? OK, here comes the React4xp rendering:</p>
+
+    <div id="target"></div>
+
+    <!-- import React4xp and its frontend-core _CLIENT_ (from the react4xp-client) and all its dependency chunks: -->
+    <th:block data-th-utext="${PAGE_CONTRIBUTIONS_HTML}"></th:block>
+
+    <!-- import the SimpleGreeter component into React4xp: -->
+    <script data-th-src="|${componentRootUrl}/SimpleGreeter|"></script>
+
+    <!-- Use React4xp._CLIENT_ to render the SimpleGreeter component into the 'target' element above, with some props: -->
+    <script defer>
+        React4xp._CLIENT_.render(React4xp.SimpleGreeter, 'target', {worldOrSomething: "worldie"});
+    </script>
+
+</body>
+</html>

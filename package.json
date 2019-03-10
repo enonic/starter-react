@@ -55,7 +55,7 @@
         "less-loader": "^4.1.0",
         "react4xp-build-components": "0.0.4",
         "react4xp-buildconstants": "0.4.5",
-        "react4xp-runtime-client": "0.1.0",
+        "react4xp-runtime-client": "0.1.2",
         "react4xp-runtime-externals": "0.1.0",
         "react4xp-runtime-nashornpolyfills": "0.1.0",
         "rimraf": "^2.6.3",

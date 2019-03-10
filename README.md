@@ -151,7 +151,7 @@ For rendering stateful class components, they must be wrapped during the export:
 ```jsx harmony
 import React from 'react';
 
-class WorldGreeter expands React.Component {
+class ReduxWorldGreeter expands React.Component {
     constructor(props) {
         this.state = {
             greetee: props || "world",
@@ -163,7 +163,7 @@ class WorldGreeter expands React.Component {
     }
 }
 
-export default (props) => <WorldGreeter {...props} />;
+export default (props) => <ReduxWorldGreeter {...props} />;
 ```
 
 ## More examples

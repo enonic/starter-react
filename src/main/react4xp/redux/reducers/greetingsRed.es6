@@ -1,15 +1,27 @@
 import DuckFactory from 'duckfactory';
 
 const greetingsDuck = new DuckFactory("GREETINGS", {}, {
-    moreGreetees: (state) => ({
+    init: (state, {id, initGreetings}) => ({
         ...state,
-        greeteeCount: state.greeteeCount * 2,
-        greetee: state.greetee + " " + state.greetee,
+        [id]: initGreetings,
     }),
 
-    moreGreetings: (state) => ({
+    moreGreetees: (state, {id}) => ({
         ...state,
-        greetingsCount: state.greetingsCount * 2,
+        [id]: {
+            ...state[id],
+            greeteeCount: state[id].greeteeCount * 2,
+            greetee: state[id].greetee + " " + state[id].greetee,
+        }
+    }),
+
+    moreGreetings: (state, {id}) => ({
+        ...state,
+        [id]: {
+            ...state[id],
+            greetingsCount: state[id].greetingsCount * 2,
+        }
+
     })
 
 }, true, true);                         // eslint-disable-line no-undef

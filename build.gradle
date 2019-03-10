@@ -90,7 +90,7 @@ def REACT4XP_CONFIG_FILE = "build/react4xp_constants.json"
 def REACT4XP_OVERRIDES = '{' +
         '"outputFileName": "' + ROOT + "/" + REACT4XP_CONFIG_FILE + '",' +
 
-        '"BUILD_ENV": "production",' +
+        '"BUILD_ENV": "development",' +    // "production",' +
         '"overwriteConstantsFile":true, ' +
         '"verbose": true' +
 

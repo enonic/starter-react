@@ -3,16 +3,28 @@ const React4xp = require('/lib/enonic/react4xp');
 
 // Handle the GET request
 exports.get = function(request) {
+
     const component = portal.getComponent();
 
-    const props = {
-        initialState: {
-            greetings: {
-                greetingsCount: 1,
-                greeteeCount: 1,
-                greetee: component.config.greeted
-            }
-        }
+    const reduxComponent = new React4xp(component)
+        .setJsxFileName('/site/parts/clientReduxed/clientReduxed')
+        .uniqueId();
+
+    const id = reduxComponent.react4xpId;
+
+    reduxComponent.setProps({
+        id,
+        greetings: {
+            greetingsCount: 1,
+            greeteeCount: 1,
+            greetee: component.config.greeted
+        },
+    });
+
+    return {
+        body: reduxComponent.renderBody(),
+        pageContributions: (request.mode === "edit") ?
+            {} :
+            reduxComponent.renderHydrationPageContributions()
     };
-    return React4xp.renderMarkupAndHydrate({ component, props });
 };

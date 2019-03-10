@@ -12,7 +12,9 @@ const getStore = (initialState) => {
             initialState
         );
 
-        store.subscribe( ()=>{ console.log("Store updated:", store.getState().greetings.greetingsCount, "greeting(s) and", store.getState().greetings.greeteeCount, "greeting receiver(s)"); });
+        store.subscribe(
+            ()=>{ console.log("Store updated:", store.getState()); }
+        );
     }
     return store;
 };

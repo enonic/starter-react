@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { actionCreators as testAC } from '../redux/reducers/greetingsRed';
 
-const WorldGreeter = ({greetingsCount, greetee, moreGreetings, moreGreetees}) => {
+const ReduxWorldGreeter = ({id, greetingsCount, greetee, moreGreetings, moreGreetees}) => {
     let greetings = "";
     for (let i = 0; i < greetingsCount; i++) {
         greetings += "hello ";
@@ -12,16 +12,17 @@ const WorldGreeter = ({greetingsCount, greetee, moreGreetings, moreGreetees}) =>
 
     return <div className="worldGreeter">
         <h1>
-            <span onClick={moreGreetings} style={{cursor: "pointer"}} className="greetee">{greetings}</span>
-            <span onClick={moreGreetees} style={{cursor: "pointer"}} className="greetee">{greetee}</span>
+            <span onClick={ ()=>moreGreetings(id) } style={{cursor: "pointer"}} className="greetee">{greetings}</span>
+            <span onClick={ ()=>moreGreetees(id) } style={{cursor: "pointer"}} className="greetee">{greetee}</span>
             !
         </h1>
     </div>;
 };
 
-const mapStateToProps = (state) => ({
-    greetingsCount: state.greetings.greetingsCount,
-    greetee: state.greetings.greetee,
+const mapStateToProps = (state, ownprops) => ({
+    id: ownprops.id,
+    greetingsCount: state.greetings[ownprops.id].greetingsCount,
+    greetee: state.greetings[ownprops.id].greetee,
 });
 
 const mapDispatchToProps = {
@@ -36,4 +37,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(WorldGreeter);
+)(ReduxWorldGreeter);

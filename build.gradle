@@ -33,7 +33,7 @@ dependencies {
     include "com.enonic.lib:lib-router:1.0.1"
 
     // REACT4XP RUNTIME:
-    include 'com.enonic.lib:lib_react4xp_runtime:0.0.2-SNAPSHOT'
+    include 'com.enonic.lib:lib_react4xp_runtime:0.1.0-SNAPSHOT'
 
 
 }

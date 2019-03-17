@@ -4,7 +4,7 @@ const { getAllUrls } = require('/lib/enonic/react4xp/dependencies');
 
 const dependencies = getAllUrls('SimpleGreeter');
 
-const view = resolve('main.html');
+const view = resolve('main2.html');
 
 exports.get = req => {
     const model = {

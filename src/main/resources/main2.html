@@ -10,17 +10,8 @@
     -->
     <script src="/_/service/com.enonic.starter.react4xp/react4xp-externals"></script>
 
+    <!-- This must be loaded either way: -->
     <script src="/_/service/com.enonic.starter.react4xp/react4xp-client"></script>
-    <script>
-        React4xp._CLIENT_.loadDependenciesAsync(
-            "SimpleGreeter",
-            "/_/service/com.enonic.starter.react4xp",
-            function() {
-                console.log("Dependencies should be loaded.");
-            }
-        );
-    </script>
-
 </head>
 <body>
     <h1>TESTING 2... TESTING 2...</h1>
@@ -29,19 +20,15 @@
     <div id="target"></div>
 
     <script defer>
-        function maybeRender() {
-            console.log("Can I render now?");
-            if (React4xp.SimpleGreeter) {
-                console.log("Yes!!!");
-
-                React4xp._CLIENT_.render(React4xp.SimpleGreeter, 'target', {worldOrSomething: "worldie"});
-
-            } else {
-                setTimeout(maybeRender, 25);
-            }
-        }
-        maybeRender();
+            React4xp._CLIENT_.renderWithDependencies({
+                SimpleGreeter: {
+                    targetId: 'target',
+                    props: {worldOrSomething: "worldie"}
+                }
+            },
+            function() {
+                console.log("Dependencies should be loaded now.");
+            });
     </script>
-
     </body>
 </html>

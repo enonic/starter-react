@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <title>React4xp standalone page 2</title>
 
-    <!-- You can get React and ReactDOM from CDN like this, if you want to skip the react4xp-runtime-externals step in build.gradle:
+    <!-- OPTION 1: You can get React and ReactDOM from CDN like this, if you want to skip the react4xp-runtime-externals step in build.gradle: -->
         <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-    -->
-    <script src="/_/service/com.enonic.starter.react4xp/react4xp-externals"></script>
 
-    <!-- This must be loaded either way: -->
+    <!-- OPTION 2: Cook your own externals -->
+    <!-- <script src="/_/service/com.enonic.starter.react4xp/react4xp-externals"></script> -->
+
+    <!-- This is needed either way: -->
     <script src="/_/service/com.enonic.starter.react4xp/react4xp-client"></script>
+
 </head>
 <body>
     <h1>TESTING 2... TESTING 2...</h1>
@@ -19,15 +21,20 @@
 
     <div id="target"></div>
     <script>
+
+            // Actual rendering:
             React4xp.CLIENT.renderWithDependencies({
                 SimpleGreeter: {
                     targetId: 'target',
                     props: {worldOrSomething: "worldie"}
                 }
             },
+
+            // Demo callback:
             function() {
-                console.log("Dependencies should be loaded now.");
+                alert("Everything should be loaded, run and rendered now.");
             });
+
     </script>
     </body>
 </html>

@@ -16,15 +16,15 @@
     <div id="target"></div>
 
 
-    <!-- import React4xp and its frontend-core _CLIENT_ (from the react4xp-client) and all its dependency chunks: -->
+    <!-- import React4xp and its frontend-core CLIENT (from the react4xp-client) and all its dependency chunks: -->
     <script data-th-each="url: ${dependencies}" data-th-src="${url}"></script>
 
     <!-- import the actual SimpleGreeter component into the React4xp global object: -->
     <script data-th-src="|${componentRootUrl}/SimpleGreeter|"></script>
 
-    <!-- Use React4xp._CLIENT_ to render the SimpleGreeter component into the 'target' element above, with some props: -->
+    <!-- Use React4xp.CLIENT to render the SimpleGreeter component into the 'target' element above, with some props: -->
     <script defer>
-        React4xp._CLIENT_.render(React4xp.SimpleGreeter, 'target', {worldOrSomething: "worldie"});
+        React4xp.CLIENT.render(React4xp.SimpleGreeter, 'target', {worldOrSomething: "worldie"});
     </script>
 
     </body>

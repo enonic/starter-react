@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>React4xp standalone page</title>
 
-    <!-- You can get React and ReactDOM from CDN like this, if you want to skip the react4xp-runtime-externals step in build.gradle:
+    <!-- You can get React and ReactDOM from CDN like this, if you want to skip the react4xp-runtime-externals step in build.gradle: --
         <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
         <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
     -->
@@ -15,16 +15,18 @@
 
     <div id="target"></div>
 
-    <!-- import React4xp and its frontend-core _CLIENT_ (from the react4xp-client) and all its dependency chunks: -->
-    <th:block data-th-utext="${PAGE_CONTRIBUTIONS_HTML}"></th:block>
 
-    <!-- import the SimpleGreeter component into React4xp: -->
+    <!-- import React4xp and its frontend-core CLIENT (from the react4xp-client) and all its dependency chunks: -->
+    <script data-th-each="url: ${dependencies}" data-th-src="${url}"></script>
+
+    <!-- import the actual SimpleGreeter component into the React4xp global object: -->
     <script data-th-src="|${componentRootUrl}/SimpleGreeter|"></script>
 
-    <!-- Use React4xp._CLIENT_ to render the SimpleGreeter component into the 'target' element above, with some props: -->
+    <!-- Use React4xp.CLIENT to render the SimpleGreeter component into the 'target' element above, with some props: -->
     <script defer>
-        React4xp._CLIENT_.render(React4xp.SimpleGreeter, 'target', {worldOrSomething: "worldie"});
+        React4xp.CLIENT.render(React4xp.SimpleGreeter, 'target', {worldOrSomething: "worldie"});
     </script>
 
-</body>
+    </body>
 </html>
+

@@ -19,22 +19,35 @@
     <h1>TESTING 2... TESTING 2...</h1>
     <p>Is this thing still on? OK, here comes another React4xp rendering:</p>
 
-    <div id="target"></div>
+    <div id="simple_target"></div>
+    <div id="reduxed_target"></div>
     <script>
 
             // Actual rendering:
-            React4xp.CLIENT.renderWithDependencies({
-                SimpleGreeter: {
-                    targetId: 'target',
-                    props: {worldOrSomething: "worldie"}
-                }
-            },
+            React4xp.CLIENT.renderWithDependencies(
+                {
+                    SimpleGreeter: {
+                        targetId: 'simple_target',
+                        props: {worldOrSomething: "worldie"}
+                    },
 
-            // Demo callback:
-            function() {
-                alert("Everything should be loaded, run and rendered now.");
-            });
+                    'site/parts/clientReduxed/clientReduxed': {
+                        targetId: 'reduxed_target',
+                        props: {
+                            react4xpId: "yup",
+                            greetings: {
+                                greetingsCount: 1,
+                                greeteeCount: 1,
+                                greetee: "different world"
+                            },
+                        },
+                    },
 
+                },
+
+                // Demo callback:
+                function() { console.log("This is inserted and called after rendering the SimpleGreeter."); }
+            );
     </script>
     </body>
 </html>

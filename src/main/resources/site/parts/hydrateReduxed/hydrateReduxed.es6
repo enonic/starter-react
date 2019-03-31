@@ -16,7 +16,7 @@ exports.get = function(request) {
                     greetee: component.config.greeted
                 },
             },
-            jsxFileName: '/site/parts/clientReduxed/clientReduxed',
+            jsxPath: 'site/parts/clientReduxed/clientReduxed',
             //uniqueId: true
         });
 };

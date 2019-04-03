@@ -71,7 +71,7 @@ task babelXP(type: NodeTask) {
 babelXP.dependsOn += 'config_react4xp'
 babelXP.dependsOn += 'processResources'
 
-
+jar.dependsOn += 'babelXP'
 
 
 // --------------------------------------------------- REACT4XP-SPECIFIC:
@@ -153,6 +153,5 @@ webpack_react4xp.dependsOn += 'config_react4xp'
 
 
 jar.dependsOn += 'webpack_react4xp'
-jar.dependsOn += 'babelXP'
 
 jar.outputs.dir('build/libs')

@@ -2,20 +2,20 @@
 
 const thymeleaf = require('/lib/xp/thymeleaf');
 
-const { getAllUrls } = require('/lib/enonic/react4xp/dependencies');
+const dependencies = require('/lib/enonic/react4xp/dependencies');
 
-const dependencies = getAllUrls('SimpleGreeter');
-
-const view1 = resolve('main.html');
+//const view1 = resolve('main.html');
 
 const view2 = resolve('main2.html');
 
 exports.get = req => {
 
+    /*
     const model = {
-        dependencies,
-        componentRootUrl: `/_/service/${app.name}/react4xp`
+        urls: dependencies.getAllUrls('SimpleGreeter')
     };
+    model.urls.push(`/_/service/${app.name}/react4xp/SimpleGreeter`);
+    //*/
 
     return {
         //body: thymeleaf.render(view1, model)   // <-- Semi-serverside: client-side rendering, inserting all urls for dependencies and entries with thymeleaf from the model.
